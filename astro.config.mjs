@@ -2,5 +2,5 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://ajscanlan.github.io',
+  site: 'https://ajscanlan.dev',
 })

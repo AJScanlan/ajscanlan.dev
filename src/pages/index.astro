@@ -1,12 +1,39 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import {
+	ARCHIVE_COLLECTIONS,
+	ARCHIVE_LABELS,
+	type ArchiveEntryData,
+	type ArchiveCollection,
+	getPrimaryDate,
+} from "@/lib/archive";
 
-const posts = (await getCollection(
-	"thoughts",
-	({ data }) => data.status === "published",
-))
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const aggregatedEntries: Array<{
+	collection: ArchiveCollection;
+	slug: string;
+	data: ArchiveEntryData;
+}> = (
+	await Promise.all(
+		ARCHIVE_COLLECTIONS.map(async (collection) => {
+			const items = await getCollection(
+				collection,
+				({ data }) => data.status === "published",
+			);
+			return items.map((item) => ({
+				collection,
+				slug: item.slug,
+				data: item.data as ArchiveEntryData,
+			}));
+		}),
+	)
+)
+	.flat()
+	.sort((a, b) => {
+		const aDate = getPrimaryDate(a.data)?.valueOf() ?? 0;
+		const bDate = getPrimaryDate(b.data)?.valueOf() ?? 0;
+		return bDate - aDate;
+	})
 	.slice(0, 8);
 ---
 
@@ -25,33 +52,38 @@ const posts = (await getCollection(
 	</section>
 
 	<section>
-		<h2 class="text-xl font-semibold mb-4">Latest posts</h2>
+		<h2 class="text-xl font-semibold mb-4">Latest writing</h2>
 		<ul class="space-y-5">
 			{
-				posts.map(({ data, slug }) => (
-					<li>
-						<a href={`/posts/${slug}/`} class="block">
-							<h3 class="text-lg font-medium hover:underline">
-								{data.title}
-							</h3>
-							{data.dek && (
-								<p class="text-sm text-ink-600 dark:text-ink-400">
-									{data.dek}
-								</p>
-							)}
-							<time class="text-xs text-ink-500">
-								{new Date(data.date).toLocaleDateString(
-									"en-IE",
-									{
-										year: "numeric",
-										month: "short",
-										day: "2-digit",
-									},
+				aggregatedEntries.map(({ collection, data, slug }) => {
+					const displayDate = getPrimaryDate(data);
+					return (
+						<li>
+							<span class="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">
+								{ARCHIVE_LABELS[collection]}
+							</span>
+							<a href={`/archive/${collection}/${slug}/`} class="block">
+								<h3 class="text-lg font-medium hover:underline">
+									{data.title}
+								</h3>
+								{data.dek && (
+									<p class="text-sm text-ink-600 dark:text-ink-400">
+										{data.dek}
+									</p>
 								)}
-							</time>
-						</a>
-					</li>
-				))
+								{displayDate && (
+									<time class="text-xs text-ink-500">
+										{displayDate.toLocaleDateString("en-IE", {
+											year: "numeric",
+											month: "short",
+											day: "2-digit",
+										})}
+									</time>
+								)}
+							</a>
+						</li>
+					);
+				})
 			}
 		</ul>
 	</section>

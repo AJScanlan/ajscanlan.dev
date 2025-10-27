@@ -1,0 +1,86 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getEntry } from "astro:content";
+import Callout from "@/components/Callout.astro";
+import {
+    ARCHIVE_COLLECTIONS,
+    ARCHIVE_LABELS,
+    type ArchiveCollection,
+    type ArchiveEntryData,
+    getPrimaryDate,
+    isArchiveCollection,
+} from "@/lib/archive";
+
+export async function getStaticPaths() {
+    const { getCollection } = await import("astro:content");
+    const entries = await Promise.all(
+        ARCHIVE_COLLECTIONS.map(async (collection) => {
+            const items = await getCollection(
+                collection,
+                ({ data }) => data.status === "published",
+            );
+            return items.map((item) => ({
+                params: { collection, slug: item.slug },
+            }));
+        }),
+    );
+    return entries.flat();
+}
+
+const { collection, slug } = Astro.params;
+if (!collection || !slug) {
+    throw new Error("Archive route missing params");
+}
+
+if (!isArchiveCollection(collection)) {
+    throw new Error(`Unsupported archive section: ${collection}`);
+}
+const typedCollection = collection as ArchiveCollection;
+
+const entry = await getEntry(typedCollection, slug);
+if (!entry) {
+    throw new Error(`Archive entry not found: ${typedCollection}/${slug}`);
+}
+const { Content } = await entry.render();
+const typedData = entry.data as ArchiveEntryData;
+
+const primaryDate = getPrimaryDate(typedData);
+const updatedDate = typedData.updated;
+---
+
+<BaseLayout
+    title={`${typedData.title} - ajscanlan.dev`}
+    description={typedData.dek}
+>
+    <article class="prose dark:prose-invert">
+        <header class="mb-6">
+            <span class="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">
+                {ARCHIVE_LABELS[typedCollection]}
+            </span>
+            <h1 class="mb-2">{typedData.title}</h1>
+            {(primaryDate || updatedDate) && (
+                <p class="text-ink-600 dark:text-ink-400 text-sm">
+                    {primaryDate && (
+                        <time
+                            >{
+                                primaryDate.toLocaleDateString("en-IE", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "2-digit",
+                                })
+                            }</time
+                        >
+                    )}
+                    {updatedDate && primaryDate && updatedDate > primaryDate && (
+                        <span>
+                            {" "}
+                            · updated{" "}
+                            {updatedDate.toLocaleDateString("en-IE")}
+                        </span>
+                    )}
+                </p>
+            )}
+        </header>
+        <Content components={{ Callout }} />
+    </article>
+</BaseLayout>

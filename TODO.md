@@ -2,13 +2,14 @@
 
 ## 🚀 High Impact (MVP blockers)
 
-- [ ] **Publish 3 diverse posts** — MVP needs 1 "On…" (done), 1 Field Note, 1 Cheat-sheet
+- [ ] **Publish 3 diverse posts** — MVP needs 1 Thought, 1 Field Note, 1 Cheat-sheet
+  - [ ] Write & publish first Thought
   - [ ] Write & publish first Field Note (~400 words, link-heavy, timestamped)
   - [ ] Write & publish first Cheat-sheet (opinionated summary with copy-paste blocks)
 - [x] **Reading time calculation** — Surface in post templates & index (improve scannability)
 - [x] **RSS feed expansion** — Extend `/feed.xml` to include notes, cheat-sheets, and logs (not just thoughts)
 - [x] **Dynamic route expansion** — Extend `/posts/[slug].astro` to handle all collection types (notes, cheat-sheets, logs)
-- [ ] **Sitemap generation** — Add to build process for basic SEO
+- [x] **Sitemap generation** — Add to build process for basic SEO
 - [ ] **404 page** — Create with consistent brand voice & helpful navigation
 - [x] **GitHub Actions CI** — Automate build → deploy to GitHub Pages with custom domain
 - [ ] **Typography audit** — Verify 60-75ch measure, 1.55-1.7 line height, proper heading scale
@@ -24,6 +25,14 @@
 
 ## 🎨 Design & UX
 
+### Scannability Improvements (Magazine-Grade Editorial)
+- [ ] **Table of Contents component** — Auto-generate TOC from headings for longer articles (800+ words); fits "layered pedagogy" philosophy
+- [ ] **Strengthen heading visual hierarchy** — Add subtle left border on h2/h3 in Fox Red; increase weight contrast between levels
+- [ ] **Pull Quote component** — Magazine-style callouts for key ideas (larger, offset text); breaks up long reads naturally
+- [ ] **Section break ornaments** — Subtle centered markers (◆ or • • •) between major sections
+- [ ] **Reading progress indicator** — Thin Fox Red line at top showing scroll progress for long reads
+
+### Components & Patterns
 - [ ] **Figure component with caption** — Semantic `<figure>` + `<figcaption>`, proper spacing
 - [ ] **Footnote/sidenote pattern** — Implement tooltip or margin notes for wide screens
 - [ ] **Print stylesheet** — Ensure essays print beautifully (hide nav, adjust margins)
@@ -48,7 +57,7 @@
 
 ## 📊 Analytics & Monitoring
 
-- [ ] **Plausible Analytics (or none)** — Make final decision & implement if desired
+- [x] **Plausible Analytics (or none)** — Make final decision & implement if desired
 - [ ] **Core Web Vitals tracking** — Set baseline; monitor over time
 - [ ] **Broken link monitoring** — Tool or script to catch 404s
 

@@ -1,312 +1,128 @@
+# Copilot Instructions for ajscanlan.dev
 
-# AJSCANLAN.DEV
+## Project Overview
+Personal blog and digital garden built with **Astro 5** — static site generator focused on typography-first design with minimal aesthetic. Mission: clear, humble, intellectually playful writing with magazine-grade composition.
 
-## 0) One‑screen Summary (TL;DR)
+## Architecture
 
-**Mission:** Publish clear, humble, intellectually playful writing (especially short “On…” essays) and practical notes; use minimal, legible design with magazine‑grade composition.
+### Content Collections (src/content/)
+Four distinct content types defined in `src/content/config.ts`:
+- **thoughts/** — "On…" essays (800-1600 words, requires `dek` field)
+- **notes/** — Field notes (≤400 words, timestamped)
+- **cheat-sheets/** — Opinionated summaries (uses `updated` instead of `date`)
+- **logs/** — Project logs (UPLEX, etc.)
+- **drafts/** — WIP content (excluded from builds)
 
-**Principles:** Clarity over flair · Visual calm · Empathy & trust · Layered pedagogy (“onion”) · Structured provisionalism (state uncertainty & scope) · High reuse (templates/partials) · Accessibility by default.
+All collections share `sharedFields` schema: `title`, `dek?`, `tags[]`, `series?`, `readingTime?`, `status`, `openness`, `updated?`
 
-**Stack:** Astro + Markdown/MDX · GitHub Pages · GitHub Actions CI · DNS already on Namecheap. Typography first; light CSS utilities; optional Tailwind (if needed).
+### URL Convention
+All content types route through `/posts/[slug]/` — the dynamic route in `src/pages/posts/[slug].astro` currently only handles `thoughts` collection but should be expanded to handle all published content from notes, cheat-sheets, and logs collections.
 
-**Brand cue:** Abstract **red fox head** (profile), modernist mark; clean wordmark. Favor geometric construction, negative space, and a single accent red.
+### Key Files
+- `src/layouts/BaseLayout.astro` — Shared layout with skip-to-content, header with Fox logo, footer
+- `src/components/Callout.astro` — Three variants (note, tip, warn) with ARIA roles
+- `src/pages/feed.xml.ts` — RSS generation (currently thoughts-only)
+- `src/styles/global.css` — Typography-first base styles with accessibility patterns
+- `tailwind.config.js` — Custom color system (ink/paper/fox scales) + typography scale
 
-**Sites:**  
-- **ajscanlan.dev** — personal essays, notes, cheat‑sheets.  
-- **uplex.network** — technical docs for UPLEX.  
-- **uplex.foundation** — governance & policy docs for UPLEX.
+## Design System
 
-**Voice:** Humble, curious, sincere. “Write your way to understanding.” Respect the reader’s time; avoid performative gravitas while borrowing the classical “On…” titling as playful homage.
+### Colors
+- **Ink** (50-900): Warm blacks for text, `ink-700` default body, `ink-800` headings
+- **Paper** (50-200): Background scale, `paper-100` primary background  
+- **Fox** (#D0342C): Primary brand accent, used sparingly for links/focus states
+- **Functional**: green (#1F7A5C), amber (#D97706), red (#DC2626)
 
----
+### Typography Scale
+- Body: 18px (1.125rem), line-height 1.7 (1.75 on mobile)
+- Heading scale: 1.25 ratio (20/25/31/39/49px)
+- Max-width: 70ch default (`max-w-prose`), 60ch narrow, 75ch wide
+- Container classes: `.container-narrow` (max-w-3xl), `.container-wide` (max-w-5xl)
 
-## 1) Goals & Scope
+### Spacing System
+Rhythm units based on 4px increments: `rhythm-1` (4px), `rhythm-2` (8px), `rhythm-3` (12px), `rhythm-4` (16px), `rhythm-6` (24px), `rhythm-8` (32px), `rhythm-12` (48px), `rhythm-16` (64px)
 
-### 1.1 Objectives
-- Ship a durable personal blog with legible typography, minimal UI, and print‑worthy layout habits.
-- Establish canonical content types: **On… essays**, **Field Notes**, **Cheat‑sheets**, and **Project Logs**.
-- Keep deploy friction near‑zero (commit → preview → main → publish).
+## Conventions
 
-### 1.2 Non‑goals (for now)
-- Heavy design systems or animation.  
-- CMS with databases; keep to Markdown/MDX + Git.  
-- Dark‑pattern growth hacks; SEO kept lightweight and honest.
+### MDX Components
+Import components at top of MDX files:
+```mdx
+import Callout from "@/components/Callout.astro";
 
----
-
-## 2) Brand System (Quick Spec)
-
-### 2.1 Icon concept — Abstract Red Fox (profile)
-**Attributes:** smart · alert · kind · minimalist  
-**Geometry:** construct from 2–3 primary shapes (triangle ear, curved snout, neck wedge).  
-**Line:** 1–2 stroke weights max; prefer solid fill + negative space over outlines.  
-**Color:** single accent **Fox Red** + neutral ink.  
-**Contrast:** AA/AAA compliant on light background.
-
-**Starter palette (editable):**
-- Fox Red hexD0342C
-- Ink hex0B0B0E
-- Mist (bg) hexF7F7F8
-- Graphite (muted text) hex44464A
-- Accent Green (success) hex1F7A5C
-
-**Usage:** 24–32 px favicon; 128–256 px site mark; avoid gradients; allow 1‑color print.
-
-### 2.2 Wordmark
-- Typeface: same as body or a restrained grotesk (e.g., Inter/IBM Plex Sans).  
-- Letter‑spacing slightly tight for small sizes; no faux‑bold.
-
----
-
-## 3) Design System (Lean)
-
-### 3.1 Typography
-- **Body:** system stack or Inter/Source Sans/IBM Plex Sans.  
-- **Size/measure:** 18–20 px body; 60–75 ch line width.  
-- **Line height:** 1.55–1.7; increase on narrow screens.  
-- **Headings:** scale 1.25–1.333; keep H1 rare.  
-- **Code:** JetBrains Mono/Cascadia Code; 90–95% of body size.  
-- **Emphasis:** prefer *italic* for nuance, **bold** for true anchors only.
-
-### 3.2 Layout rules
-- Generous white space.  
-- Use a **content column** with rhythm units (4/8/12 px).  
-- Images bleed to grid edge only on larger breakpoints.  
-- Never center long text; left‑align with rag control.
-
-### 3.3 Components (low‑friction)
-- **Callout** (info/warn/quote).  
-- **Footnote**/reference.  
-- **Figure** with caption.  
-- **Inline definition** (tooltip or sidenote on wide screens).
-
----
-
-## 4) Information Architecture
-
-### 4.1 Content types
-- **On… Essay:** 800–1,600 words. Reflective; one idea.  
-- **Field Notes:** ≤400 words, link‑heavy, timestamped.  
-- **Cheat‑sheet:** opinionated summaries with copy‑paste blocks.  
-- **Project Log:** dated entries for builds (UPLEX, tooling).
-
-### 4.2 URL scheme
-- `/thoughts/on-rivers-and-change/`  
-- `/notes/edge-ai-sparks/`  
-- `/cheats/verbal-judo/`  
-- `/logs/uplex/phase-0/`
-
-### 4.3 Metadata
-- `title`, `dek` (1–2 sentence summary), `tags`, `series`, `readingTime`, `updated`, `status: draft|published`, `openness: provisional|confident`.
-
----
-
-## 5) Editorial Guidelines
-
-### 5.1 Voice
-Humble, earnest, technically fluent. Prefer concrete nouns, short sentences, and honest caveats. Say “I think,” “I’m not sure,” and state what would change your mind.
-
-### 5.2 Structured Provisionalism (S.P.)
-Each long post ends with:
-- **What I’m confident about**  
-- **Live questions / unknowns**  
-- **What would falsify this**  
-- **Next experiment**
-
-### 5.3 Onion Pedagogy (layered)
-- **Layer 1:** 30‑sec gist.  
-- **Layer 2:** 3‑min skim (subheads, callouts).  
-- **Layer 3:** Full text + references.  
-- **Layer 4:** Appendices (notes, links, datasets).
-
-### 5.4 “On…” Titles
-Use with playful reverence; avoid borrowing gravitas. Keep deks plain: explain the metaphor in one crisp sentence.
-
----
-
-## 6) Tech Stack & Workflow
-
-### 6.1 Astro workflow (GitHub Pages)
-1. `npm create astro@latest` → content collection + Markdown.  
-2. Local dev: `npm run dev`.  
-3. Add **GitHub Actions** with Astro static build → pushes to `gh-pages`.  
-4. Custom domain set; HTTPS; 404 route configured.  
-5. Drafts live under `src/content/drafts` and are excluded from build.
-
-### 6.2 Optional utilities
-- Tailwind for utility classes (only if helpful).  
-- Remark/Rehype plugins: autolink headers, footnotes, reading‑time, external‑links.  
-- RSS feed + sitemap.  
-- Plausible or no analytics.
-
-### 6.3 Project tree
-```
-src
-  /components
-  /layouts
-  /styles
-  /content
-    /thoughts
-    /notes
-    /cheat-sheets
-    /logs
-    /drafts
-public
-  /images
-  /icons
-scripts/
-.vscode/
+<Callout type="tip" title="Custom title">
+Content here
+</Callout>
 ```
 
----
+### Path Aliases
+`tsconfig.json` defines `@/*` → `src/*` — use in imports: `import BaseLayout from "@/layouts/BaseLayout.astro"`
 
-## 7) Reusable Templates (Front‑matter + MD)
-
-### 7.1 Thoughts essay
-```md
----
-title: "On Rivers and Change"
-dek: "A short reflection on flux, constraints, and how systems carve their channels."
-tags: ["philosophy", "systems", "change"]
-series: "Thoughts"
-readingTime: 6
-status: "draft"
-openness: "provisional"
-updated: 2025-10-27
----
-
-> Layer 1 — the 30‑sec gist.
-
-## Why this
-A paragraph setting the question and stakes.
-
-## The thread
-Key sections, each 3–5 short paragraphs.
-
-## Where I’m unsure
-Bulleted uncertainties.
-
-## S.P. Appendix
-- Confident about:
-- Unknowns:
-- Falsify by:
-- Next experiment:
+### Content Queries
+Always filter published content:
+```typescript
+const posts = await getCollection('thoughts', ({ data }) => data.status === 'published');
 ```
 
-### 7.2 Notes
-```md
----
-title: "Edge AI & Federation: first thoughts"
-tags: ["notes", "edge-ai", "federation"]
-status: "published"
-updated: 2025-10-27
----
+**Draft workflow**: Drafts should be visible in development (`npm run dev`) but excluded from production builds. Use `import.meta.env.PROD` to conditionally filter drafts in `getStaticPaths()` and collection queries.
 
-- 12:41 — thought/link
-- 14:05 — test result
-```
+### Markdown Plugins
+Configured in `astro.config.mjs`:
+- **Remark**: `remarkGfm`, `remarkSmartypants`, `remarkFootnotes` (inline notes enabled)
+- **Rehype**: `rehypeSlug`, `rehypeAutolinkHeadings` (wrap behavior, `.heading-anchor` class)
 
-### 7.3 Cheat‑sheets
-```md
----
-title: "Verbal Judo — quick handles"
-tags: ["cheat-sheet", "communication"]
-status: "draft"
-updated: 2025-10-27
----
+## Accessibility Requirements
 
-## Moves
-- Move → script
-## Caveats
-## References
-```
+### Must-Have Patterns
+- Skip-to-content link (`.skip-to-content`, jumps to `#main-content`)
+- ARIA landmarks on header/nav/main/footer with roles
+- Visible `:focus-visible` styles (3px Fox Red outline, 2px offset)
+- Callouts use semantic ARIA roles: `role="note"`, `role="complementary"`, `role="alert"`
+- Respect `prefers-reduced-motion` (global styles in `global.css`)
 
----
+### Contrast Standards
+All text meets WCAG AA (4.5:1 for body, 3:1 for large text). Callout borders strengthened in dark mode for visibility. See `ACCESSIBILITY_AUDIT.md` for tested ratios.
 
-## 8) Accessibility & Performance
+## Development Workflow
 
-- Color contrast AA minimum; test links and callouts.  
-- Keyboard focus visible; skip‑to‑content link.  
-- Prefer `<figure>` with `<figcaption>`.  
-- Lazy‑load large images; use modern formats when convenient.  
-- No blocking webfonts: system stack acceptable to avoid FOUT.
-
----
-
-## 9) SEO & Social (lightweight)
-
-- `<title>` + meta description from `dek`.  
-- Open Graph + Twitter cards (fallback to site mark).  
-- RSS + `/sitemap.xml`.  
-- Canonicals; no intrusive popups.
-
----
-
-## 10) Repo Conventions
-
-- Conventional Commits (`feat:`, `fix:`).  
-- Keep‑a‑Changelog in `CHANGELOG.md`.  
-- `src/content/drafts/` ignored by build.  
-- `/public/images/` flat with slugs as prefixes.  
-- Small, legible PRs; squash‑merge.
-
----
-
-## 11) Adjacent Sites (UPLEX)
-
-Keep **uplex.network** technical and **uplex.foundation** governance‑oriented. Cross‑link sparingly; each site should stand alone. Reuse typography and spacing rules; distinct accent colors allowed.
-
----
-
-## 12) Open Questions / Next Decisions
-
-- Pick final body typeface (system vs Inter/IBM Plex).  
-- Decide on Tailwind usage (Y/N).  
-- Finalize fox icon geometry + exact red.  
-- Choose analytics (Plausible or none).  
-- Lock URL taxonomy (see §4.2).
-
----
-
-## 13) Definition of Done (MVP)
-
-- Home, Posts index, About, RSS, Sitemap.  
-- At least 3 published posts (1 “On…”, 1 Field Note, 1 Cheat‑sheet).  
-- Passing accessibility sweep; core web vitals decent.  
-- CI deploy green from `main`; custom domain live.
-
----
-
-## 14) Quick Start
-
+### Commands
 ```bash
-# clone, install, run
-npm ci
-npm run dev
-
-# create a “Thoughts” essay
-npm run new:thought -- "On Rivers and Change"
-
-# build & preview
-npm run build && npm run preview
+npm ci              # Clean install (prefer over npm install)
+npm run dev         # Dev server at localhost:4321
+npm run build       # Production build to ./dist/
+npm run preview     # Preview build locally
 ```
-(You can wire `npm run new:*` scripts later to scaffold files.)
 
+### Content Frontmatter Template
+```yaml
 ---
-
-## 15) Icon Draft Brief (for design tool or AI image gen)
-
-**Prompt skeleton:**  
-“Abstract red fox head in profile, minimalist geometric logo, flat solid color, strong negative space, single accent red on clean light background, no gradients, print‑friendly, modernist.”
-
-**Constraints:** 1‑color flattening must retain recognizability. Nose/ear geometry readable at 16 px.
-
+title: "Your Title"
+dek: "Short description (required for thoughts)"
+date: 2025-10-27
+updated: 2025-10-27  # Optional
+tags: ["tag1", "tag2"]
+series: "Series Name"  # Optional
+readingTime: 6  # Minutes, optional
+status: "published"  # or "draft"
+openness: "provisional"  # or "confident"
 ---
+```
 
-## 16) Maintenance Rhythm
+### Testing Changes
+- After edits to `tailwind.config.js`, verify in browser with dev server running
+- Check responsive behavior at narrow widths (line-height increases < 640px)
+- Test keyboard navigation: Tab through skip link → nav → main content
+- Verify dark mode: system preference toggle should work automatically
 
-- Weekly: publish one Field Note or Log.  
-- Bi‑weekly: one “On…” draft → publish or park.  
-- Quarterly: design/IA tidy‑up and link‑rot pass.
+## Current Limitations & TODOs
 
----
+- **Dynamic routes**: Only `thoughts` collection renders at `/posts/[slug]/` — needs expansion to handle notes, cheat-sheets, and logs
+- **RSS feed**: Only includes thoughts — should include all content types (notes, cheat-sheets, logs)
+- **Draft exclusion**: Drafts visible in dev but need conditional filtering in production using `import.meta.env.PROD`
+- **No search**: Static site with no search functionality yet
+- **Reading time**: Not auto-calculated, must be manually added to frontmatter
+
+See `TODO.md` for full task list prioritized by impact.
+
+## Brand & Voice
+
+Red fox head mark represents smart, alert, kind minimalism. Design favors visual calm, empathy & trust, layered pedagogy ("onion"), structured provisionalism. Typography is magazine-grade with generous whitespace. Never center long text — always left-align with proper rag.

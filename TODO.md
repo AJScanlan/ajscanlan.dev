@@ -1,12 +1,71 @@
 # TODO
 
+## 🚀 High Impact (MVP blockers)
+
+- [ ] **Publish 3 diverse posts** — MVP needs 1 "On…" (done), 1 Field Note, 1 Cheat-sheet
+  - [ ] Write & publish first Field Note (~400 words, link-heavy, timestamped)
+  - [ ] Write & publish first Cheat-sheet (opinionated summary with copy-paste blocks)
+- [ ] **Reading time calculation** — Surface in post templates & index (improve scannability)
+- [ ] **RSS feed validation** — Ensure `/feed.xml` works correctly with all content types
+- [ ] **Sitemap generation** — Add to build process for basic SEO
+- [ ] **404 page** — Create with consistent brand voice & helpful navigation
+- [x] **GitHub Actions CI** — Automate build → deploy to GitHub Pages with custom domain
+- [ ] **Typography audit** — Verify 60-75ch measure, 1.55-1.7 line height, proper heading scale
+- [ ] **Performance check** — Lighthouse audit; lazy-load images; check webfont strategy
+
+## 📝 Content & Editorial
+
+- [ ] **S.P. (Structured Provisionalism) component** — Build reusable appendix layout for essays
+- [ ] **Scaffold helper scripts** (`npm run new:thought`, `new:note`, `new:cheat`, `new:log`)
+- [ ] **Content templates** — Add frontmatter templates to repo docs for easy copy-paste
+- [ ] **Link rot detection** — Set up quarterly check or tool for external link validation
+- [ ] **Cross-references system** — Enable linking between related posts (manual or semi-auto)
+
+## 🎨 Design & UX
+
+- [ ] **Figure component with caption** — Semantic `<figure>` + `<figcaption>`, proper spacing
+- [ ] **Footnote/sidenote pattern** — Implement tooltip or margin notes for wide screens
+- [ ] **Print stylesheet** — Ensure essays print beautifully (hide nav, adjust margins)
+- [ ] **Focus indicators** — Audit & ensure all interactive elements have visible focus states
+- [ ] **Responsive image strategy** — Modern formats (WebP/AVIF), proper srcset, lazy-loading
+- [ ] **Code block enhancements** — Syntax highlighting, copy button, language labels
+
+## 🏗️ Technical Infrastructure
+
+- [ ] **Draft workflow** — Exclude `src/content/drafts/` from production, easy preview locally
+- [ ] **Remark/Rehype plugins** — Autolink headers, external link icons, reading time
+- [ ] **Open Graph & Twitter Cards** — Social sharing meta tags with fallback to site mark
+- [ ] **Canonical URLs** — Set proper canonicals for SEO
+- [ ] **Search functionality** — Consider lightweight client-side search (Pagefind/Fuse.js)
+- [ ] **Dark mode polish** — Verify contrast ratios, test all components, smooth transition
+
+## 🔗 UPLEX Integration (Future)
+
+- [ ] **Cross-site navigation strategy** — Decide on linking between ajscanlan.dev, uplex.network, uplex.foundation
+- [ ] **Shared component library** — Extract common layouts/typography for reuse across sites
+- [ ] **Content series taxonomy** — Tag posts related to UPLEX project for filtering
+
+## 📊 Analytics & Monitoring
+
+- [ ] **Plausible Analytics (or none)** — Make final decision & implement if desired
+- [ ] **Core Web Vitals tracking** — Set baseline; monitor over time
+- [ ] **Broken link monitoring** — Tool or script to catch 404s
+
+## ✅ Already Complete
+
 - [x] Restructure `src/content/` directories for `thoughts`, `notes`, `cheat-sheets`, `logs`, and `drafts` to mirror the updated IA.
 - [x] Define Astro content collections for each type in `src/content/config.ts`, including new frontmatter fields (`dek`, `series`, `readingTime`, `status`, `openness`).
 - [x] Backfill the new frontmatter on existing Markdown/MDX entries and migrate legacy files out of `content/`.
 - [x] Update Tailwind palette to use the specified fox-red accent and ensure neutrals match the brand palette.
 - [x] Add accessibility affordances: skip-to-content link, explicit focus styles, and audit callout contrast.
 - [x] Create the missing `/about/` page referenced in navigation with BaseLayout and onion-layer summary sections.
-- [ ] Introduce reading-time calculation (e.g., Astro content hook or build step) and surface it in post templates.
-- [ ] Scaffold helper scripts (`npm run new:*`) for generating each content type with the provided frontmatter templates.
 - [x] Add assets for the fox head mark and favicon variants under `public/`.
-- [ ] Configure drafts (`src/content/drafts/`) so they are excluded from production builds but easy to preview locally.
+
+---
+
+## 🎯 Next Sprint (Week of Oct 27)
+
+1. Publish Field Note + Cheat-sheet (reach MVP content diversity)
+2. Add reading time calculation
+~~3. Set up GitHub Actions deployment~~
+4. Typography audit & adjustments

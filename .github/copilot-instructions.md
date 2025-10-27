@@ -44,11 +44,11 @@
 **Contrast:** AA/AAA compliant on light background.
 
 **Starter palette (editable):**
-- Fox Red #D0342C
-- Ink #0B0B0E
-- Mist (bg) #F7F7F8
-- Graphite (muted text) #44464A
-- Accent Green (success) #1F7A5C
+- Fox Red hexD0342C
+- Ink hex0B0B0E
+- Mist (bg) hexF7F7F8
+- Graphite (muted text) hex44464A
+- Accent Green (success) hex1F7A5C
 
 **Usage:** 24–32 px favicon; 128–256 px site mark; avoid gradients; allow 1‑color print.
 
@@ -91,7 +91,7 @@
 - **Project Log:** dated entries for builds (UPLEX, tooling).
 
 ### 4.2 URL scheme
-- `/on/rivers-and-change/`  
+- `/thoughts/rivers-and-change/`  
 - `/notes/2025-10-27-edge-ai-sparks/`  
 - `/cheats/verbal-judo/`  
 - `/logs/uplex/2025-10-27-phase-0/`
@@ -131,7 +131,7 @@ Use with playful reverence; avoid borrowing gravitas. Keep deks plain: explain t
 2. Local dev: `npm run dev`.  
 3. Add **GitHub Actions** with Astro static build → pushes to `gh-pages`.  
 4. Custom domain set; HTTPS; 404 route configured.  
-5. Drafts live under `content/drafts` and are excluded from build.
+5. Drafts live under `src/content/drafts` and are excluded from build.
 
 ### 6.2 Optional utilities
 - Tailwind for utility classes (only if helpful).  
@@ -146,9 +146,9 @@ src
   /layouts
   /styles
   /content
-    /on
+    /thoughts
     /notes
-    /cheats
+    /cheat-sheets
     /logs
     /drafts
 public
@@ -162,13 +162,13 @@ scripts/
 
 ## 7) Reusable Templates (Front‑matter + MD)
 
-### 7.1 On… essay
+### 7.1 Thoughts essay
 ```md
 ---
 title: "On Rivers and Change"
 dek: "A short reflection on flux, constraints, and how systems carve their channels."
 tags: ["philosophy", "systems", "change"]
-series: "On…"
+series: "Thoughts"
 readingTime: 6
 status: "draft"
 openness: "provisional"
@@ -193,7 +193,7 @@ Bulleted uncertainties.
 - Next experiment:
 ```
 
-### 7.2 Field note
+### 7.2 Notes
 ```md
 ---
 title: "Edge AI & Federation: first thoughts"
@@ -206,7 +206,7 @@ updated: 2025-10-27
 - 14:05 — test result
 ```
 
-### 7.3 Cheat‑sheet
+### 7.3 Cheat‑sheets
 ```md
 ---
 title: "Verbal Judo — quick handles"
@@ -284,8 +284,8 @@ Keep **uplex.network** technical and **uplex.foundation** governance‑oriented.
 npm ci
 npm run dev
 
-# create an “On…” essay
-npm run new:on -- "On Rivers and Change"
+# create a “Thoughts” essay
+npm run new:thought -- "On Rivers and Change"
 
 # build & preview
 npm run build && npm run preview

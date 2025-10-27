@@ -2,9 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
-    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = (await getCollection(
+    "thoughts",
+    ({ data }) => data.status === "published",
+)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
 <BaseLayout title="Archive - ajscanlan.dev">
@@ -20,6 +21,11 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
                         {" "}
                         · {new Date(data.date).toLocaleDateString("en-IE")}
                     </span>
+                    {data.dek && (
+                        <p class="text-ink-600 dark:text-ink-400 text-sm">
+                            {data.dek}
+                        </p>
+                    )}
                 </li>
             ))
         }

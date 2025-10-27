@@ -2,7 +2,10 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const posts = (await getCollection("posts", ({ data }) => !data.draft))
+const posts = (await getCollection(
+	"thoughts",
+	({ data }) => data.status === "published",
+))
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 	.slice(0, 8);
 ---
@@ -26,14 +29,14 @@ const posts = (await getCollection("posts", ({ data }) => !data.draft))
 		<ul class="space-y-5">
 			{
 				posts.map(({ data, slug }) => (
-					<li class="">
+					<li>
 						<a href={`/posts/${slug}/`} class="block">
 							<h3 class="text-lg font-medium hover:underline">
 								{data.title}
 							</h3>
-							{data.description && (
+							{data.dek && (
 								<p class="text-sm text-ink-600 dark:text-ink-400">
-									{data.description}
+									{data.dek}
 								</p>
 							)}
 							<time class="text-xs text-ink-500">

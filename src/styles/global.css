@@ -3,19 +3,99 @@
 @tailwind utilities;
 
 
-/* Minimal base: canvas + smooth type, prefers-color-scheme respected */
+/* ===== BASE LAYER ===== */
+/* Canvas + smooth type, prefers-color-scheme respected */
 :root {
     color-scheme: light dark;
 }
 
 html {
     -webkit-text-size-adjust: 100%;
+    font-size: 16px; /* base for rem calculations */
 }
 
 body {
     @apply bg-paper-50 text-ink-900 dark:bg-ink-900 dark:text-ink-100 antialiased;
+    font-size: 1.125rem;  /* 18px body text */
+    line-height: 1.7;
+    
+    /* Increase line-height on narrow screens */
+    @media (max-width: 640px) {
+        line-height: 1.75;
+    }
 }
 
+/* ===== LAYOUT UTILITIES ===== */
+/* Content column with rhythm units (4/8/12 px) */
+.content-column {
+    max-width: 70ch;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.content-column-narrow {
+    max-width: 60ch;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.content-column-wide {
+    max-width: 75ch;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Generous white space utilities */
+.prose-spacing > * + * {
+    margin-top: 1.25rem;
+}
+
+.prose-spacing > h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.prose-spacing > h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Never center long text; left-align with rag control */
+.prose-text {
+    text-align: left;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+}
+
+/* Images bleed to grid edge only on larger breakpoints */
+.prose-image {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+@media (min-width: 768px) {
+    .prose-image-bleed {
+        margin-left: calc(-1 * (100vw - 70ch) / 2);
+        margin-right: calc(-1 * (100vw - 70ch) / 2);
+        max-width: 100vw;
+    }
+}
+
+@media (min-width: 768px) {
+    .prose-image-bleed {
+        margin-left: calc(-1 * (100vw - 70ch) / 2);
+        margin-right: calc(-1 * (100vw - 70ch) / 2);
+        max-width: 100vw;
+    }
+}
+
+/* ===== COMPONENT LAYER ===== */
 /* Container variants */
 .container-narrow {
     @apply container max-w-3xl;
@@ -25,6 +105,25 @@ body {
     @apply container max-w-5xl;
 }
 
+/* Typography emphasis helpers */
+.text-nuance {
+    @apply italic font-normal;
+}
+
+.text-anchor {
+    @apply font-bold not-italic;
+}
+
+/* Code sizing: 90-95% of body */
+code {
+    font-size: 0.95em;
+}
+
+pre code {
+    font-size: 0.9em;
+}
+
+/* ===== UTILITIES LAYER ===== */
 /* Anchor link icon spacing (rehype-autolink-headings) */
 .heading-anchor {
     @apply no-underline;

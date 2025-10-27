@@ -20,11 +20,11 @@ const {
     </head>
     <body>
         <header class="border-b border-ink-200/60 dark:border-ink-800/60">
-            <div class="container-wide py-6 flex items-center justify-between">
+            <div class="container-wide py-rhythm-6 flex items-center justify-between">
                 <a href="/" class="font-semibold tracking-tight"
                     >ajscanlan.dev</a
                 >
-                <nav class="text-sm flex gap-6">
+                <nav class="text-sm flex gap-rhythm-6">
                     <a href="/about/" class="hover:underline">About</a>
                     <a href="/posts/" class="hover:underline">Archive</a>
                     <a href="/feed.xml" class="hover:underline">RSS</a>
@@ -32,13 +32,13 @@ const {
             </div>
         </header>
 
-        <main class="container-narrow py-10">
+        <main class="container-narrow py-rhythm-12">
             <slot />
         </main>
 
-        <footer class="mt-10 border-t border-ink-200/60 dark:border-ink-800/60">
+        <footer class="mt-rhythm-12 border-t border-ink-200/60 dark:border-ink-800/60">
             <div
-                class="container-narrow py-8 text-sm text-ink-600 dark:text-ink-400"
+                class="container-narrow py-rhythm-8 text-sm text-ink-600 dark:text-ink-400"
             >
                 <p>
                     © {new Date().getFullYear()} A.J. Scanlan. Built with Astro.

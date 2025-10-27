@@ -6,7 +6,7 @@
   - [ ] Write & publish first Field Note (~400 words, link-heavy, timestamped)
   - [ ] Write & publish first Cheat-sheet (opinionated summary with copy-paste blocks)
 - [ ] **Reading time calculation** — Surface in post templates & index (improve scannability)
-- [ ] **RSS feed expansion** — Extend `/feed.xml` to include notes, cheat-sheets, and logs (not just thoughts)
+- [x] **RSS feed expansion** — Extend `/feed.xml` to include notes, cheat-sheets, and logs (not just thoughts)
 - [ ] **Dynamic route expansion** — Extend `/posts/[slug].astro` to handle all collection types (notes, cheat-sheets, logs)
 - [ ] **Sitemap generation** — Add to build process for basic SEO
 - [ ] **404 page** — Create with consistent brand voice & helpful navigation

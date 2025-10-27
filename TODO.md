@@ -6,7 +6,8 @@
   - [ ] Write & publish first Field Note (~400 words, link-heavy, timestamped)
   - [ ] Write & publish first Cheat-sheet (opinionated summary with copy-paste blocks)
 - [ ] **Reading time calculation** — Surface in post templates & index (improve scannability)
-- [ ] **RSS feed validation** — Ensure `/feed.xml` works correctly with all content types
+- [ ] **RSS feed expansion** — Extend `/feed.xml` to include notes, cheat-sheets, and logs (not just thoughts)
+- [ ] **Dynamic route expansion** — Extend `/posts/[slug].astro` to handle all collection types (notes, cheat-sheets, logs)
 - [ ] **Sitemap generation** — Add to build process for basic SEO
 - [ ] **404 page** — Create with consistent brand voice & helpful navigation
 - [x] **GitHub Actions CI** — Automate build → deploy to GitHub Pages with custom domain
@@ -32,8 +33,8 @@
 
 ## 🏗️ Technical Infrastructure
 
-- [ ] **Draft workflow** — Exclude `src/content/drafts/` from production, easy preview locally
-- [ ] **Remark/Rehype plugins** — Autolink headers, external link icons, reading time
+- [ ] **Draft workflow** — Implement `import.meta.env.PROD` filtering to exclude drafts in production while keeping visible in dev
+- [ ] **Remark/Rehype plugins** — External link icons, reading time calculation
 - [ ] **Open Graph & Twitter Cards** — Social sharing meta tags with fallback to site mark
 - [ ] **Canonical URLs** — Set proper canonicals for SEO
 - [ ] **Search functionality** — Consider lightweight client-side search (Pagefind/Fuse.js)
@@ -65,7 +66,9 @@
 
 ## 🎯 Next Sprint (Week of Oct 27)
 
-1. Publish Field Note + Cheat-sheet (reach MVP content diversity)
-2. Add reading time calculation
-~~3. Set up GitHub Actions deployment~~
-4. Typography audit & adjustments
+1. Extend dynamic route to handle all content types (notes, cheat-sheets, logs)
+2. Implement draft workflow with `import.meta.env.PROD` filtering
+3. Expand RSS feed to include all content types
+4. Publish Field Note + Cheat-sheet (reach MVP content diversity)
+5. Add reading time calculation
+6. Typography audit & adjustments

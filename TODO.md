@@ -8,5 +8,5 @@
 - [ ] Create the missing `/about/` page referenced in navigation with BaseLayout and onion-layer summary sections.
 - [ ] Introduce reading-time calculation (e.g., Astro content hook or build step) and surface it in post templates.
 - [ ] Scaffold helper scripts (`npm run new:*`) for generating each content type with the provided frontmatter templates.
-- [ ] Add assets for the fox head mark and favicon variants under `public/`.
+- [x] Add assets for the fox head mark and favicon variants under `public/`.
 - [ ] Configure drafts (`src/content/drafts/`) so they are excluded from production builds but easy to preview locally.

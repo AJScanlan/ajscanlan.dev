@@ -79,5 +79,5 @@
 2. Implement draft workflow with `import.meta.env.PROD` filtering
 ~~3. Expand RSS feed to include all content types~~
 4. Publish Field Note + Cheat-sheet (reach MVP content diversity)
-5. Add reading time calculation
+~~5. Add reading time calculation~~
 ~~6. Typography audit & adjustments~~

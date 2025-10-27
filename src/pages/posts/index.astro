@@ -1,29 +1,40 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { formatReadingTime } from "@/utils/reading-time";
+import { getReadingTime } from "@/utils/get-reading-time";
 
 const posts = (await getCollection(
     "thoughts",
     ({ data }) => data.status === "published",
 )).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Pre-calculate reading times for all posts
+const postsWithReadingTime = await Promise.all(
+    posts.map(async (post) => ({
+        post,
+        readingTime: await getReadingTime(post),
+    }))
+);
 ---
 
 <BaseLayout title="Archive - ajscanlan.dev">
     <h1 class="text-2xl font-semibold mb-6">Archive</h1>
     <ul class="space-y-4">
         {
-            posts.map(({ data, slug }) => (
+            postsWithReadingTime.map(({ post, readingTime }) => (
                 <li>
-                    <a href={`/posts/${slug}/`} class="hover:underline">
-                        {data.title}
+                    <a href={`/posts/${post.slug}/`} class="hover:underline">
+                        {post.data.title}
                     </a>
                     <span class="text-ink-500 text-sm">
                         {" "}
-                        · {new Date(data.date).toLocaleDateString("en-IE")}
+                        · {new Date(post.data.date).toLocaleDateString("en-IE")}
+                        {" "}· {formatReadingTime(readingTime)}
                     </span>
-                    {data.dek && (
+                    {post.data.dek && (
                         <p class="text-ink-600 dark:text-ink-400 text-sm">
-                            {data.dek}
+                            {post.data.dek}
                         </p>
                     )}
                 </li>

@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { formatReadingTime } from "@/utils/reading-time";
+import { getReadingTime } from "@/utils/get-reading-time";
 
 const posts = (await getCollection(
 	"thoughts",
@@ -8,6 +10,14 @@ const posts = (await getCollection(
 ))
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 	.slice(0, 8);
+
+// Pre-calculate reading times for all posts
+const postsWithReadingTime = await Promise.all(
+	posts.map(async (post) => ({
+		post,
+		readingTime: await getReadingTime(post),
+	}))
+);
 ---
 
 <BaseLayout
@@ -28,19 +38,19 @@ const posts = (await getCollection(
 		<h2 class="text-xl font-semibold mb-4">Latest posts</h2>
 		<ul class="space-y-5">
 			{
-				posts.map(({ data, slug }) => (
+				postsWithReadingTime.map(({ post, readingTime }) => (
 					<li>
-						<a href={`/posts/${slug}/`} class="block">
+						<a href={`/posts/${post.slug}/`} class="block">
 							<h3 class="text-lg font-medium hover:underline">
-								{data.title}
+								{post.data.title}
 							</h3>
-							{data.dek && (
+							{post.data.dek && (
 								<p class="text-sm text-ink-600 dark:text-ink-400">
-									{data.dek}
+									{post.data.dek}
 								</p>
 							)}
 							<time class="text-xs text-ink-500">
-								{new Date(data.date).toLocaleDateString(
+								{new Date(post.data.date).toLocaleDateString(
 									"en-IE",
 									{
 										year: "numeric",
@@ -48,6 +58,7 @@ const posts = (await getCollection(
 										day: "2-digit",
 									},
 								)}
+								{" "}· {formatReadingTime(readingTime)}
 							</time>
 						</a>
 					</li>

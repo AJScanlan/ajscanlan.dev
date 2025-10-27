@@ -4,6 +4,8 @@ import { getEntry } from "astro:content";
 import Callout from "@/components/Callout.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
 import SectionBreak from "@/components/SectionBreak.astro";
+import { formatReadingTime } from "@/utils/reading-time";
+import { getReadingTime } from "@/utils/get-reading-time";
 
 export async function getStaticPaths() {
     const { getCollection } = await import("astro:content");
@@ -36,6 +38,9 @@ if (!entry) throw new Error(`Post not found: ${slug}`);
 
 const { Content } = await entry.render();
 const { data } = entry;
+
+// Get reading time (from frontmatter or calculated)
+const readingTime = await getReadingTime(entry);
 ---
 
 <BaseLayout
@@ -71,6 +76,9 @@ const { data } = entry;
                         {" "}· updated {new Date(data.updated).toLocaleDateString("en-IE")}
                     </span>
                 )}
+                <span class="text-ink-500">
+                    {" "}· {formatReadingTime(readingTime)}
+                </span>
             </p>
         </header>
         <Content components={{ Callout, SectionBreak }} />

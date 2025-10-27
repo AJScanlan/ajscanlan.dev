@@ -70,6 +70,15 @@ Configured in `astro.config.mjs`:
 - **Remark**: `remarkGfm`, `remarkSmartypants`, `remarkFootnotes` (inline notes enabled)
 - **Rehype**: `rehypeSlug`, `rehypeAutolinkHeadings` (wrap behavior, `.heading-anchor` class)
 
+### Reading Time Calculation
+Reading time is **automatically calculated** using the `getReadingTime()` utility at build time:
+- Default: 200 words per minute
+- Ignores code blocks, markdown syntax, and HTML tags
+- Rounds up to nearest minute (minimum 1 minute)
+- Can be manually overridden in frontmatter if needed
+- Calculated from the raw markdown body of each post
+- Use `formatReadingTime()` utility from `@/utils/reading-time` to display
+
 ## Accessibility Requirements
 
 ### Must-Have Patterns
@@ -101,7 +110,7 @@ date: 2025-10-27
 updated: 2025-10-27  # Optional
 tags: ["tag1", "tag2"]
 series: "Series Name"  # Optional
-readingTime: 6  # Minutes, optional
+readingTime: 6  # Minutes, optional - auto-calculated if omitted
 status: "published"  # or "draft"
 openness: "provisional"  # or "confident"
 ---
@@ -115,11 +124,10 @@ openness: "provisional"  # or "confident"
 
 ## Current Limitations & TODOs
 
-- **Dynamic routes**: Only `thoughts` collection renders at `/posts/[slug]/` — needs expansion to handle notes, cheat-sheets, and logs
-- **RSS feed**: Only includes thoughts — should include all content types (notes, cheat-sheets, logs)
+- **Dynamic routes**: ~~Only `thoughts` collection renders at `/posts/[slug]/`~~ Now handles all content types (notes, cheat-sheets, and logs)
+- **RSS feed**: ~~Only includes thoughts~~ Now includes all content types (notes, cheat-sheets, and logs)
 - **Draft exclusion**: Drafts visible in dev but need conditional filtering in production using `import.meta.env.PROD`
 - **No search**: Static site with no search functionality yet
-- **Reading time**: Not auto-calculated, must be manually added to frontmatter
 
 See `TODO.md` for full task list prioritized by impact.
 

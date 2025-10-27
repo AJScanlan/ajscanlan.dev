@@ -124,6 +124,78 @@ pre code {
 }
 
 /* ===== UTILITIES LAYER ===== */
+
+/* ===== ACCESSIBILITY ===== */
+/* Skip-to-content link */
+.skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    z-index: 100;
+    padding: 0.75rem 1.5rem;
+    background-color: #d0342c; /* Fox Red */
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0 0 0.5rem 0;
+    transition: top 0.2s;
+}
+
+.skip-to-content:focus {
+    top: 0;
+    outline: 3px solid #0b0b0e;
+    outline-offset: 2px;
+}
+
+/* Enhanced focus styles - visible and consistent */
+:focus-visible {
+    outline: 3px solid #d0342c; /* Fox Red */
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Remove default outline but keep focus-visible */
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* Specific focus styles for interactive elements */
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #d0342c;
+    outline-offset: 2px;
+}
+
+/* Focus styles for inputs */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid #d0342c;
+    outline-offset: 0;
+    border-color: #d0342c;
+}
+
+/* High contrast focus for dark mode */
+.dark :focus-visible {
+    outline-color: #f87171; /* Lighter fox for dark backgrounds */
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .skip-to-content {
+        transition: none;
+    }
+}
+
 /* Anchor link icon spacing (rehype-autolink-headings) */
 .heading-anchor {
     @apply no-underline;

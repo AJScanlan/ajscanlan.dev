@@ -1,10 +1,22 @@
 ---
 const map = {
-    note: { label: "Note", border: "border-ink-300 dark:border-ink-700" },
-    tip: { label: "Tip", border: "border-green-300 dark:border-green-700" },
+    note: { 
+        label: "Note", 
+        border: "border-ink-400 dark:border-ink-600",
+        bg: "bg-ink-50 dark:bg-ink-800/40",
+        textColor: "text-ink-800 dark:text-ink-100"
+    },
+    tip: { 
+        label: "Tip", 
+        border: "border-green dark:border-green",
+        bg: "bg-green/5 dark:bg-green/10",
+        textColor: "text-ink-800 dark:text-ink-100"
+    },
     warn: {
         label: "Warning",
-        border: "border-amber-300 dark:border-amber-700",
+        border: "border-amber dark:border-amber",
+        bg: "bg-amber/10 dark:bg-amber/15",
+        textColor: "text-ink-900 dark:text-ink-100"
     },
 } as const;
 
@@ -18,12 +30,21 @@ interface CalloutProps {
 
 const { type = "note", title, icon = true } = Astro.props as CalloutProps;
 
-const { label, border } = map[type];
+const { label, border, bg, textColor } = map[type];
+
+// Map callout types to ARIA roles
+const roleMap = {
+    note: "note",
+    tip: "complementary", 
+    warn: "alert"
+} as const;
 ---
 <div
-    class={`my-6 rounded-xl border ${border} p-4 bg-paper-100/60 dark:bg-ink-800/30`}
+    class={`my-6 rounded-xl border-2 ${border} ${bg} ${textColor} p-rhythm-4`}
+    role={roleMap[type]}
+    aria-label={title ?? label}
 >
-    <div class="text-sm font-medium mb-1">{title ?? label}</div>
+    <div class="text-sm font-semibold mb-rhythm-2">{title ?? label}</div>
     <div class="prose prose-sm dark:prose-invert">
         <slot />
     </div>

@@ -1,0 +1,200 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Callout from "@/components/Callout.astro";
+---
+
+<BaseLayout
+    title="About - ajscanlan.dev"
+    description="Alexander Scanlan — writing to understand; thinking in public."
+>
+    <article class="prose dark:prose-invert prose-text max-w-prose">
+        <!-- Layer 1: 30-second gist -->
+        <section class="mb-rhythm-12">
+            <h1 class="mb-rhythm-4">About</h1>
+            
+            <div class="text-xl leading-relaxed text-ink-800 dark:text-ink-200 mb-rhythm-6">
+                <p>
+                    I write to understand. I think in public.
+                </p>
+            </div>
+
+            <p class="text-lg text-ink-600 dark:text-ink-300">
+                This is where I publish essays, field notes, and technical explorations — 
+                mostly about philosophy, systems, decentralization, and how we make sense of complexity.
+            </p>
+        </section>
+
+        <!-- Layer 2: 3-minute skim -->
+        <section class="mb-rhythm-12">
+            <h2>What you'll find here</h2>
+            
+            <div class="space-y-rhythm-6">
+                <div>
+                    <h3 class="text-heading-sm mb-rhythm-2">Thoughts</h3>
+                    <p>
+                        Short reflections, usually stemming from a quote I found insightful or thought-provoking.
+                        Borrowing the classical "On..." format as playful homage.
+                        Think of them thinking out loud, exploring ideas in public
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-heading-sm mb-rhythm-2">Field Notes</h3>
+                    <p>
+                        Brief observations and discoveries, usually related to new technology I'm learning. Link-heavy, exploratory, provisional. 
+                        I hope to better my communication skills through explanations, and to show my struggles and failures openly. 
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-heading-sm mb-rhythm-2">Cheat Sheets</h3>
+                    <p>
+                        Opinionated summaries with copy-paste-friendly examples.
+                        Patterns I've found useful, distilled. Also covers books I've read and want to put into action.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-heading-sm mb-rhythm-2">Project Logs</h3>
+                    <p>
+                        Dated entries tracking builds and experiments — especially 
+                        <a href="https://uplex.network" class="text-fox-500 hover:text-fox-600">UPLEX</a>, 
+                        my work on a federated ledger for externalities.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Layer 3: Full context -->
+        <section class="mb-rhythm-12">
+            <h2>How I work</h2>
+            
+            <p>
+                I follow what I call <strong>structured provisionalism</strong>: stating clearly 
+                what I'm confident about, what I'm uncertain of, and what would falsify my thinking.
+                I aspire to build up my knowledge and opinions bit by bit, provisionally but with structure, to hopefully avoid hubris and unearned conviction.
+                You'll often find a section at the end of longer posts that makes this explicit.
+            </p>
+
+            <p>
+                The design philosophy here is <em>clarity over flair</em>. Typography-first, 
+                minimal UI, generous white space. I want the writing to breathe. The red fox 
+                mark represents alertness and curiosity — qualities I aspire to in my thinking.
+            </p>
+
+            <Callout type="tip" title="Why 'onion pedagogy'?">
+                <p>
+                    Each piece is layered: a 30-second gist, a 3-minute skim, full read, and (sometimes) deep appendices. Peel as far as you need. Respect for your time is built into the structure.
+                </p>
+            </Callout>
+        </section>
+
+        <section class="mb-rhythm-12">
+            <h2>Who I am</h2>
+            
+            <p>
+                My name is Alexander Scanlan — I'm a builder by nature, an optimist by force-of-will, and hopefully an occasional writer. My background 
+                is mostly in mobile apps, but I hope to expand into distributed systems, AI/ML, and decentralized infrastructure. Currently,
+                I'm focused on <strong>UPLEX</strong>: a federated ledger for externalities.
+            </p>
+
+            <p>
+                I care deeply about:
+            </p>
+
+            <ul>
+                <li><strong>Epistemic humility</strong> — knowing what we don't know</li>
+                <li><strong>Systems thinking</strong> — understanding relationships, emergence, and feedback</li>
+                <li><strong>Local-first tech</strong> — ownership, privacy, resilience</li>
+                <li><strong>Intellectual honesty</strong> — showing your work, stating your priors</li>
+                <li><strong>Accessible knowledge</strong> — writing that invites, not excludes</li>
+            </ul>
+
+            <p>
+                I write because it forces me to clarify my thinking. Publishing in public adds useful pressure: if I can't explain it clearly, I probably don't understand it yet.
+            </p>
+        </section>
+
+        <section class="mb-rhythm-12">
+            <h2>Technical details</h2>
+            
+            <p>
+                This site is built with <a href="https://astro.build">Astro</a>, hosted on GitHub Pages, and deployed automatically via GitHub Actions. Everything is written in Markdown/MDX. The typography uses system fonts with careful sizing (18-20px body, 1.7 line-height, 60-75ch measure). Colors follow a warm neutral palette with Fox Red (#D0342C) as the accent.
+            </p>
+
+            <p>
+                The design system prioritizes:
+            </p>
+
+            <ul>
+                <li>Visual calm through generous spacing</li>
+                <li>High contrast for accessibility (WCAG AA minimum)</li>
+                <li>Print-worthy composition</li>
+                <li>Fast, lightweight pages</li>
+                <li>No tracking or analytics</li>
+            </ul>
+
+            <p>
+                Source code is available at 
+                <a href="https://github.com/AJScanlan/ajscanlan.dev">github.com/AJScanlan/ajscanlan.dev</a>.
+            </p>
+        </section>
+
+        <section class="mb-rhythm-12">
+            <h2>Get in touch</h2>
+            
+            <p>
+                The best way to reach me is via email: 
+                <a href="mailto:aj@ajscanlan.dev" class="text-fox-500 hover:text-fox-600">aj@ajscanlan.dev</a>
+            </p>
+
+            <p>
+                You can also find me on:
+            </p>
+
+            <ul>
+                <li>
+                    <a href="https://github.com/AJScanlan" class="text-fox-500 hover:text-fox-600">
+                        GitHub
+                    </a> — code, projects, contributions
+                </li>
+                <li>
+                    <a href="/feed.xml" class="text-fox-500 hover:text-fox-600">
+                        RSS
+                    </a> — subscribe to new posts
+                </li>
+            </ul>
+
+            <Callout type="note" title="Response time">
+                <p>
+                    I aim to reply within a few days, but life happens. If you don't hear back, feel free to send a gentle nudge.
+                </p>
+            </Callout>
+        </section>
+
+        <section class="mb-rhythm-8">
+            <h2>Colophon</h2>
+            
+            <p class="text-sm text-ink-600 dark:text-ink-400">
+                <strong>Design:</strong> Custom, minimal, typography-first<br>
+                <strong>Fonts:</strong> System stack (prioritizing Inter, IBM Plex Sans)<br>
+                <strong>Code:</strong> JetBrains Mono, Cascadia Code<br>
+                <strong>Colors:</strong> Warm neutrals + Fox Red accent<br>
+                <strong>Hosting:</strong> GitHub Pages<br>
+                <strong>Framework:</strong> Astro + Markdown/MDX<br>
+                <strong>License:</strong> Content © A.J. Scanlan. Code MIT.<br>
+                <strong>Updated:</strong> {new Date().toLocaleDateString("en-IE", { year: "numeric", month: "long" })}
+            </p>
+        </section>
+
+        <hr class="my-rhythm-12 border-ink-200 dark:border-ink-700" />
+
+        <section class="text-center">
+            <p class="text-ink-600 dark:text-ink-400">
+                <a href="/" class="text-fox-500 hover:text-fox-600 font-medium">
+                    ← Back to home
+                </a>
+            </p>
+        </section>
+    </article>
+</BaseLayout>

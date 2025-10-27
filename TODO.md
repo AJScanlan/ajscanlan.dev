@@ -27,7 +27,7 @@
 
 ### Scannability Improvements (Magazine-Grade Editorial)
 - [ ] **Table of Contents component** — Auto-generate TOC from headings for longer articles (800+ words); fits "layered pedagogy" philosophy
-- [ ] **Strengthen heading visual hierarchy** — Add subtle left border on h2/h3 in Fox Red; increase weight contrast between levels
+- [x] **Strengthen heading visual hierarchy** — Add subtle left border on h2/h3 in Fox Red; increase weight contrast between levels
 - [ ] **Pull Quote component** — Magazine-style callouts for key ideas (larger, offset text); breaks up long reads naturally
 - [x] **Section break ornaments** — Subtle centered markers (◆ or • • •) between major sections
 - [x] **Reading progress indicator** — Thin Fox Red line at top showing scroll progress for long reads

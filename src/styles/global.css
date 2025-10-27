@@ -114,6 +114,89 @@ body {
     @apply font-bold not-italic;
 }
 
+/* ===== HEADING HIERARCHY ===== */
+/* Magazine-grade visual hierarchy with Fox Red accents */
+
+/* h1: Page titles - Maximum visual weight */
+h1 {
+    @apply text-ink-800 dark:text-ink-50;
+    font-size: 3.0625rem;  /* 49px */
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+/* h2: Major sections - Fox Red left border */
+h2 {
+    @apply text-ink-800 dark:text-ink-50;
+    font-size: 2.4375rem;  /* 39px */
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+    border-left: 4px solid #d0342c; /* Fox Red */
+}
+
+/* h3: Subsections - Subtle Fox Red left border */
+h3 {
+    @apply text-ink-800 dark:text-ink-100;
+    font-size: 1.9375rem;  /* 31px */
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-left: 0.75rem;
+    border-left: 3px solid #d0342c; /* Fox Red */
+}
+
+/* h4: Minor headings - No border, clear weight step down */
+h4 {
+    @apply text-ink-700 dark:text-ink-200;
+    font-size: 1.5625rem;  /* 25px */
+    line-height: 1.5;
+    font-weight: 600;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+/* h5: Small headings - Lighter weight */
+h5 {
+    @apply text-ink-700 dark:text-ink-300;
+    font-size: 1.25rem;  /* 20px */
+    line-height: 1.6;
+    font-weight: 500;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* h6: Smallest headings - Run-in style */
+h6 {
+    @apply text-ink-600 dark:text-ink-400;
+    font-size: 1.125rem;  /* 18px - same as body */
+    line-height: 1.7;
+    font-weight: 500;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Dark mode adjustments for Fox Red borders */
+.dark h2,
+.dark h3 {
+    border-left-color: #f87171; /* Lighter fox for visibility */
+}
+
+/* Reduce motion: Remove border animation potential */
+@media (prefers-reduced-motion: reduce) {
+    h2, h3 {
+        transition: none;
+    }
+}
+
 /* Code sizing: 90-95% of body */
 code {
     font-size: 0.95em;

@@ -5,16 +5,33 @@ import Callout from "@/components/Callout.astro";
 
 export async function getStaticPaths() {
     const { getCollection } = await import("astro:content");
-    const posts = await getCollection(
-        "thoughts",
-        ({ data }) => data.status === "published",
+    
+    // Collect all content types (excluding drafts)
+    const collections = ['thoughts', 'notes', 'cheat-sheets', 'logs'] as const;
+    
+    const allPosts = await Promise.all(
+        collections.map(async (collection) => {
+            const posts = await getCollection(
+                collection,
+                ({ data }) => data.status === "published",
+            );
+            return posts.map((post) => ({
+                params: { slug: post.slug },
+                props: { collection, entry: post },
+            }));
+        })
     );
-    return posts.map((p) => ({ params: { slug: p.slug } }));
+    
+    return allPosts.flat();
 }
 
 const { slug } = Astro.params;
-const entry = await getEntry("thoughts", slug);
+const { collection, entry: propsEntry } = Astro.props;
+
+// Fetch the entry (using props for efficiency)
+const entry = propsEntry || await getEntry(collection, slug);
 if (!entry) throw new Error(`Post not found: ${slug}`);
+
 const { Content } = await entry.render();
 const { data } = entry;
 ---
@@ -27,24 +44,30 @@ const { data } = entry;
         <header class="mb-rhythm-8">
             <h1 class="mb-rhythm-2">{data.title}</h1>
             <p class="text-ink-600 dark:text-ink-400 text-sm">
-                <time
-                    >{
-                        new Date(data.date).toLocaleDateString("en-IE", {
+                {/* cheat-sheets use updated date, others use date */}
+                {('date' in data && data.date) && (
+                    <time>
+                        {new Date(data.date).toLocaleDateString("en-IE", {
                             year: "numeric",
                             month: "short",
                             day: "2-digit",
-                        })
-                    }</time
-                >
-                {
-                    data.updated && (
-                        <span>
-                            {" "}
-                            · updated{" "}
-                            {new Date(data.updated).toLocaleDateString("en-IE")}
-                        </span>
-                    )
-                }
+                        })}
+                    </time>
+                )}
+                {('updated' in data && data.updated && !('date' in data)) && (
+                    <time>
+                        {new Date(data.updated).toLocaleDateString("en-IE", {
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                        })}
+                    </time>
+                )}
+                {('date' in data && 'updated' in data && data.updated) && (
+                    <span>
+                        {" "}· updated {new Date(data.updated).toLocaleDateString("en-IE")}
+                    </span>
+                )}
             </p>
         </header>
         <Content components={{ Callout }} />

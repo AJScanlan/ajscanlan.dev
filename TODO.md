@@ -5,9 +5,9 @@
 - [ ] **Publish 3 diverse posts** — MVP needs 1 "On…" (done), 1 Field Note, 1 Cheat-sheet
   - [ ] Write & publish first Field Note (~400 words, link-heavy, timestamped)
   - [ ] Write & publish first Cheat-sheet (opinionated summary with copy-paste blocks)
-- [ ] **Reading time calculation** — Surface in post templates & index (improve scannability)
+- [x] **Reading time calculation** — Surface in post templates & index (improve scannability)
 - [x] **RSS feed expansion** — Extend `/feed.xml` to include notes, cheat-sheets, and logs (not just thoughts)
-- [ ] **Dynamic route expansion** — Extend `/posts/[slug].astro` to handle all collection types (notes, cheat-sheets, logs)
+- [x] **Dynamic route expansion** — Extend `/posts/[slug].astro` to handle all collection types (notes, cheat-sheets, logs)
 - [ ] **Sitemap generation** — Add to build process for basic SEO
 - [ ] **404 page** — Create with consistent brand voice & helpful navigation
 - [x] **GitHub Actions CI** — Automate build → deploy to GitHub Pages with custom domain
@@ -66,9 +66,9 @@
 
 ## 🎯 Next Sprint (Week of Oct 27)
 
-1. Extend dynamic route to handle all content types (notes, cheat-sheets, logs)
+~~1. Extend dynamic route to handle all content types (notes, cheat-sheets, logs)~~
 2. Implement draft workflow with `import.meta.env.PROD` filtering
-3. Expand RSS feed to include all content types
+~~3. Expand RSS feed to include all content types~~
 4. Publish Field Note + Cheat-sheet (reach MVP content diversity)
 5. Add reading time calculation
 6. Typography audit & adjustments

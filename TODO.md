@@ -30,7 +30,7 @@
 - [ ] **Strengthen heading visual hierarchy** — Add subtle left border on h2/h3 in Fox Red; increase weight contrast between levels
 - [ ] **Pull Quote component** — Magazine-style callouts for key ideas (larger, offset text); breaks up long reads naturally
 - [ ] **Section break ornaments** — Subtle centered markers (◆ or • • •) between major sections
-- [ ] **Reading progress indicator** — Thin Fox Red line at top showing scroll progress for long reads
+- [x] **Reading progress indicator** — Thin Fox Red line at top showing scroll progress for long reads
 
 ### Components & Patterns
 - [ ] **Figure component with caption** — Semantic `<figure>` + `<figcaption>`, proper spacing

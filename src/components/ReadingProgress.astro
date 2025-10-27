@@ -1,0 +1,71 @@
+---
+/**
+ * ReadingProgress.astro
+ * Thin Fox Red progress bar at top of page showing scroll progress.
+ * Respects prefers-reduced-motion for accessibility.
+ */
+---
+
+<div 
+    id="reading-progress" 
+    class="reading-progress" 
+    role="progressbar" 
+    aria-valuemin="0" 
+    aria-valuemax="100" 
+    aria-valuenow="0"
+    aria-label="Reading progress"
+>
+</div>
+
+<style>
+    .reading-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0%;
+        height: 3px;
+        background: #D0342C; /* Fox Red */
+        z-index: 9999;
+        transition: width 0.1s ease-out;
+    }
+
+    /* Respect reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+        .reading-progress {
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    function updateReadingProgress() {
+        const progressBar = document.getElementById('reading-progress');
+        if (!progressBar) return;
+
+        // Calculate scroll percentage
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+
+        // Update progress bar width and ARIA value
+        progressBar.style.width = `${scrollPercent}%`;
+        progressBar.setAttribute('aria-valuenow', String(Math.round(scrollPercent)));
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateReadingProgress();
+        
+        // Update on scroll with passive listener for better performance
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateReadingProgress();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    });
+</script>

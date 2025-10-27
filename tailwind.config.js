@@ -8,24 +8,42 @@ module.exports = {
         container: { center: true, padding: '1rem' },
         extend: {
             colors: {
+                // Primary text scale - warm blacks for empathy & clarity
                 ink: {
-                    50: '#f8fafc',
-                    100: '#eef2f6',
-                    200: '#e3e8ef',
-                    300: '#cfd8e3',
-                    400: '#97a3b6',
-                    500: '#667085',
-                    600: '#475467',
-                    700: '#344054',
-                    800: '#1d2939',
-                    900: '#101828',
+                    50: '#f7f7f8',   // Mist (lightest backgrounds)
+                    100: '#e8e8e9',  // Subtle borders
+                    200: '#c8c9cb',  // Disabled text
+                    300: '#a0a2a6',  // Placeholder text
+                    400: '#6d6f73',  // Captions, meta
+                    500: '#44464a',  // Graphite (secondary text)
+                    600: '#2d2e31',  // Body text (lighter option)
+                    700: '#1a1b1d',  // Body text (default)
+                    800: '#0f1011',  // Headings
+                    900: '#0b0b0e',  // Maximum contrast
                 },
+                // Backgrounds - warm neutrals for visual calm
                 paper: {
-                    50: '#fcfcfa',
-                    100: '#faf9f6',
-                    200: '#f5f2ea',
+                    50: '#fcfcfc',   // Pure white (rare use)
+                    100: '#f7f7f8',  // Mist (primary background)
+                    200: '#f0f0f1',  // Code blocks, subtle wells
                 },
-                accent: '#0ea5e9',
+                // Brand accent - Fox Red (smart, alert, kind)
+                fox: {
+                    50: '#fef2f2',   // Tints for hover states
+                    100: '#fee2e2',
+                    200: '#fecaca',
+                    300: '#fca5a5',
+                    400: '#f87171',
+                    500: '#d0342c',  // Primary Fox Red
+                    600: '#b82a23',
+                    700: '#9f221b',
+                    800: '#7f1d16',
+                    900: '#651710',
+                },
+                // Functional accents (used sparingly)
+                green: '#1f7a5c',   // Success states
+                amber: '#d97706',   // Warnings
+                red: '#dc2626',     // Errors (distinct from brand)
             },
             fontFamily: {
                 sans: [
@@ -74,12 +92,15 @@ module.exports = {
                         fontSize: '1.125rem',     // 18px body
                         lineHeight: '1.7',
                         
-                        // Links
+                        // Links - Fox Red accent
                         a: { 
-                            color: theme('colors.accent'), 
+                            color: theme('colors.fox.500'), 
                             textDecoration: 'none', 
                             fontWeight: '500',
-                            '&:hover': { textDecoration: 'underline' }
+                            '&:hover': { 
+                                textDecoration: 'underline',
+                                color: theme('colors.fox.600'),
+                            }
                         },
                         
                         // Headings: scale 1.25, tight letter-spacing
@@ -174,7 +195,10 @@ module.exports = {
                 invert: {
                     css: {
                         color: theme('colors.ink.100'),
-                        a: { color: theme('colors.accent') },
+                        a: { 
+                            color: theme('colors.fox.400'),
+                            '&:hover': { color: theme('colors.fox.300') }
+                        },
                         blockquote: { borderLeftColor: theme('colors.ink.600'), color: theme('colors.ink.200') },
                         code: { backgroundColor: theme('colors.ink.800') },
                         pre: { backgroundColor: theme('colors.ink.900') },

@@ -91,10 +91,10 @@
 - **Project Log:** dated entries for builds (UPLEX, tooling).
 
 ### 4.2 URL scheme
-- `/thoughts/rivers-and-change/`  
-- `/notes/2025-10-27-edge-ai-sparks/`  
+- `/thoughts/on-rivers-and-change/`  
+- `/notes/edge-ai-sparks/`  
 - `/cheats/verbal-judo/`  
-- `/logs/uplex/2025-10-27-phase-0/`
+- `/logs/uplex/phase-0/`
 
 ### 4.3 Metadata
 - `title`, `dek` (1–2 sentence summary), `tags`, `series`, `readingTime`, `updated`, `status: draft|published`, `openness: provisional|confident`.

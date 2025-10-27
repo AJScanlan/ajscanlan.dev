@@ -15,7 +15,7 @@ html {
 }
 
 body {
-    @apply bg-paper-50 text-ink-900 dark:bg-ink-900 dark:text-ink-100 antialiased;
+    @apply bg-paper-100 text-ink-700 dark:bg-ink-900 dark:text-ink-100 antialiased;
     font-size: 1.125rem;  /* 18px body text */
     line-height: 1.7;
     

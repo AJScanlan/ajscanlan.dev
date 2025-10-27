@@ -3,6 +3,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getEntry } from "astro:content";
 import Callout from "@/components/Callout.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
+import SectionBreak from "@/components/SectionBreak.astro";
 
 export async function getStaticPaths() {
     const { getCollection } = await import("astro:content");
@@ -72,6 +73,6 @@ const { data } = entry;
                 )}
             </p>
         </header>
-        <Content components={{ Callout }} />
+        <Content components={{ Callout, SectionBreak }} />
     </article>
 </BaseLayout>

@@ -1,0 +1,76 @@
+---
+/**
+ * SectionBreak.astro
+ * Subtle centered ornaments to mark section transitions.
+ * Supports different variants: diamond, dots, asterism.
+ * Magazine-style typographic element for visual breathing room.
+ */
+
+interface Props {
+    variant?: 'diamond' | 'dots' | 'asterism';
+    spacing?: 'normal' | 'tight' | 'loose';
+}
+
+const { variant = 'diamond', spacing = 'normal' } = Astro.props;
+
+const ornaments = {
+    diamond: '◆',
+    dots: '• • •',
+    asterism: '⁂',
+};
+
+const spacingClasses = {
+    tight: 'my-rhythm-8',
+    normal: 'my-rhythm-12',
+    loose: 'my-rhythm-16',
+};
+---
+
+<div 
+    class={`section-break ${spacingClasses[spacing]}`}
+    role="separator"
+    aria-hidden="true"
+>
+    <span class="ornament">
+        {ornaments[variant]}
+    </span>
+</div>
+
+<style>
+    .section-break {
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .ornament {
+        color: var(--fox-500, #D0342C);
+        font-size: 1rem;
+        letter-spacing: 0.5em;
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+    }
+
+    /* Subtle interaction on hover */
+    .section-break:hover .ornament {
+        opacity: 0.8;
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+        .ornament {
+            transition: none;
+        }
+    }
+
+    /* Dark mode adjustment */
+    :global(.dark) .ornament {
+        opacity: 0.5;
+    }
+
+    :global(.dark) .section-break:hover .ornament {
+        opacity: 0.7;
+    }
+</style>

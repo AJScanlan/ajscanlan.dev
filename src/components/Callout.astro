@@ -1,0 +1,30 @@
+---
+const map = {
+    note: { label: "Note", border: "border-ink-300 dark:border-ink-700" },
+    tip: { label: "Tip", border: "border-emerald-300 dark:border-emerald-700" },
+    warn: {
+        label: "Warning",
+        border: "border-amber-300 dark:border-amber-700",
+    },
+} as const;
+
+type CalloutType = keyof typeof map;
+
+interface CalloutProps {
+    type?: CalloutType;
+    title?: string;
+    icon?: boolean;
+}
+
+const { type = "note", title, icon = true } = Astro.props as CalloutProps;
+
+const { label, border } = map[type];
+---
+<div
+    class={`my-6 rounded-xl border ${border} p-4 bg-paper-100/60 dark:bg-ink-800/30`}
+>
+    <div class="text-sm font-medium mb-1">{title ?? label}</div>
+    <div class="prose prose-sm dark:prose-invert">
+        <slot />
+    </div>
+</div>

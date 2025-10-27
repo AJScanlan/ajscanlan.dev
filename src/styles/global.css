@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Minimal base: canvas + smooth type, prefers-color-scheme respected */
+:root {
+    color-scheme: light dark;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    @apply bg-paper-50 text-ink-900 dark:bg-ink-900 dark:text-ink-100 antialiased;
+}
+
+/* Container variants */
+.container-narrow {
+    @apply container max-w-3xl;
+}
+
+.container-wide {
+    @apply container max-w-5xl;
+}
+
+/* Anchor link icon spacing (rehype-autolink-headings) */
+.heading-anchor {
+    @apply no-underline;
+}
+
+.heading-anchor>span {
+    @apply align-middle;
+}

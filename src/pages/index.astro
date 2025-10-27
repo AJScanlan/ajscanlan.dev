@@ -1,16 +1,55 @@
 ---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 
+const posts = (await getCollection("posts", ({ data }) => !data.draft))
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 8);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+	title="ajscanlan.dev"
+	description="Writing my way to understanding."
+>
+	<section class="mb-12">
+		<h1 class="text-3xl font-semibold tracking-tight mb-3">
+			Writing my way to understanding
+		</h1>
+		<p class="text-ink-600 dark:text-ink-400 max-w-prose">
+			Short, sincere, approachable reflections — clarity over flair.
+			Occasionally technical, often humane.
+		</p>
+	</section>
+
+	<section>
+		<h2 class="text-xl font-semibold mb-4">Latest posts</h2>
+		<ul class="space-y-5">
+			{
+				posts.map(({ data, slug }) => (
+					<li class="">
+						<a href={`/posts/${slug}/`} class="block">
+							<h3 class="text-lg font-medium hover:underline">
+								{data.title}
+							</h3>
+							{data.description && (
+								<p class="text-sm text-ink-600 dark:text-ink-400">
+									{data.description}
+								</p>
+							)}
+							<time class="text-xs text-ink-500">
+								{new Date(data.date).toLocaleDateString(
+									"en-IE",
+									{
+										year: "numeric",
+										month: "short",
+										day: "2-digit",
+									},
+								)}
+							</time>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</BaseLayout>

@@ -1,0 +1,50 @@
+---
+const {
+    title = "ajscanlan.dev",
+    description = "Thoughts in public",
+    ogImage,
+} = Astro.props;
+---
+
+<html lang="en" class="scroll-smooth">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.svg" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        {ogImage && <meta property="og:image" content={ogImage} />}
+        <style is:global>
+            @import "/src/styles/global.css";
+        </style>
+    </head>
+    <body>
+        <header class="border-b border-ink-200/60 dark:border-ink-800/60">
+            <div class="container-wide py-6 flex items-center justify-between">
+                <a href="/" class="font-semibold tracking-tight"
+                    >ajscanlan.dev</a
+                >
+                <nav class="text-sm flex gap-6">
+                    <a href="/about/" class="hover:underline">About</a>
+                    <a href="/posts/" class="hover:underline">Archive</a>
+                    <a href="/feed.xml" class="hover:underline">RSS</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container-narrow py-10">
+            <slot />
+        </main>
+
+        <footer class="mt-10 border-t border-ink-200/60 dark:border-ink-800/60">
+            <div
+                class="container-narrow py-8 text-sm text-ink-600 dark:text-ink-400"
+            >
+                <p>
+                    © {new Date().getFullYear()} A.J. Scanlan. Built with Astro.
+                    Minimal on purpose.
+                </p>
+            </div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getEntry } from "astro:content";
+import Callout from "@/components/Callout.astro";
+
+export async function getStaticPaths() {
+    const { getCollection } = await import("astro:content");
+    const posts = await getCollection("posts", ({ data }) => !data.draft);
+    return posts.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const entry = await getEntry("posts", slug);
+if (!entry) throw new Error(`Post not found: ${slug}`);
+const { Content } = await entry.render();
+const { data } = entry;
+---
+
+<BaseLayout
+    title={`${data.title} - ajscanlan.dev`}
+    description={data.description}
+>
+    <article class="prose dark:prose-invert">
+        <header class="mb-6">
+            <h1 class="mb-2">{data.title}</h1>
+            <p class="text-ink-600 dark:text-ink-400 text-sm">
+                <time
+                    >{
+                        new Date(data.date).toLocaleDateString("en-IE", {
+                            year: "numeric",
+                            month: "short",
+                            day: "2-digit",
+                        })
+                    }</time
+                >
+                {
+                    data.updated && (
+                        <span>
+                            {" "}
+                            · updated{" "}
+                            {new Date(data.updated).toLocaleDateString("en-IE")}
+                        </span>
+                    )
+                }
+            </p>
+        </header>
+        <Content components={{ Callout }} />
+    </article>
+</BaseLayout>

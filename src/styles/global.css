@@ -17,16 +17,17 @@ html {
 body {
     @apply bg-paper-100 text-ink-700 dark:bg-ink-900 dark:text-ink-100 antialiased;
     font-size: 1.125rem;  /* 18px body text */
-    line-height: 1.7;
+    line-height: 1.65;     /* Within 1.55-1.7 range, optimized for readability */
     
-    /* Increase line-height on narrow screens */
+    /* Increase line-height on narrow screens for better mobile reading */
     @media (max-width: 640px) {
-        line-height: 1.75;
+        line-height: 1.7;
     }
 }
 
 /* ===== LAYOUT UTILITIES ===== */
-/* Content column with rhythm units (4/8/12 px) */
+/* Content column with optimal measure (60-75ch per audit) */
+/* Measure verified: 70ch default, 60ch narrow, 75ch wide */
 .content-column {
     max-width: 70ch;
     margin-left: auto;
@@ -116,11 +117,12 @@ body {
 
 /* ===== HEADING HIERARCHY ===== */
 /* Magazine-grade visual hierarchy with Fox Red accents */
+/* Consistent 1.25 modular scale: 18px base → 20/25/31/39/49px */
 
 /* h1: Page titles - Maximum visual weight */
 h1 {
     @apply text-ink-800 dark:text-ink-50;
-    font-size: 3.0625rem;  /* 49px */
+    font-size: 3.0625rem;  /* 49px - scale step 5 */
     line-height: 1.2;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -131,7 +133,7 @@ h1 {
 /* h2: Major sections - Fox Red left border */
 h2 {
     @apply text-ink-800 dark:text-ink-50;
-    font-size: 2.4375rem;  /* 39px */
+    font-size: 2.4375rem;  /* 39px - scale step 4 */
     line-height: 1.3;
     font-weight: 700;
     letter-spacing: -0.015em;
@@ -144,7 +146,7 @@ h2 {
 /* h3: Subsections - Subtle Fox Red left border */
 h3 {
     @apply text-ink-800 dark:text-ink-100;
-    font-size: 1.9375rem;  /* 31px */
+    font-size: 1.9375rem;  /* 31px - scale step 3 */
     line-height: 1.4;
     font-weight: 600;
     letter-spacing: -0.01em;
@@ -157,7 +159,7 @@ h3 {
 /* h4: Minor headings - No border, clear weight step down */
 h4 {
     @apply text-ink-700 dark:text-ink-200;
-    font-size: 1.5625rem;  /* 25px */
+    font-size: 1.5625rem;  /* 25px - scale step 2 */
     line-height: 1.5;
     font-weight: 600;
     margin-top: 1.75rem;
@@ -167,18 +169,18 @@ h4 {
 /* h5: Small headings - Lighter weight */
 h5 {
     @apply text-ink-700 dark:text-ink-300;
-    font-size: 1.25rem;  /* 20px */
+    font-size: 1.25rem;  /* 20px - scale step 1 */
     line-height: 1.6;
     font-weight: 500;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
 }
 
-/* h6: Smallest headings - Run-in style */
+/* h6: Smallest headings - Run-in style, same as body size */
 h6 {
     @apply text-ink-600 dark:text-ink-400;
-    font-size: 1.125rem;  /* 18px - same as body */
-    line-height: 1.7;
+    font-size: 1.125rem;  /* 18px - same as body (scale step 0) */
+    line-height: 1.65;     /* Match body line-height */
     font-weight: 500;
     margin-top: 1.25rem;
     margin-bottom: 0.5rem;

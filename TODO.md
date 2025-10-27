@@ -12,7 +12,7 @@
 - [x] **Sitemap generation** — Add to build process for basic SEO
 - [ ] **404 page** — Create with consistent brand voice & helpful navigation
 - [x] **GitHub Actions CI** — Automate build → deploy to GitHub Pages with custom domain
-- [ ] **Typography audit** — Verify 60-75ch measure, 1.55-1.7 line height, proper heading scale
+- [x] **Typography audit** — Verify 60-75ch measure, 1.55-1.7 line height, proper heading scale
 - [ ] **Performance check** — Lighthouse audit; lazy-load images; check webfont strategy
 
 ## 📝 Content & Editorial
@@ -80,4 +80,4 @@
 ~~3. Expand RSS feed to include all content types~~
 4. Publish Field Note + Cheat-sheet (reach MVP content diversity)
 5. Add reading time calculation
-6. Typography audit & adjustments
+~~6. Typography audit & adjustments~~

@@ -58,15 +58,17 @@ module.exports = {
                 ],
             },
             fontSize: {
-                // Body: 18-20px with responsive scaling
-                base: ['1.125rem', { lineHeight: '1.7' }],  // 18px
-                lg: ['1.25rem', { lineHeight: '1.7' }],    // 20px
-                // Heading scale: 1.25-1.333
-                'heading-sm': ['1.25rem', { lineHeight: '1.4' }],    // 20px, scale 1.25
-                'heading-md': ['1.563rem', { lineHeight: '1.35' }],  // 25px, scale 1.25
-                'heading-lg': ['1.953rem', { lineHeight: '1.3' }],   // 31px, scale 1.25
-                'heading-xl': ['2.441rem', { lineHeight: '1.25' }],  // 39px, scale 1.25
-                'heading-2xl': ['3.052rem', { lineHeight: '1.2' }],  // 49px, scale 1.25
+                // Body: 18px base with optimized line-height (1.55-1.7 range)
+                base: ['1.125rem', { lineHeight: '1.65' }],  // 18px
+                lg: ['1.25rem', { lineHeight: '1.65' }],     // 20px
+                
+                // Heading scale: 1.25 modular scale (18 → 20 → 25 → 31 → 39 → 49)
+                // Line heights progressively tighter for larger sizes
+                'heading-sm': ['1.25rem', { lineHeight: '1.6' }],     // 20px, h5
+                'heading-md': ['1.5625rem', { lineHeight: '1.5' }],   // 25px, h4
+                'heading-lg': ['1.9375rem', { lineHeight: '1.4' }],   // 31px, h3
+                'heading-xl': ['2.4375rem', { lineHeight: '1.3' }],   // 39px, h2
+                'heading-2xl': ['3.0625rem', { lineHeight: '1.2' }],  // 49px, h1
             },
             maxWidth: {
                 'prose': '70ch',   // 60-75ch range
@@ -88,9 +90,9 @@ module.exports = {
                 DEFAULT: {
                     css: {
                         color: theme('colors.ink.800'),
-                        maxWidth: '70ch',
-                        fontSize: '1.125rem',     // 18px body
-                        lineHeight: '1.7',
+                        maxWidth: '70ch',          // Within 60-75ch spec
+                        fontSize: '1.125rem',      // 18px body
+                        lineHeight: '1.65',        // Within 1.55-1.7 spec
                         
                         // Links - Fox Red accent
                         a: { 
@@ -103,36 +105,52 @@ module.exports = {
                             }
                         },
                         
-                        // Headings: scale 1.25, tight letter-spacing
+                        // Headings: 1.25 modular scale with progressive line-height tightening
                         h1: { 
-                            fontSize: '2.441rem',      // ~39px
-                            lineHeight: '1.25',
+                            fontSize: '3.0625rem',     // 49px
+                            lineHeight: '1.2',
                             letterSpacing: '-0.02em',
-                            fontWeight: '700',
+                            fontWeight: '800',
                             marginTop: '0',
                             marginBottom: '1.5rem',
                         },
                         h2: { 
-                            fontSize: '1.953rem',      // ~31px
+                            fontSize: '2.4375rem',     // 39px
                             lineHeight: '1.3',
                             letterSpacing: '-0.015em',
                             fontWeight: '700',
-                            marginTop: '2rem',
+                            marginTop: '2.5rem',
                             marginBottom: '1rem',
                         },
                         h3: { 
-                            fontSize: '1.563rem',      // ~25px
-                            lineHeight: '1.35',
+                            fontSize: '1.9375rem',     // 31px
+                            lineHeight: '1.4',
                             letterSpacing: '-0.01em',
                             fontWeight: '600',
-                            marginTop: '1.5rem',
+                            marginTop: '2rem',
                             marginBottom: '0.75rem',
                         },
                         h4: { 
-                            fontSize: '1.25rem',       // 20px
-                            lineHeight: '1.4',
+                            fontSize: '1.5625rem',     // 25px
+                            lineHeight: '1.5',
                             letterSpacing: '-0.005em',
                             fontWeight: '600',
+                            marginTop: '1.75rem',
+                            marginBottom: '0.5rem',
+                        },
+                        h5: {
+                            fontSize: '1.25rem',       // 20px
+                            lineHeight: '1.6',
+                            fontWeight: '500',
+                            marginTop: '1.5rem',
+                            marginBottom: '0.5rem',
+                        },
+                        h6: {
+                            fontSize: '1.125rem',      // 18px - same as body
+                            lineHeight: '1.65',
+                            fontWeight: '500',
+                            marginTop: '1.25rem',
+                            marginBottom: '0.5rem',
                         },
                         
                         // Emphasis: italic for nuance, bold for anchors

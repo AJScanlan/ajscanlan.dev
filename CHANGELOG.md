@@ -16,6 +16,15 @@ Fixed: for any bug fixes.
 Security: in case of vulnerabilities.
 ```
 
+## [0.0.5] - 2025-10-27
+
+### Added
+- Tooling: added @astrojs/check and typescript as dev dependencies to enable astro check.
+
+### Changed
+- Content: replaced posts collection with thoughts, notes, cheat-sheets, logs, and drafts collections in config.ts, standardising frontmatter on dek, status, openness, and related metadata.
+- Pages: updated index.astro, src/pages/posts/*.astro, and feed.xml.ts to read from the new thoughts collection and surface dek summaries.
+- Content: migrated the “On Rivers and Change” essay to on-rivers-and-change.mdx with the new schema and removed the legacy posts entry.
 
 ## [0.0.4] - 2025-10-27
 

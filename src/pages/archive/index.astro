@@ -46,7 +46,7 @@ const orderedEntries = entries
                 const displayDate = getPrimaryDate(data);
                 return (
                     <li>
-                        <span class="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">
+                        <span class="text-xs uppercase tracking-wide text-ink-700 dark:text-ink-200">
                             {ARCHIVE_LABELS[collection]}
                         </span>
                         <a
@@ -56,13 +56,13 @@ const orderedEntries = entries
                             {data.title}
                         </a>
                         {displayDate && (
-                            <span class="text-ink-500 text-sm">
+                            <span class="text-ink-700 dark:text-ink-100 text-sm">
                                 {" "}
                                 · {displayDate.toLocaleDateString("en-IE")}
                             </span>
                         )}
                         {data.dek && (
-                            <p class="text-ink-600 dark:text-ink-400 text-sm">
+                            <p class="text-ink-700 dark:text-ink-200 text-sm">
                                 {data.dek}
                             </p>
                         )}

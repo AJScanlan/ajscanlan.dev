@@ -45,7 +45,7 @@ const aggregatedEntries: Array<{
 		<h1 class="text-3xl font-semibold tracking-tight mb-3">
 			Writing my way to understanding
 		</h1>
-		<p class="text-ink-600 dark:text-ink-400 max-w-prose">
+		<p class="text-ink-700 dark:text-ink-200 max-w-prose">
 			Short, sincere, approachable reflections — clarity over flair.
 			Occasionally technical, often humane.
 		</p>
@@ -59,7 +59,7 @@ const aggregatedEntries: Array<{
 					const displayDate = getPrimaryDate(data);
 					return (
 						<li>
-							<span class="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">
+							<span class="text-xs uppercase tracking-wide text-ink-700 dark:text-ink-200">
 								{ARCHIVE_LABELS[collection]}
 							</span>
 							<a href={`/archive/${collection}/${slug}/`} class="block">
@@ -67,12 +67,12 @@ const aggregatedEntries: Array<{
 									{data.title}
 								</h3>
 								{data.dek && (
-									<p class="text-sm text-ink-600 dark:text-ink-400">
+									<p class="text-sm text-ink-700 dark:text-ink-200">
 										{data.dek}
 									</p>
 								)}
 								{displayDate && (
-									<time class="text-xs text-ink-500">
+									<time class="text-xs text-ink-700 dark:text-ink-100">
 										{displayDate.toLocaleDateString("en-IE", {
 											year: "numeric",
 											month: "short",

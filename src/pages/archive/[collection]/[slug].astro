@@ -54,14 +54,14 @@ const updatedDate = typedData.updated;
 >
     <article class="prose dark:prose-invert">
         <header class="mb-6">
-            <span class="text-xs uppercase tracking-wide text-ink-500 dark:text-ink-400">
+            <span class="text-xs uppercase tracking-wide text-ink-700 dark:text-ink-200">
                 {ARCHIVE_LABELS[typedCollection]}
             </span>
             <h1 class="mb-2">{typedData.title}</h1>
             {(primaryDate || updatedDate) && (
-                <p class="text-ink-600 dark:text-ink-400 text-sm">
+                <p class="text-ink-700 dark:text-ink-200 text-sm">
                     {primaryDate && (
-                        <time
+                        <time class="text-ink-700 dark:text-ink-100"
                             >{
                                 primaryDate.toLocaleDateString("en-IE", {
                                     year: "numeric",
@@ -75,7 +75,9 @@ const updatedDate = typedData.updated;
                         <span>
                             {" "}
                             · updated{" "}
-                            {updatedDate.toLocaleDateString("en-IE")}
+                            <time class="text-ink-700 dark:text-ink-100">
+                                {updatedDate.toLocaleDateString("en-IE")}
+                            </time>
                         </span>
                     )}
                 </p>

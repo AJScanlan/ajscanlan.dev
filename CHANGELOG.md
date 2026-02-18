@@ -17,6 +17,25 @@ Security: in case of vulnerabilities.
 ```
 
 
+## [0.0.8]
+
+### Added
+- Notes category test post — `notes/field-note-on-attention.mdx` (field note format: short, link-heavy, timestamped)
+- Cheat Sheets category test post — `cheat-sheets/thinking-fast-and-slow.mdx` (opinionated non-fiction book summary with Callout and SectionBreak components)
+- Project Logs category test post — `logs/ajscanlan-dev-phase-0.mdx` (dated build notes for ajscanlan.dev)
+
+### Changed
+- Homepage now shows 8 most recent posts across all 4 content types (thoughts, notes, cheat-sheets, logs) with Fox Red category labels, instead of thoughts only
+- Archive (`/posts/`) now shows all published posts across all 4 content types with category labels, sorted by date descending
+- Thoughts test post (`on-rivers-and-change.mdx`) — replaced Lorem Ipsum placeholder content with real prose on Heraclitean flux, entropy, and gentle stubbornness
+
+### Fixed
+- Removed duplicate `.prose-image-bleed` media query rule in `global.css`
+
+### Documentation
+- README.md: updated deployment section (GitHub Actions is live, not planned); added `SectionBreak`, `ReadingProgress` components and `utils/` directory to project structure diagram
+- TODO.md: marked all content posts and homepage/archive unification as complete; cleaned up Next Sprint into Next Up with remaining priorities
+
 ## [0.0.7]
 
 ### Added

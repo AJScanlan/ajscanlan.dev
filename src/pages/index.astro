@@ -4,19 +4,47 @@ import { getCollection } from "astro:content";
 import { formatReadingTime } from "@/utils/reading-time";
 import { getReadingTime } from "@/utils/get-reading-time";
 
-const posts = (await getCollection(
-	"thoughts",
-	({ data }) => data.status === "published",
-))
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const collectionLabels = {
+	thoughts: "Thought",
+	notes: "Note",
+	"cheat-sheets": "Cheat Sheet",
+	logs: "Project Log",
+} as const;
+
+type CollectionKey = keyof typeof collectionLabels;
+
+const collections = ["thoughts", "notes", "cheat-sheets", "logs"] as const;
+
+const allEntries = (
+	await Promise.all(
+		collections.map(async (col) => {
+			const entries = await getCollection(
+				col,
+				({ data }) => data.status === "published",
+			);
+			return entries.map((entry) => ({
+				entry,
+				collection: col as CollectionKey,
+				sortDate:
+					"date" in entry.data && entry.data.date
+						? (entry.data.date as Date)
+						: (entry.data.updated as Date),
+			}));
+		}),
+	)
+)
+	.flat()
+	.sort((a, b) => b.sortDate.valueOf() - a.sortDate.valueOf())
 	.slice(0, 8);
 
 // Pre-calculate reading times for all posts
 const postsWithReadingTime = await Promise.all(
-	posts.map(async (post) => ({
-		post,
-		readingTime: await getReadingTime(post),
-	}))
+	allEntries.map(async ({ entry, collection, sortDate }) => ({
+		entry,
+		collection,
+		sortDate,
+		readingTime: await getReadingTime(entry),
+	})),
 );
 ---
 
@@ -38,28 +66,31 @@ const postsWithReadingTime = await Promise.all(
 		<h2 class="text-xl font-semibold mb-4">Latest posts</h2>
 		<ul class="space-y-5">
 			{
-				postsWithReadingTime.map(({ post, readingTime }) => (
+				postsWithReadingTime.map(({ entry, collection, sortDate, readingTime }) => (
 					<li>
-						<a href={`/posts/${post.slug}/`} class="block">
+						<a href={`/posts/${entry.slug}/`} class="block">
 							<h3 class="text-lg font-medium hover:underline">
-								{post.data.title}
+								{entry.data.title}
 							</h3>
-							{post.data.dek && (
+							{entry.data.dek && (
 								<p class="text-sm text-ink-600 dark:text-ink-400">
-									{post.data.dek}
+									{entry.data.dek}
 								</p>
 							)}
-							<time class="text-xs text-ink-500">
-								{new Date(post.data.date).toLocaleDateString(
-									"en-IE",
-									{
+							<p class="text-xs text-ink-500 mt-0.5">
+								<span class="text-fox-500 font-medium">
+									{collectionLabels[collection]}
+								</span>
+								{" "}·{" "}
+								<time>
+									{sortDate.toLocaleDateString("en-IE", {
 										year: "numeric",
 										month: "short",
 										day: "2-digit",
-									},
-								)}
+									})}
+								</time>
 								{" "}· {formatReadingTime(readingTime)}
-							</time>
+							</p>
 						</a>
 					</li>
 				))

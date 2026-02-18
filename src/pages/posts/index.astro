@@ -4,17 +4,46 @@ import { getCollection } from "astro:content";
 import { formatReadingTime } from "@/utils/reading-time";
 import { getReadingTime } from "@/utils/get-reading-time";
 
-const posts = (await getCollection(
-    "thoughts",
-    ({ data }) => data.status === "published",
-)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const collectionLabels = {
+    thoughts: "Thought",
+    notes: "Note",
+    "cheat-sheets": "Cheat Sheet",
+    logs: "Project Log",
+} as const;
+
+type CollectionKey = keyof typeof collectionLabels;
+
+const collections = ["thoughts", "notes", "cheat-sheets", "logs"] as const;
+
+const allEntries = (
+    await Promise.all(
+        collections.map(async (col) => {
+            const entries = await getCollection(
+                col,
+                ({ data }) => data.status === "published",
+            );
+            return entries.map((entry) => ({
+                entry,
+                collection: col as CollectionKey,
+                sortDate:
+                    "date" in entry.data && entry.data.date
+                        ? (entry.data.date as Date)
+                        : (entry.data.updated as Date),
+            }));
+        }),
+    )
+)
+    .flat()
+    .sort((a, b) => b.sortDate.valueOf() - a.sortDate.valueOf());
 
 // Pre-calculate reading times for all posts
 const postsWithReadingTime = await Promise.all(
-    posts.map(async (post) => ({
-        post,
-        readingTime: await getReadingTime(post),
-    }))
+    allEntries.map(async ({ entry, collection, sortDate }) => ({
+        entry,
+        collection,
+        sortDate,
+        readingTime: await getReadingTime(entry),
+    })),
 );
 ---
 
@@ -22,19 +51,22 @@ const postsWithReadingTime = await Promise.all(
     <h1 class="text-2xl font-semibold mb-6">Archive</h1>
     <ul class="space-y-4">
         {
-            postsWithReadingTime.map(({ post, readingTime }) => (
+            postsWithReadingTime.map(({ entry, collection, sortDate, readingTime }) => (
                 <li>
-                    <a href={`/posts/${post.slug}/`} class="hover:underline">
-                        {post.data.title}
+                    <a href={`/posts/${entry.slug}/`} class="hover:underline">
+                        {entry.data.title}
                     </a>
                     <span class="text-ink-500 text-sm">
-                        {" "}
-                        · {new Date(post.data.date).toLocaleDateString("en-IE")}
+                        {" "}·{" "}
+                        <span class="text-fox-500 font-medium">
+                            {collectionLabels[collection]}
+                        </span>
+                        {" "}· {sortDate.toLocaleDateString("en-IE")}
                         {" "}· {formatReadingTime(readingTime)}
                     </span>
-                    {post.data.dek && (
+                    {entry.data.dek && (
                         <p class="text-ink-600 dark:text-ink-400 text-sm">
-                            {post.data.dek}
+                            {entry.data.dek}
                         </p>
                     )}
                 </li>

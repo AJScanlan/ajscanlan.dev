@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs:*)",
+      "Bash(git -C /Users/AJ/ajscanlan.dev log --oneline -20)",
+      "Bash(npm run build:*)"
+    ]
+  }
+}

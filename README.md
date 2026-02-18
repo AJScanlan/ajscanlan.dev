@@ -20,7 +20,12 @@ Abstract **red fox head** (profile) as site mark — smart, alert, kind, minimal
 │   └── CNAME            # Custom domain config
 ├── src/
 │   ├── components/
-│   │   └── Callout.astro       # Info/warn/quote callouts
+│   │   ├── Callout.astro       # Info/warn/quote callouts
+│   │   ├── SectionBreak.astro  # Magazine-style section dividers
+│   │   └── ReadingProgress.astro # Scroll progress indicator
+│   ├── utils/
+│   │   ├── reading-time.ts     # Word count + reading time logic
+│   │   └── get-reading-time.ts # Reading time calculation wrapper
 │   ├── content/
 │   │   ├── config.ts           # Content collections schema
 │   │   ├── thoughts/           # "On…" essays (800-1600 words)
@@ -88,9 +93,7 @@ All commands run from the project root:
 
 ## 🚀 Deployment
 
-Currently deploying to GitHub Pages with custom domain `ajscanlan.dev`.
-
-**Planned:** GitHub Actions workflow for automated builds on push to `main`.
+Deploying to GitHub Pages with custom domain `ajscanlan.dev`. Automated via GitHub Actions (`.github/workflows/deploy.yml`) — pushes to `main` trigger a build and deploy.
 
 ## 📐 Design Principles
 

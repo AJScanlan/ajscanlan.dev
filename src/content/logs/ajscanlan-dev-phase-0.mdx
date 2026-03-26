@@ -1,0 +1,55 @@
+---
+title: "ajscanlan.dev — Phase 0"
+date: 2025-10-27
+tags: ["astro", "tailwind", "personal-site", "web"]
+status: "published"
+openness: "provisional"
+---
+
+Log of decisions, surprises, and lessons from building this site. Phase 0 covers initial setup through first published post. Informal — this is notes for future-me, not a tutorial.
+
+---
+
+**Oct 2025 — Chose Astro 5**
+
+Considered Next.js (already familiar), Eleventy (simpler), Astro (newer). Went with Astro because:
+- Content collections with Zod schema validation out of the box
+- MDX support with component imports
+- Zero JavaScript by default (good for a content site)
+- The island architecture is smart even if I won't need it at first
+
+Friction: Astro's syntax is unfamiliar at first. The frontmatter fences look like YAML but it's TypeScript. The `.astro` files feel like JSX but aren't quite. Took half a day to stop fighting the mental model.
+
+---
+
+**Content collection schema design**
+
+Spent more time on the `src/content/config.ts` schema than expected. The key insight: different content types have different required fields. Thoughts need a `dek` (subtitle). Cheat sheets don't have a "published date" — they have an "updated" date, since they're living references. Notes are ephemeral; logs are chronological.
+
+Modelling these differences with Zod's `.extend()` pattern worked well. The shared `sharedFields` base schema avoids repetition without losing the per-type distinctions.
+
+---
+
+**Tailwind for typography — a mixed experience**
+
+The `@tailwindcss/typography` plugin generates sensible prose styles, but fighting it to get the exact type scale I wanted took effort. Eventually stripped back the plugin and wrote the critical rules in `global.css` directly. The Fox Red heading borders, the 70ch measure, the 1.65 line-height — these are too specific to be utility classes.
+
+Lesson: use Tailwind for layout and spacing utilities; use `global.css` for opinionated typographic rules that don't belong in a utility system.
+
+---
+
+**MDX component approach**
+
+Passing components explicitly to `<Content components={{ Callout, SectionBreak }} />` in `[slug].astro` is verbose but sensible. Components are available in MDX without explicit imports in the MDX file itself, which is the right ergonomics for content authors. Didn't reach for global component registrations — explicit is better.
+
+---
+
+**What I'd do differently**
+
+- Start with the typography system before building any components. Changing the base font size and line-height propagated through everything unexpectedly.
+- Separate the design system documentation from the code earlier. The `TYPOGRAPHY_AUDIT.md`, `ACCESSIBILITY_AUDIT.md`, and `COMPONENTS.md` files were written retroactively — useful to have, but it would have been better to write them as decisions were made.
+- The `status: "draft" | "published"` field in frontmatter was right. Adding it from day one meant I could commit work-in-progress without it surfacing publicly.
+
+---
+
+*Phase 1 will cover: draft workflow, performance audit, first real posts in each category.*

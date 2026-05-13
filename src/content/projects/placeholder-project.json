@@ -1,0 +1,11 @@
+{
+  "name": "Project Two",
+  "blurb": "Replace this with a real project blurb — what it does and why it matters.",
+  "status": "live",
+  "stack": ["React", "Node", "PostgreSQL"],
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/AJScanlan" }
+  ],
+  "featured": true,
+  "order": 2
+}

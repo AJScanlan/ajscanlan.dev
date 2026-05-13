@@ -1,0 +1,12 @@
+{
+  "name": "ajscanlan.dev",
+  "blurb": "Personal site and working notebook. Built with Astro 5, MDX, and Tailwind.",
+  "status": "in-progress",
+  "stack": ["Astro", "TypeScript", "Tailwind", "MDX"],
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/AJScanlan/ajscanlan.dev" },
+    { "label": "Live", "url": "https://ajscanlan.dev" }
+  ],
+  "featured": true,
+  "order": 1
+}

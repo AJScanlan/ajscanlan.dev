@@ -1,0 +1,53 @@
+---
+/**
+ * Eyebrow.astro
+ * Small mono uppercase label component for section headers.
+ * Optionally displays a secondary sub label separated by a · character.
+ */
+
+interface Props {
+    text: string;
+    sub?: string;
+}
+
+const { text, sub } = Astro.props;
+---
+
+<p class="eyebrow">
+    {text}
+    {sub && (
+        <>
+            <span class="separator"> · </span>
+            <span class="sub-label">{sub}</span>
+        </>
+    )}
+</p>
+
+<style>
+    .eyebrow {
+        margin: 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.71875rem; /* 11.5px */
+        font-weight: 500;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--ink-400);
+    }
+
+    .separator {
+        margin: 0 0.25em;
+    }
+
+    .sub-label {
+        color: var(--ink-300);
+    }
+
+    /* Dark mode adjustments */
+    :global(.dark) .eyebrow {
+        color: var(--ink-400);
+    }
+
+    :global(.dark) .sub-label {
+        color: var(--ink-300);
+    }
+</style>

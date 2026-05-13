@@ -1,7 +1,5 @@
 import { defineCollection, z } from 'astro:content';
 
-const kindEnum = z.enum(['project-log', 'technical', 'cheat-sheet', 'note', 'essay']);
-
 const sharedFields = z.object({
     title: z.string(),
     dek: z.string().min(1).optional(),
@@ -18,7 +16,7 @@ const essays = defineCollection({
     schema: sharedFields.extend({
         dek: z.string().min(1),
         date: z.coerce.date(),
-        kind: kindEnum,
+        kind: z.literal('essay'),
     }),
 });
 
@@ -26,7 +24,7 @@ const notes = defineCollection({
     type: 'content',
     schema: sharedFields.extend({
         date: z.coerce.date(),
-        kind: kindEnum,
+        kind: z.literal('note'),
     }),
 });
 
@@ -34,7 +32,7 @@ const cheatSheets = defineCollection({
     type: 'content',
     schema: sharedFields.extend({
         updated: z.coerce.date(),
-        kind: kindEnum,
+        kind: z.literal('cheat-sheet'),
     }),
 });
 
@@ -42,7 +40,7 @@ const logs = defineCollection({
     type: 'content',
     schema: sharedFields.extend({
         date: z.coerce.date(),
-        kind: kindEnum,
+        kind: z.literal('project-log'),
     }),
 });
 
@@ -51,7 +49,7 @@ const technical = defineCollection({
     schema: sharedFields.extend({
         dek: z.string().min(1),
         date: z.coerce.date(),
-        kind: kindEnum,
+        kind: z.literal('technical'),
     }),
 });
 
@@ -72,7 +70,7 @@ const projects = defineCollection({
         links: z.array(z.object({
             label: z.string(),
             url: z.string(),
-        })),
+        })).default([]),
         featured: z.boolean().default(false),
         order: z.number().optional(),
     }),

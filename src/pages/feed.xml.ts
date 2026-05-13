@@ -5,18 +5,19 @@ import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
     // Fetch all published content from all collections
-    const [thoughts, notes, cheatSheets, logs] = await Promise.all([
-        getCollection('thoughts', ({ data }) => data.status === 'published'),
+    const [essays, notes, cheatSheets, logs, technical] = await Promise.all([
+        getCollection('essays', ({ data }) => data.status === 'published'),
         getCollection('notes', ({ data }) => data.status === 'published'),
         getCollection('cheat-sheets', ({ data }) => data.status === 'published'),
         getCollection('logs', ({ data }) => data.status === 'published'),
+        getCollection('technical', ({ data }) => data.status === 'published'),
     ]);
 
     // Combine all content types into a single array
     const allContent = [
-        ...thoughts.map((post) => ({
+        ...essays.map((post) => ({
             ...post,
-            collection: 'thoughts' as const,
+            collection: 'essays' as const,
         })),
         ...notes.map((post) => ({
             ...post,
@@ -29,6 +30,10 @@ export async function GET(context: APIContext) {
         ...logs.map((post) => ({
             ...post,
             collection: 'logs' as const,
+        })),
+        ...technical.map((post) => ({
+            ...post,
+            collection: 'technical' as const,
         })),
     ];
 

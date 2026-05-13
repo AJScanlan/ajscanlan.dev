@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,6 +9,26 @@
 /* Canvas + smooth type, prefers-color-scheme respected */
 :root {
     color-scheme: light dark;
+    /* Design tokens for use in component styles */
+    --ink-900: #0b0b0e;
+    --ink-800: #0f1011;
+    --ink-700: #1a1b1d;
+    --ink-600: #2d2e31;
+    --ink-500: #44464a;
+    --ink-400: #6d6f73;
+    --ink-300: #a0a2a6;
+    --ink-200: #c8c9cb;
+    --ink-100: #e8e8e9;
+    --ink-50:  #f7f7f8;
+    --paper:   #faf9f6;
+    --paper-2: #f3f1ec;
+    --fox:     #d0342c;
+    --fox-ink: #8a221c;
+}
+
+::selection {
+    background: rgba(208, 52, 44, 0.18);
+    color: var(--ink-900);
 }
 
 html {
@@ -16,12 +38,11 @@ html {
 
 body {
     @apply bg-paper-100 text-ink-700 dark:bg-ink-900 dark:text-ink-100 antialiased;
-    font-size: 1.125rem;  /* 18px body text */
-    line-height: 1.65;     /* Within 1.55-1.7 range, optimized for readability */
-    
-    /* Increase line-height on narrow screens for better mobile reading */
+    font-size: 1.0625rem;  /* 17px */
+    line-height: 1.6;
+
     @media (max-width: 640px) {
-        line-height: 1.7;
+        line-height: 1.65;
     }
 }
 
@@ -50,6 +71,31 @@ body {
     margin-right: auto;
     padding-left: 1rem;
     padding-right: 1rem;
+}
+
+/* Page-level layout containers (new design) */
+.layout-home {
+    max-width: 920px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+.layout-post {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+}
+
+@media (max-width: 640px) {
+    .layout-home,
+    .layout-post {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }
 
 /* Generous white space utilities */
@@ -114,7 +160,7 @@ body {
 /* h1: Page titles - Maximum visual weight */
 h1 {
     @apply text-ink-800 dark:text-ink-50;
-    font-size: 3.0625rem;  /* 49px - scale step 5 */
+    font-size: 3.0625rem;
     line-height: 1.2;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -122,30 +168,30 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
-/* h2: Major sections - Fox Red left border */
+/* h2: clean — no border */
 h2 {
     @apply text-ink-800 dark:text-ink-50;
-    font-size: 2.4375rem;  /* 39px - scale step 4 */
-    line-height: 1.3;
+    font-size: 1.75rem;    /* 28px */
+    line-height: 1.22;
     font-weight: 700;
     letter-spacing: -0.015em;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
-    padding-left: 1rem;
-    border-left: 4px solid #d0342c; /* Fox Red */
+    margin-top: 3.5rem;
+    margin-bottom: 0.75rem;
+    padding-left: 0;
+    border: 0;
 }
 
-/* h3: Subsections - Subtle Fox Red left border */
+/* h3: clean — no border */
 h3 {
     @apply text-ink-800 dark:text-ink-100;
-    font-size: 1.9375rem;  /* 31px - scale step 3 */
-    line-height: 1.4;
+    font-size: 1.25rem;    /* 20px */
+    line-height: 1.3;
     font-weight: 600;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
     margin-top: 2rem;
-    margin-bottom: 0.75rem;
-    padding-left: 0.75rem;
-    border-left: 3px solid #d0342c; /* Fox Red */
+    margin-bottom: 0.5rem;
+    padding-left: 0;
+    border: 0;
 }
 
 /* h4: Minor headings - No border, clear weight step down */
@@ -176,12 +222,6 @@ h6 {
     font-weight: 500;
     margin-top: 1.25rem;
     margin-bottom: 0.5rem;
-}
-
-/* Dark mode adjustments for Fox Red borders */
-.dark h2,
-.dark h3 {
-    border-left-color: #f87171; /* Lighter fox for visibility */
 }
 
 /* Reduce motion: Remove border animation potential */

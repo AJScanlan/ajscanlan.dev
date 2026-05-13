@@ -24,8 +24,8 @@ module.exports = {
                 // Backgrounds - warm neutrals for visual calm
                 paper: {
                     50: '#fcfcfc',   // Pure white (rare use)
-                    100: '#f7f7f8',  // Mist (primary background)
-                    200: '#f0f0f1',  // Code blocks, subtle wells
+                    100: '#faf9f6',  // Mist (primary background)
+                    200: '#f3f1ec',  // Code blocks, subtle wells
                 },
                 // Brand accent - Fox Red (smart, alert, kind)
                 fox: {
@@ -39,6 +39,7 @@ module.exports = {
                     700: '#9f221b',
                     800: '#7f1d16',
                     900: '#651710',
+                    ink: '#8a221c',  // Text-grade burgundy
                 },
                 // Functional accents (used sparingly)
                 green: '#1f7a5c',   // Success states
@@ -58,17 +59,16 @@ module.exports = {
                 ],
             },
             fontSize: {
-                // Body: 18px base with optimized line-height (1.55-1.7 range)
-                base: ['1.125rem', { lineHeight: '1.65' }],  // 18px
-                lg: ['1.25rem', { lineHeight: '1.65' }],     // 20px
-                
-                // Heading scale: 1.25 modular scale (18 → 20 → 25 → 31 → 39 → 49)
-                // Line heights progressively tighter for larger sizes
-                'heading-sm': ['1.25rem', { lineHeight: '1.6' }],     // 20px, h5
-                'heading-md': ['1.5625rem', { lineHeight: '1.5' }],   // 25px, h4
-                'heading-lg': ['1.9375rem', { lineHeight: '1.4' }],   // 31px, h3
-                'heading-xl': ['2.4375rem', { lineHeight: '1.3' }],   // 39px, h2
-                'heading-2xl': ['3.0625rem', { lineHeight: '1.2' }],  // 49px, h1
+                // Body: 17px base with optimized line-height
+                base: ['1.0625rem', { lineHeight: '1.6' }],   // 17px
+                lg:   ['1.25rem',   { lineHeight: '1.65' }],  // 20px
+
+                // Heading scale
+                'heading-sm':  ['1.25rem',   { lineHeight: '1.6'  }],  // 20px
+                'heading-md':  ['1.5625rem', { lineHeight: '1.5'  }],  // 25px
+                'heading-lg':  ['1.25rem',   { lineHeight: '1.3'  }],  // 20px
+                'heading-xl':  ['1.75rem',   { lineHeight: '1.22' }],  // 28px
+                'heading-2xl': ['3.0625rem', { lineHeight: '1.2'  }],  // 49px
             },
             maxWidth: {
                 'prose': '70ch',   // 60-75ch range
@@ -91,7 +91,7 @@ module.exports = {
                     css: {
                         color: theme('colors.ink.800'),
                         maxWidth: '70ch',          // Within 60-75ch spec
-                        fontSize: '1.125rem',      // 18px body
+                        fontSize: '1.0625rem',     // 17px body
                         lineHeight: '1.65',        // Within 1.55-1.7 spec
                         
                         // Links - Fox Red accent
@@ -114,21 +114,25 @@ module.exports = {
                             marginTop: '0',
                             marginBottom: '1.5rem',
                         },
-                        h2: { 
-                            fontSize: '2.4375rem',     // 39px
-                            lineHeight: '1.3',
+                        h2: {
+                            fontSize: '1.75rem',       // 28px
+                            lineHeight: '1.22',
                             letterSpacing: '-0.015em',
                             fontWeight: '700',
-                            marginTop: '2.5rem',
-                            marginBottom: '1rem',
+                            marginTop: '3.5rem',
+                            marginBottom: '0.75rem',
+                            paddingLeft: '0',
+                            borderLeftWidth: '0',
                         },
-                        h3: { 
-                            fontSize: '1.9375rem',     // 31px
-                            lineHeight: '1.4',
-                            letterSpacing: '-0.01em',
+                        h3: {
+                            fontSize: '1.25rem',       // 20px
+                            lineHeight: '1.3',
+                            letterSpacing: '-0.005em',
                             fontWeight: '600',
                             marginTop: '2rem',
-                            marginBottom: '0.75rem',
+                            marginBottom: '0.5rem',
+                            paddingLeft: '0',
+                            borderLeftWidth: '0',
                         },
                         h4: { 
                             fontSize: '1.5625rem',     // 25px

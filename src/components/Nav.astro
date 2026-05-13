@@ -1,13 +1,16 @@
 ---
+interface NavLink {
+  href: string;
+  label: string;
+  isActive?: boolean;
+  isExternal?: boolean;
+}
+
 const { pathname } = Astro.url;
 
-// Determine active nav links
-const isArchiveActive = pathname.startsWith('/archive');
-const isAboutActive = pathname.startsWith('/about');
-
-const navLinks = [
-  { href: '/archive', label: 'Archive', isActive: isArchiveActive },
-  { href: '/about', label: 'About', isActive: isAboutActive },
+const navLinks: NavLink[] = [
+  { href: '/archive', label: 'Archive', isActive: pathname.startsWith('/archive') },
+  { href: '/about', label: 'About', isActive: pathname.startsWith('/about') },
   { href: 'https://github.com/AJScanlan', label: 'GitHub', isExternal: true },
   { href: '/feed.xml', label: 'RSS' },
 ];

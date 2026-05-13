@@ -8,5 +8,5 @@ export async function getReadingTime(
         return entry.data.readingTime;
     }
     const { body } = entry;
-    return calculateReadingTime(body);
+    return calculateReadingTime(body ?? '');
 }

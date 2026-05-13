@@ -1,0 +1,118 @@
+---
+import { getAbsoluteLocaleUrl } from 'astro:i18n';
+
+interface Props {}
+
+const { pathname } = Astro.url;
+
+// Determine active nav links
+const isArchiveActive = pathname.startsWith('/archive');
+const isAboutActive = pathname.startsWith('/about');
+
+const navLinks = [
+  { href: '/archive', label: 'Archive', isActive: isArchiveActive },
+  { href: '/about', label: 'About', isActive: isAboutActive },
+  { href: 'https://github.com/AJScanlan', label: 'GitHub', isExternal: true },
+  { href: '/feed.xml', label: 'RSS' },
+];
+---
+
+<nav aria-label="Main navigation" class="nav-wrapper">
+  <div class="layout-home nav-container">
+    {/* Brand */}
+    <a href="/" class="brand-link">
+      <div class="fox-mark"></div>
+      <span class="brand-text">ajscanlan.dev</span>
+    </a>
+
+    {/* Nav Links */}
+    <div class="nav-links">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="nav-link"
+          class:list={{
+            'nav-link--active': link.isActive,
+          }}
+          {...(link.isExternal && { target: '_blank', rel: 'noopener noreferrer' })}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <style>
+    .nav-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background-color: var(--paper);
+      border-bottom: 1px solid var(--ink-100);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      padding: 12px 0;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--ink-900);
+      transition: color 120ms ease-in-out;
+    }
+
+    .brand-link:hover {
+      color: var(--fox-ink);
+    }
+
+    .fox-mark {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      background-color: var(--fox);
+      clip-path: polygon(50% 0%, 100% 30%, 85% 100%, 15% 100%, 0% 30%);
+    }
+
+    .brand-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: inherit;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-500);
+      text-decoration: none;
+      transition: color 120ms ease-in-out;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: var(--fox-ink);
+    }
+
+    .nav-link--active {
+      color: var(--ink-900);
+      font-weight: 600;
+    }
+
+    .nav-link--active:hover {
+      color: var(--fox-ink);
+    }
+  </style>
+</nav>

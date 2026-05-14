@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-05-14 — Engineer's Notebook Redesign
+
+### Added
+- `Nav.astro` — Sticky navigation with fox mark, brand name, and page links
+- `PostRow.astro` — Post list row with two variants: `home` (3-column) and `archive` (4-column)
+- `ProjectCard.astro` — Project card with status pill, stack chips, and links
+- `Eyebrow.astro` — Mono uppercase section label (11.5–12px, ink-400)
+- `/archive` page — Filtered post list replacing the old `/posts/` index
+- `/about` — Rebuilt as two-column about grid
+- `projects` data collection (JSON) with schema: `name`, `blurb`, `status`, `stack[]`, `links[]`, `featured`, `order?`
+- `technical/` content collection for technical posts
+- `essays/` content collection (renamed from `thoughts/`)
+- `kind` frontmatter field on all posts: `project-log`, `technical`, `cheat-sheet`, `note`, `essay`
+- CSS custom properties: `--paper`, `--paper-2`, `--fox`, `--fox-ink`; ink scale 900→50
+
+### Changed
+- Homepage redesigned: hero section + project cards grid + post sections
+- Typography scale updated: body 17px/1.6, post body 17.5px/1.65, home H1 50px, post/about H1 44px, H2 28px, H3 20px
+- H2 and H3 no longer have Fox Red left borders
+- H1 weight changed to 700 (was 800)
+- `ReadingProgress.astro` — 2px height (was 3px), fox-ink at 60% opacity, sticky top 56px
+- `SectionBreak.astro` — dots variant uses 3×4px circles in ink-200; diamond/asterism now ink-300 (was Fox Red)
+- `Callout.astro` — flat style, paper-2 background, ink-200 border; `icon` prop removed
+- Layout containers renamed: `.layout-home` (920px) and `.layout-post` (720px)
+- `/posts` now redirects to `/archive`
+
+### Removed
+- `thoughts/` collection (replaced by `essays/`)
+- Red left borders on H2 and H3
+- "Literary garden" site concept and related editorial framing
+- `icon` prop from `Callout` component
+
+---
+
 ## Template
 
 ```

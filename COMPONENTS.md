@@ -1,12 +1,63 @@
 # Component Reference
 
-Guide to using custom components in MDX content.
+Guide to using custom components in MDX content and page templates.
 
 ## Available Components
 
+### Nav
+
+Sticky site navigation with fox mark, brand name, and page links. Included automatically in `BaseLayout.astro`.
+
+No props. Not used directly in MDX.
+
+---
+
+### PostRow
+
+Post list row used on the homepage and archive page. Two layout variants controlled by context.
+
+**Variants:**
+- `home` — 3-column layout (used on homepage post sections)
+- `archive` — 4-column layout (used on the `/archive` page)
+
+**Props:**
+- `post` — Post collection entry (required)
+- `variant`: `"home"` | `"archive"` (default: `"home"`)
+
+Not used directly in MDX.
+
+---
+
+### ProjectCard
+
+Project card with status pill, stack chips, and links. Used in the homepage project grid.
+
+**Props:**
+- `project` — Project data entry (required)
+
+Displays `name`, `blurb`, `status` (live/in-progress/archived), `stack[]`, and `links[]` from the `projects` data collection.
+
+Not used directly in MDX.
+
+---
+
+### Eyebrow
+
+Mono uppercase section label for marking content sections.
+
+```mdx
+<Eyebrow>Project Logs</Eyebrow>
+```
+
+**Style:** 11.5–12px monospace / .14–.16em letter-spacing / uppercase / ink-400 color.
+
+No props beyond children.
+
+---
+
 ### Callout
 
-Info boxes with three semantic variants. Use for asides, tips, or warnings.
+Flat-style info boxes with three semantic variants. Use for asides, tips, or warnings.
 
 ```mdx
 <Callout type="note" title="Optional title">
@@ -26,13 +77,15 @@ Important warnings or caveats.
 - `type`: `"note"` | `"tip"` | `"warn"` (required)
 - `title`: Optional heading text
 
+**Visual style:** Flat style, `paper-2` background (`#f3f1ec`), `ink-200` border.
+
 **Accessibility:** Uses semantic ARIA roles (`role="note"`, `role="complementary"`, `role="alert"`)
 
 ---
 
 ### SectionBreak
 
-Subtle centered ornaments marking transitions between major sections. Magazine-style typographic element.
+Subtle centered ornaments marking transitions between major sections.
 
 ```mdx
 <!-- Default: diamond ornament (◆) -->
@@ -58,17 +111,9 @@ Subtle centered ornaments marking transitions between major sections. Magazine-s
 - `spacing`: `"tight"` | `"normal"` | `"loose"` (default: `"normal"`)
 
 **Visual style:**
-- Fox Red color (#D0342C)
-- 60% opacity (50% in dark mode)
-- Subtle hover effect (increased opacity)
+- `dots` variant: 3 × 4px circles, ink-200 color
+- `diamond` and `asterism` variants: ink-300 color
 - Respects `prefers-reduced-motion`
-
-**Usage tips:**
-- Use between major conceptual shifts in long essays
-- Prefer `variant="diamond"` for formal tone
-- Use `variant="dots"` for casual, conversational breaks
-- Use `variant="asterism"` for poetic or reflective transitions
-- Don't overuse — reserve for truly significant section breaks
 
 ---
 
@@ -76,11 +121,11 @@ Subtle centered ornaments marking transitions between major sections. Magazine-s
 
 Automatically included on all post pages. No manual usage required.
 
-Shows a thin Fox Red progress bar at the top of the page that fills as you scroll.
+Shows a thin progress bar at the top of the page that fills as you scroll.
 
 **Features:**
-- Fixed position at top of viewport
-- 3px height, Fox Red (#D0342C)
+- Sticky position at top: 56px
+- 2px height, fox-ink color at 60% opacity (`#8a221c` at 0.6)
 - Smooth animation with `requestAnimationFrame`
 - ARIA progressbar role for accessibility
 - Respects `prefers-reduced-motion`
@@ -89,16 +134,16 @@ Shows a thin Fox Red progress bar at the top of the page that fills as you scrol
 
 ## Usage in MDX
 
-All components are automatically available in MDX files. No import required:
+`Callout`, `SectionBreak`, and `Eyebrow` are automatically available in MDX files. No import required:
 
 ```mdx
 ---
 title: "Your Post Title"
 dek: "Short description"
 date: 2025-10-27
+kind: "technical"
 tags: ["tag1", "tag2"]
 status: "published"
-openness: "provisional"
 ---
 
 Your introduction paragraph.
@@ -133,16 +178,4 @@ All components follow these conventions:
 1. **Typography-first** — Respect the reading flow
 2. **Accessible by default** — Semantic HTML + ARIA when needed
 3. **Respects motion preferences** — Honor `prefers-reduced-motion`
-4. **Dark mode aware** — Proper contrast in light and dark themes
-5. **Minimal aesthetic** — Visual calm, no decoration for decoration's sake
-6. **Magazine-grade composition** — Professional editorial quality
-
----
-
-## Requesting New Components
-
-See `TODO.md` for planned components:
-- Table of Contents (auto-generated from headings)
-- Pull Quotes (magazine-style callouts)
-- Figure with Caption (semantic image captions)
-- Footnote/Sidenote patterns (margin notes for wide screens)
+4. **Minimal aesthetic** — Visual calm, no decoration for decoration's sake

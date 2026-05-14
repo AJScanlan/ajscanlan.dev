@@ -1,0 +1,127 @@
+---
+interface Props {
+  name: string;
+  blurb: string;
+  status: 'live' | 'in-progress' | 'archived';
+  stack: string[];
+  links: Array<{ label: string; url: string }>;
+}
+
+const { name, blurb, status, stack, links } = Astro.props;
+
+const statusColors = {
+  live: { bg: '#1f7a5c' },
+  'in-progress': { bg: 'var(--fox)' },
+  archived: { bg: 'var(--ink-300)' },
+};
+---
+
+<div class="project-card">
+  <div class="status-pill" data-status={status}>
+    {status.replace('-', ' ')}
+  </div>
+
+  <h3 class="title">{name}</h3>
+
+  <p class="blurb">{blurb}</p>
+
+  <div class="stack-chips">
+    {stack.map((item) => (
+      <span class="chip">{item}</span>
+    ))}
+  </div>
+
+  <div class="links-section">
+    {links.map((link) => (
+      <a href={link.url} class="link">
+        {link.label}
+      </a>
+    ))}
+  </div>
+</div>
+
+<style define:vars={{ statusBg: statusColors[status].bg }}>
+  .project-card {
+    border: 1px solid var(--ink-100);
+    border-radius: 10px;
+    padding: 22px;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+    cursor: pointer;
+  }
+
+  .project-card:hover {
+    transform: translateY(-1px);
+    border-color: var(--ink-200);
+    box-shadow: 0 12px 28px -18px rgba(11, 11, 14, 0.18);
+  }
+
+  .status-pill {
+    align-self: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 3px;
+    padding: 2px 8px;
+    background: var(--statusBg);
+    color: white;
+  }
+
+  .title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+    margin: 0;
+    padding: 0;
+  }
+
+  .blurb {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-600);
+    margin: 0;
+    padding: 0;
+  }
+
+  .stack-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    border-radius: 3px;
+    padding: 2px 7px;
+    background: var(--paper-2);
+    color: var(--ink-600);
+    border: 1px solid var(--ink-100);
+    display: inline-block;
+  }
+
+  .links-section {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: auto;
+  }
+
+  .link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-500);
+    text-decoration: none;
+    transition: color 120ms ease;
+  }
+
+  .link:hover {
+    color: var(--fox-ink);
+  }
+</style>

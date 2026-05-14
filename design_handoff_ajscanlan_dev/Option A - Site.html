@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ajscanlan.dev</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink-900:#0b0b0e; --ink-800:#0f1011; --ink-700:#1a1b1d; --ink-600:#2d2e31;
+    --ink-500:#44464a; --ink-400:#6d6f73; --ink-300:#a0a2a6; --ink-200:#c8c9cb;
+    --ink-100:#e8e8e9; --ink-50:#f7f7f8;
+    --paper:#faf9f6; --paper-2:#f3f1ec;
+    --fox:#d0342c; --fox-ink:#8a221c;
+    --sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif;
+    --serif: ui-serif, "Iowan Old Style", "Charter", Georgia, "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper); color: var(--ink-700);
+    font-family: var(--sans); font-size: 17px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: rgba(208,52,44,.18); color: var(--ink-900); }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 32px; }
+  .wrap-prose { max-width: 720px; margin: 0 auto; padding: 0 32px; }
+
+  /* ── Nav ─────────────────────────────────────────────────────────── */
+  .nav {
+    border-bottom: 1px solid var(--ink-100);
+    background: rgba(250,249,246,.92);
+    backdrop-filter: saturate(140%) blur(10px);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .nav .inner {
+    max-width: 920px; margin: 0 auto; padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; color: var(--ink-900); letter-spacing: -0.01em; }
+  .brand .dot { width: 8px; height: 8px; border-radius: 999px; background: var(--fox); }
+  .brand .tld { color: var(--ink-300); font-weight: 500; }
+  .nav-links { display: flex; gap: 26px; font-size: 14.5px; color: var(--ink-500); }
+  .nav-links a { padding: 4px 0; transition: color .12s; }
+  .nav-links a:hover { color: var(--fox-ink); }
+  .nav-links a.on { color: var(--ink-900); font-weight: 500; }
+
+  /* Fox mark */
+  .fox-mark { width: 22px; height: 22px; position: relative; display: inline-block; }
+  .fox-mark::before, .fox-mark::after { content: ""; position: absolute; inset: 0; }
+  .fox-mark::before { background: var(--fox); clip-path: polygon(50% 8%, 92% 60%, 78% 92%, 22% 92%, 8% 60%); }
+  .fox-mark::after { background: var(--paper); clip-path: polygon(50% 46%, 64% 70%, 50% 76%, 36% 70%); }
+
+  /* ── Eyebrows / monospace meta ──────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-400); font-weight: 500;
+  }
+  .eyebrow b { color: var(--ink-700); font-weight: 500; }
+  .availability { display: inline-flex; align-items: center; gap: 8px; }
+  .availability::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px; background: #1f7a5c;
+    box-shadow: 0 0 0 3px rgba(31,122,92,.18);
+  }
+
+  /* ── HOME ───────────────────────────────────────────────────────── */
+  .home-hero { padding: 88px 0 48px; }
+  .home-hero .eyebrow { margin-bottom: 18px; display: inline-flex; gap: 14px; align-items: center; }
+  .home-hero h1 {
+    font-size: 50px; line-height: 1.05; letter-spacing: -0.028em; font-weight: 700;
+    color: var(--ink-900); margin: 0 0 20px; max-width: 17ch;
+  }
+  .home-hero h1 em { font-style: normal; color: var(--fox-ink); }
+  .home-hero .lede { font-size: 18.5px; line-height: 1.55; color: var(--ink-500); max-width: 56ch; margin: 0; }
+  .home-hero .links {
+    margin-top: 30px; display: flex; gap: 22px; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 13.5px; color: var(--ink-500);
+  }
+  .home-hero .links a {
+    color: var(--ink-700);
+    border-bottom: 1px solid var(--ink-200); padding-bottom: 2px;
+    transition: color .12s, border-color .12s;
+  }
+  .home-hero .links a:hover { color: var(--fox-ink); border-color: var(--fox-ink); }
+  .home-hero .links .sep { color: var(--ink-200); }
+
+  /* Section block */
+  .section { padding: 28px 0 8px; }
+  .section h2 {
+    font-size: 12px; font-family: var(--mono); font-weight: 500;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--ink-400);
+    margin: 0 0 4px; padding: 0; border: 0;
+  }
+  .section .sub { font-size: 14px; color: var(--ink-400); margin: 0 0 20px; }
+
+  .list { display: grid; }
+  .row {
+    display: grid; grid-template-columns: 100px 1fr 140px; gap: 24px;
+    padding: 18px 0; border-top: 1px solid var(--ink-100);
+    align-items: baseline; cursor: pointer;
+    transition: padding .15s;
+  }
+  .list .row:last-child { border-bottom: 1px solid var(--ink-100); }
+  .row .date { font-family: var(--mono); font-size: 12.5px; color: var(--ink-400); }
+  .row .title { font-size: 19px; line-height: 1.35; color: var(--ink-900); font-weight: 500; letter-spacing: -0.008em; }
+  .row .title .dek { color: var(--ink-400); font-weight: 400; }
+  .row .kind {
+    justify-self: end; font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--ink-500);
+    padding: 3px 8px; border: 1px solid var(--ink-100); border-radius: 3px;
+    background: var(--paper); white-space: nowrap;
+  }
+  .row .kind.proj { color: var(--fox-ink); border-color: rgba(138,34,28,.25); background: rgba(208,52,44,.04); }
+  .row:hover .title { color: var(--fox-ink); }
+  .row:hover .title::after { content: " →"; color: var(--ink-300); }
+
+  .more {
+    margin-top: 18px; display: inline-block;
+    font-family: var(--mono); font-size: 13px; color: var(--ink-500);
+    border-bottom: 1px dashed var(--ink-200); padding-bottom: 1px;
+  }
+  .more:hover { color: var(--fox-ink); border-color: var(--fox-ink); }
+
+  /* ── Project cards ──────────────────────────────────────────────── */
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+  }
+  .pcard {
+    display: block; position: relative; padding: 22px 22px 20px;
+    border: 1px solid var(--ink-100); border-radius: 10px;
+    background: var(--paper); cursor: pointer;
+    transition: border-color .15s, transform .15s, box-shadow .15s;
+  }
+  .pcard:hover {
+    border-color: var(--ink-200);
+    box-shadow: 0 1px 0 var(--ink-100), 0 12px 28px -18px rgba(11,11,14,.18);
+    transform: translateY(-1px);
+  }
+  .pcard .ptop {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .pcard .pstatus {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-500);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .pcard .pstatus.live::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px; background: #1f7a5c;
+    box-shadow: 0 0 0 3px rgba(31,122,92,.18);
+  }
+  .pcard .pstatus.wip::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--fox);
+    box-shadow: 0 0 0 3px rgba(208,52,44,.18);
+  }
+  .pcard .pstatus.archived::before {
+    content: ""; width: 6px; height: 6px; border-radius: 999px; background: var(--ink-300);
+  }
+  .pcard .plinks {
+    display: flex; gap: 12px;
+    font-family: var(--mono); font-size: 12px; color: var(--ink-500);
+  }
+  .pcard .plinks a { border-bottom: 1px solid transparent; padding-bottom: 1px; }
+  .pcard .plinks a:hover { color: var(--fox-ink); border-color: var(--fox-ink); }
+  .pcard h3 {
+    font-size: 19px; line-height: 1.3; letter-spacing: -0.012em;
+    color: var(--ink-900); font-weight: 600; margin: 0 0 6px;
+  }
+  .pcard p {
+    margin: 0 0 14px; font-size: 14.5px; line-height: 1.5; color: var(--ink-500);
+  }
+  .pcard .pstack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pcard .pstack span {
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-600);
+    background: var(--paper-2); padding: 3px 8px; border-radius: 3px;
+  }
+  .pcard:hover h3 { color: var(--fox-ink); }
+
+  /* ── ABOUT ──────────────────────────────────────────────────────── */
+  .about { padding: 72px 0 80px; }
+  .about .kicker { margin-bottom: 14px; }
+  .about h1 {
+    font-size: 44px; line-height: 1.08; letter-spacing: -0.025em; font-weight: 700;
+    color: var(--ink-900); margin: 0 0 22px; max-width: 22ch;
+  }
+  .about .lede {
+    font-size: 19px; line-height: 1.55; color: var(--ink-600);
+    max-width: 60ch; margin: 0 0 36px;
+  }
+  .about-grid {
+    display: grid; grid-template-columns: 140px 1fr; gap: 36px 40px;
+    border-top: 1px solid var(--ink-100); padding-top: 36px;
+  }
+  .about-grid > h3 {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-400); margin: 6px 0 0; font-weight: 500;
+  }
+  .about-grid > div { color: var(--ink-700); font-size: 17px; line-height: 1.65; }
+  .about-grid > div p { margin: 0 0 14px; }
+  .about-grid > div p:last-child { margin-bottom: 0; }
+  .about-grid > div ul { margin: 0; padding: 0; list-style: none; }
+  .about-grid > div ul li {
+    padding: 9px 0; border-top: 1px solid var(--ink-100);
+    display: grid; grid-template-columns: 110px 1fr; gap: 16px;
+    font-family: var(--mono); font-size: 13.5px; color: var(--ink-700);
+  }
+  .about-grid > div ul li:first-child { border-top: 0; padding-top: 0; }
+  .about-grid > div ul li b { font-weight: 500; color: var(--ink-500); }
+  .about-grid > div ul li a { color: var(--ink-900); border-bottom: 1px solid var(--ink-200); padding-bottom: 1px; }
+  .about-grid > div ul li a:hover { color: var(--fox-ink); border-color: var(--fox-ink); }
+  .about-grid > div .stack {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .about-grid > div .stack span {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-600);
+    background: var(--paper-2); padding: 4px 9px; border-radius: 3px;
+  }
+  .about-grid > div .stack span.primary { background: var(--ink-900); color: var(--paper); }
+
+  /* ── ARCHIVE ────────────────────────────────────────────────────── */
+  .archive { padding: 64px 0 80px; }
+  .archive h1 {
+    font-size: 36px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 700;
+    color: var(--ink-900); margin: 0 0 8px;
+  }
+  .archive .lede { font-size: 16.5px; color: var(--ink-500); margin: 0 0 28px; max-width: 60ch; }
+  .archive .filters {
+    display: flex; gap: 18px; padding: 8px 0; border-bottom: 1px solid var(--ink-100);
+    font-family: var(--mono); font-size: 13px; flex-wrap: wrap;
+  }
+  .archive .filters span {
+    color: var(--ink-400); padding: 8px 0; cursor: pointer;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: color .12s;
+  }
+  .archive .filters span:hover { color: var(--ink-700); }
+  .archive .filters span.on { color: var(--ink-900); border-color: var(--ink-900); font-weight: 500; }
+  .archive .filters .count { color: var(--ink-300); margin-left: 4px; }
+  .archive .year {
+    display: flex; align-items: center; gap: 14px; padding: 32px 0 6px;
+  }
+  .archive .year h3 { font-family: var(--mono); font-size: 12px; color: var(--ink-400); letter-spacing: .16em; margin: 0; font-weight: 500; }
+  .archive .year .rule { flex: 1; height: 1px; background: var(--ink-100); }
+  .archive .row { grid-template-columns: 110px 110px 1fr 80px; }
+  .archive .row .knd { font-family: var(--mono); font-size: 12.5px; color: var(--ink-500); }
+  .archive .row .knd.proj { color: var(--fox-ink); }
+  .archive .row .rt { font-family: var(--mono); font-size: 12px; color: var(--ink-400); justify-self: end; }
+
+  /* ── POST ───────────────────────────────────────────────────────── */
+  .post-progress { position: sticky; top: 60px; height: 2px; background: transparent; z-index: 15; }
+  .post-progress div { width: 32%; height: 100%; background: var(--fox-ink); opacity: .6; }
+  .post { padding: 56px 0 80px; }
+  .post .meta { font-family: var(--mono); font-size: 12.5px; color: var(--ink-500); display: flex; gap: 14px; align-items: center; margin-bottom: 22px; flex-wrap: wrap; }
+  .post .meta .kind { color: var(--fox-ink); background: rgba(208,52,44,.06); padding: 2px 8px; border-radius: 3px; letter-spacing: .06em; text-transform: uppercase; font-size: 11px; }
+  .post .meta a.back { color: var(--ink-500); border-bottom: 1px solid var(--ink-200); padding-bottom: 1px; }
+  .post .meta a.back:hover { color: var(--fox-ink); border-color: var(--fox-ink); }
+  .post h1.post-title {
+    font-size: 44px; line-height: 1.08; letter-spacing: -0.025em; font-weight: 700;
+    color: var(--ink-900); margin: 0 0 18px;
+  }
+  .post .dek {
+    font-size: 20px; line-height: 1.5; color: var(--ink-500);
+    font-family: var(--serif); font-style: italic; margin: 0 0 36px;
+  }
+  .post .callout {
+    border: 1px solid var(--ink-200); border-radius: 8px;
+    padding: 16px 22px; background: var(--paper-2); margin: 28px 0;
+  }
+  .post .callout h6 {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink-500);
+    margin: 0 0 6px; padding: 0; border: 0;
+  }
+  .post .callout p { margin: 0; font-size: 15.5px; color: var(--ink-700); line-height: 1.55; }
+
+  /* THE BIG FIX: no red leading bars on h2/h3. */
+  .post h2 {
+    font-size: 28px; line-height: 1.22; letter-spacing: -0.015em; color: var(--ink-900);
+    font-weight: 700; margin: 56px 0 12px; padding: 0; border: 0;
+  }
+  .post h2 .num {
+    display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+    color: var(--ink-400); font-weight: 500; margin-bottom: 10px; text-transform: uppercase;
+  }
+  .post h3 {
+    font-size: 20px; line-height: 1.3; letter-spacing: -0.005em; color: var(--ink-900);
+    font-weight: 600; margin: 32px 0 8px; padding: 0; border: 0;
+  }
+  .post p { font-size: 17.5px; line-height: 1.65; color: var(--ink-700); margin: 0 0 18px; }
+  .post p strong { color: var(--ink-900); font-weight: 600; }
+  .post p em { font-style: italic; color: var(--ink-600); }
+  .post a.inline { color: var(--fox-ink); border-bottom: 1px solid rgba(138,34,28,.25); }
+  .post a.inline:hover { border-color: var(--fox-ink); }
+  .post pre {
+    background: var(--ink-900); color: var(--ink-50);
+    padding: 18px 20px; border-radius: 8px; overflow: auto;
+    font-family: var(--mono); font-size: 13.5px; line-height: 1.55;
+    margin: 22px 0;
+  }
+  .post pre .c { color: var(--ink-400); }
+  .post pre .k { color: #f5a78a; }
+  .post pre .s { color: #b6cfa0; }
+  .post code { font-family: var(--mono); font-size: 14px; background: var(--paper-2); padding: 1px 6px; border-radius: 3px; }
+
+  .breaker { display: flex; justify-content: center; gap: 10px; margin: 44px 0; }
+  .breaker span { width: 4px; height: 4px; border-radius: 999px; background: var(--ink-200); }
+
+  .post-foot {
+    margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--ink-100);
+    display: flex; justify-content: space-between; font-family: var(--mono); font-size: 13px; color: var(--ink-500);
+  }
+  .post-foot a { color: var(--ink-700); border-bottom: 1px solid var(--ink-200); padding-bottom: 1px; }
+  .post-foot a:hover { color: var(--fox-ink); border-color: var(--fox-ink); }
+
+  /* ── Footer ─────────────────────────────────────────────────────── */
+  footer {
+    margin-top: 64px; padding: 28px 0 40px;
+    border-top: 1px solid var(--ink-100);
+    color: var(--ink-400); font-size: 13px; font-family: var(--mono);
+  }
+  footer .inner {
+    max-width: 920px; margin: 0 auto; padding: 0 32px;
+    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+  }
+  footer a:hover { color: var(--fox-ink); }
+
+  /* ── Responsive ─────────────────────────────────────────────────── */
+  @media (max-width: 700px) {
+    .home-hero h1 { font-size: 38px; }
+    .row { grid-template-columns: 1fr; gap: 6px; padding: 14px 0; }
+    .row .date { font-size: 12px; }
+    .row .kind { justify-self: start; }
+    .archive .row { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; gap: 12px 0; }
+    .about-grid > h3 { margin-top: 24px; }
+    .post h1.post-title { font-size: 34px; }
+    .post-progress { top: 56px; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// ─── Data ─────────────────────────────────────────────────────────────
+// Standins, written in the engineer's-notebook voice. Easy to swap out.
+// Project stand-ins. Easy to swap for real ones.
+const PROJECTS = [
+  {
+    name: 'UPLEX',
+    status: 'wip',
+    statusLabel: 'In progress',
+    blurb: 'A content-addressed log for offline-first networks. Replicates large event histories across patchy links without a consensus protocol.',
+    stack: ['Rust', 'QUIC', 'BLAKE3', 'SQLite'],
+    links: [{label:'log', slug:'uplex-phase-0'}, {label:'github ↗', href:'#'}],
+  },
+  {
+    name: 'ajscanlan.dev',
+    status: 'live',
+    statusLabel: 'Live',
+    blurb: 'This site. Astro 5, MDX, no JS on the served pages. Built as a public notebook and a hire-me surface in equal measure.',
+    stack: ['Astro', 'Tailwind', 'MDX', 'GH Pages'],
+    links: [{label:'log', slug:'astro-from-scratch'}, {label:'source ↗', href:'https://github.com/AJScanlan/ajscanlan.dev'}],
+  },
+  {
+    name: 'pgexplain.fyi',
+    status: 'live',
+    statusLabel: 'Live',
+    blurb: 'A small tool that pastes a Postgres EXPLAIN plan and tells you the four things you actually want to know about it. Weekend project that kept being useful.',
+    stack: ['TypeScript', 'Vite', 'Postgres'],
+    links: [{label:'open ↗', href:'#'}, {label:'github ↗', href:'#'}],
+  },
+  {
+    name: 'tinypipe',
+    status: 'archived',
+    statusLabel: 'Archived',
+    blurb: 'A weekend analytics pipeline — ingest, partition, query — built to learn DuckDB. Documented for posterity; not maintained.',
+    stack: ['Python', 'DuckDB', 'Parquet'],
+    links: [{label:'writeup', slug:'astro-from-scratch'}, {label:'github ↗', href:'#'}],
+  },
+];
+
+const POSTS = [
+  { slug: 'kahneman-fast-slow', date: '2026-05-08', kind: 'cheat-sheet',  title: 'Thinking, Fast and Slow — the parts I actually use', dek: 'One page. Five heuristics. No filler.', read: '3 min' },
+  { slug: 'astro-from-scratch', date: '2026-04-22', kind: 'project-log',  title: 'ajscanlan.dev — Phase 0',                                 dek: 'Why Astro, what I changed, what surprised me.', read: '4 min' },
+  { slug: 'redux-replacements', date: '2026-04-03', kind: 'technical',    title: 'Three patterns that replaced Redux on my last project',  dek: 'And one case where I\'d still pick it.', read: '9 min' },
+  { slug: 'node-leak-hunt',     date: '2026-03-11', kind: 'technical',    title: 'Hunting a 0.4% memory leak in a long-running Node worker', dek: 'A heap-snapshot diff and a lesson about WeakMap.', read: '12 min' },
+  { slug: 'pg-explain',         date: '2026-02-18', kind: 'cheat-sheet',  title: 'Postgres EXPLAIN — the four lines I always read first',  dek: '', read: '5 min' },
+  { slug: 'uplex-phase-0',      date: '2026-01-29', kind: 'project-log',  title: 'UPLEX — Phase 0: why a new log format',                  dek: 'Notes from week one of building a content-addressed log.', read: '7 min' },
+  { slug: 'rebase-moves',       date: '2025-12-04', kind: 'cheat-sheet',  title: 'Git rebase — the seven moves I use daily',               dek: '', read: '4 min' },
+  { slug: 'p99-kernel-timer',   date: '2025-10-17', kind: 'technical',    title: 'Tracing a P99 latency spike to a kernel timer',          dek: 'How a 14ms tail vanished after one sysctl.', read: '14 min' },
+  { slug: 'on-rivers',          date: '2025-09-02', kind: 'essay',        title: 'On Rivers and Change',                                   dek: 'Flux, entropy, and gentle stubbornness.', read: '3 min' },
+];
+
+const KIND_LABEL = {
+  'project-log': 'Project log',
+  'technical':   'Technical',
+  'cheat-sheet': 'Cheat sheet',
+  'note':        'Note',
+  'essay':       'Essay',
+};
+
+const formatDate = (iso) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+};
+const shortDate = (iso) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+};
+const yearOf = (iso) => iso.slice(0,4);
+
+// ─── Nav ──────────────────────────────────────────────────────────────
+const Nav = ({ route, go }) => (
+  <header className="nav">
+    <div className="inner">
+      <a className="brand" href="#/" onClick={(e)=>{e.preventDefault(); go('home')}}>
+        <span className="fox-mark"></span>
+        <span>ajscanlan<span className="tld">.dev</span></span>
+      </a>
+      <nav className="nav-links">
+        <a href="#/archive"  className={route==='archive'?'on':''} onClick={(e)=>{e.preventDefault(); go('archive')}}>Archive</a>
+        <a href="#/about"    className={route==='about'  ?'on':''} onClick={(e)=>{e.preventDefault(); go('about')}}>About</a>
+        <a href="https://github.com/AJScanlan" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="#/feed.xml" onClick={(e)=>e.preventDefault()}>RSS</a>
+      </nav>
+    </div>
+  </header>
+);
+
+// ─── Row ──────────────────────────────────────────────────────────────
+const PostRow = ({ p, go, dense }) => (
+  <a href={'#/p/'+p.slug} className="row" onClick={(e)=>{e.preventDefault(); go('post', p.slug)}}>
+    <div className="date">{dense ? p.date : shortDate(p.date)+' '+yearOf(p.date)}</div>
+    <div className="title">
+      {p.title}{p.dek && <span className="dek"> &nbsp;· {p.dek}</span>}
+    </div>
+    <div className={'kind'+(p.kind==='project-log'?' proj':'')}>{KIND_LABEL[p.kind]}</div>
+  </a>
+);
+
+// ─── HOME ─────────────────────────────────────────────────────────────
+const Home = ({ go }) => {
+  const projects   = POSTS.filter(p => p.kind === 'project-log' || p.kind === 'technical').slice(0, 4);
+  const references = POSTS.filter(p => p.kind === 'cheat-sheet' || p.kind === 'note').slice(0, 3);
+  const essays     = POSTS.filter(p => p.kind === 'essay').slice(0, 2);
+
+  return (
+    <main className="wrap">
+      <section className="home-hero">
+        <div className="eyebrow">
+          <span className="availability"><b>Available for new roles · Jun 2026</b></span>
+          <span style={{color:'var(--ink-200)'}}>·</span>
+          <span>Melbourne / remote</span>
+        </div>
+        <h1>I build things, then I write down <em>what I learned.</em></h1>
+        <p className="lede">A.J. Scanlan — software engineer. This is a working notebook: project logs from what I'm building, technical write-ups when something interesting breaks, and short references for things I keep looking up.</p>
+        <div className="links">
+          <a href="mailto:hello@ajscanlan.dev">hello@ajscanlan.dev</a>
+          <span className="sep">·</span>
+          <a href="https://github.com/AJScanlan" target="_blank" rel="noopener">github.com/AJScanlan ↗</a>
+          <span className="sep">·</span>
+          <a href="#/cv.pdf" onClick={(e)=>e.preventDefault()}>CV (pdf) ↗</a>
+          <span className="sep">·</span>
+          <a href="#/about" onClick={(e)=>{e.preventDefault(); go('about')}}>more about me</a>
+        </div>
+      </section>
+
+      <section className="section">
+        <h2>Selected projects</h2>
+        <p className="sub">Things I've built or am building. The project logs below trace the work in more detail.</p>
+        <div className="projects-grid">
+          {PROJECTS.map(pr => (
+            <div key={pr.name} className="pcard" role="link" tabIndex="0"
+                 onClick={()=>{ const l = pr.links[0]; if(l.slug) go('post', l.slug); else if(l.href && l.href!=='#') window.open(l.href, '_blank'); }}
+                 onKeyDown={(e)=>{ if(e.key==='Enter'){ const l = pr.links[0]; if(l.slug) go('post', l.slug); else if(l.href && l.href!=='#') window.open(l.href, '_blank'); } }}>
+              <div className="ptop">
+                <span className={'pstatus '+pr.status}>{pr.statusLabel}</span>
+                <span className="plinks">
+                  {pr.links.map((l,i) => l.slug
+                    ? <a key={i} href={'#/p/'+l.slug} onClick={(e)=>{e.preventDefault(); e.stopPropagation(); go('post', l.slug)}}>{l.label}</a>
+                    : <a key={i} href={l.href} target="_blank" rel="noopener" onClick={(e)=>e.stopPropagation()}>{l.label}</a>)}
+                </span>
+              </div>
+              <h3>{pr.name}</h3>
+              <p>{pr.blurb}</p>
+              <div className="pstack">
+                {pr.stack.map(s => <span key={s}>{s}</span>)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="section">
+        <h2>Projects &amp; technical writing</h2>
+        <p className="sub">What I'm building, and what I've learned breaking things in production.</p>
+        <div className="list">
+          {projects.map(p => <PostRow key={p.slug} p={p} go={go} />)}
+        </div>
+        <a href="#/archive" className="more" onClick={(e)=>{e.preventDefault(); go('archive', null, 'project-log')}}>see all project logs &amp; technical posts →</a>
+      </section>
+
+      <section className="section">
+        <h2>References &amp; cheat sheets</h2>
+        <p className="sub">Short, opinionated, copy-paste-friendly. Living documents.</p>
+        <div className="list">
+          {references.map(p => <PostRow key={p.slug} p={p} go={go} />)}
+        </div>
+      </section>
+
+      <section className="section">
+        <h2>Essays</h2>
+        <p className="sub">Slower writing — read these only if you want to.</p>
+        <div className="list">
+          {essays.map(p => <PostRow key={p.slug} p={p} go={go} />)}
+        </div>
+      </section>
+    </main>
+  );
+};
+
+// ─── ABOUT ────────────────────────────────────────────────────────────
+const About = ({ go }) => (
+  <main className="wrap-prose about">
+    <div className="eyebrow kicker"><span className="availability">Available for new roles · Jun 2026</span></div>
+    <h1>A.J. Scanlan — engineer who writes things down.</h1>
+    <p className="lede">I'm a software engineer based in Melbourne, working mostly on backend services, distributed systems, and developer tooling. This site is the public part of how I work: I build, I break things, I write down what I learned. It's also — transparently — a way to make my work legible to people thinking about hiring me.</p>
+
+    <div className="about-grid">
+      <h3>Currently</h3>
+      <div>
+        <p>Building <strong>UPLEX</strong> — a content-addressed log designed for offline-first, partition-tolerant networks. Rust on the engine, TypeScript on the edges. The project log on the homepage is the most up-to-date thing about it.</p>
+        <p>Reading <em>Designing Data-Intensive Applications</em> for the third time, slowly. I keep noticing things I missed.</p>
+      </div>
+
+      <h3>Background</h3>
+      <div>
+        <p>Ten years writing production code — mostly Node, Postgres, and React, with the last three years pulling toward Rust and lower-level systems work. I've shipped to a few hundred thousand users at small companies where one engineer wears five hats, which I'd rather have than the alternative.</p>
+        <p>Before software I trained as an electrical engineer. I still think in signals, feedback, and tolerances; it shapes how I write services.</p>
+      </div>
+
+      <h3>How I work</h3>
+      <div>
+        <p>I'm slow to start and stubborn to finish. I write things down — decisions, surprises, dead ends — because future-me has a goldfish memory and code review is easier when the reasoning is in the commit, not in someone's head.</p>
+        <p>I think the most useful thing I do for a team is ask the boring question early: <em>what does success look like?</em> Followed closely by <em>what happens when this fails?</em></p>
+      </div>
+
+      <h3>Stack</h3>
+      <div>
+        <div className="stack">
+          <span className="primary">TypeScript</span>
+          <span className="primary">Rust</span>
+          <span className="primary">Postgres</span>
+          <span>Node</span><span>React</span><span>Astro</span>
+          <span>Python</span><span>Go</span>
+          <span>Redis</span><span>SQLite</span>
+          <span>Docker</span><span>Terraform</span>
+          <span>AWS</span><span>Linux</span>
+        </div>
+        <p style={{marginTop:14, color:'var(--ink-500)', fontSize:14.5}}>Bold = current daily drivers. The rest are tools I'm fluent in but haven't touched this quarter.</p>
+      </div>
+
+      <h3>Reach me</h3>
+      <div>
+        <ul>
+          <li><b>email</b> <a href="mailto:hello@ajscanlan.dev">hello@ajscanlan.dev</a></li>
+          <li><b>github</b> <a href="https://github.com/AJScanlan" target="_blank" rel="noopener">github.com/AJScanlan</a></li>
+          <li><b>linkedin</b> <a href="https://linkedin.com/in/ajscanlan" target="_blank" rel="noopener">in/ajscanlan</a></li>
+          <li><b>cv</b> <a href="#/cv.pdf" onClick={(e)=>e.preventDefault()}>cv.pdf</a></li>
+          <li><b>rss</b> <a href="#/feed.xml" onClick={(e)=>e.preventDefault()}>/feed.xml</a></li>
+        </ul>
+        <p style={{marginTop:14, color:'var(--ink-500)', fontSize:14.5}}>Email is the fastest way. I try to answer within a day or two.</p>
+      </div>
+
+      <h3>This site</h3>
+      <div>
+        <p>Astro 5, Tailwind, MDX, GitHub Pages. The whole thing is open-source — <a href="https://github.com/AJScanlan/ajscanlan.dev" className="inline" target="_blank" rel="noopener">source on GitHub</a>. The build is intentionally boring; content is the product.</p>
+        <p>No analytics, no cookies, no tracker. The only outbound calls are for fonts.</p>
+      </div>
+    </div>
+  </main>
+);
+
+// ─── ARCHIVE ──────────────────────────────────────────────────────────
+const Archive = ({ go, initialFilter }) => {
+  const [filter, setFilter] = useState(initialFilter || 'all');
+  useEffect(()=>{ if(initialFilter) setFilter(initialFilter); }, [initialFilter]);
+
+  const counts = POSTS.reduce((acc,p)=>{ acc[p.kind] = (acc[p.kind]||0)+1; return acc; }, {});
+  const filtered = filter === 'all' ? POSTS : POSTS.filter(p => p.kind === filter);
+  const byYear = filtered.reduce((acc, p) => {
+    const y = yearOf(p.date); (acc[y] ||= []).push(p); return acc;
+  }, {});
+  const years = Object.keys(byYear).sort((a,b)=>b.localeCompare(a));
+
+  const F = ({id, label}) => (
+    <span className={filter===id?'on':''} onClick={()=>setFilter(id)}>
+      {label}<span className="count">/ {id==='all' ? POSTS.length : (counts[id]||0)}</span>
+    </span>
+  );
+
+  return (
+    <main className="wrap archive">
+      <h1>Archive</h1>
+      <p className="lede">Everything I've published, newest first. Filter by type — project logs and technical posts are the load-bearing stuff if you're evaluating me as an engineer.</p>
+      <div className="filters">
+        <F id="all" label="All" />
+        <F id="project-log" label="Project logs" />
+        <F id="technical" label="Technical" />
+        <F id="cheat-sheet" label="Cheat sheets" />
+        <F id="note" label="Notes" />
+        <F id="essay" label="Essays" />
+      </div>
+
+      {years.map(y => (
+        <div key={y}>
+          <div className="year"><h3>{y}</h3><div className="rule"></div></div>
+          <div className="list">
+            {byYear[y].map(p => (
+              <a key={p.slug} href={'#/p/'+p.slug} className="row" onClick={(e)=>{e.preventDefault(); go('post', p.slug)}}>
+                <div className="date">{p.date}</div>
+                <div className={'knd'+(p.kind==='project-log'?' proj':'')}>{p.kind}</div>
+                <div className="title">{p.title}</div>
+                <div className="rt">{p.read}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {filtered.length === 0 && (
+        <p style={{marginTop:48, color:'var(--ink-400)', fontFamily:'var(--mono)', fontSize:13}}>Nothing here yet under that filter — check back.</p>
+      )}
+    </main>
+  );
+};
+
+// ─── POST ─────────────────────────────────────────────────────────────
+// One canonical sample. Stand-in content — easy to swap.
+const Post = ({ slug, go }) => {
+  const p = POSTS.find(x => x.slug === slug) || POSTS[0];
+  return (
+    <>
+      <div className="post-progress"><div></div></div>
+      <main className="wrap-prose post">
+        <div className="meta">
+          <a className="back" href="#/" onClick={(e)=>{e.preventDefault(); go('home')}}>← back</a>
+          <span className="kind">{KIND_LABEL[p.kind]}</span>
+          <span>{formatDate(p.date)}</span>
+          <span>·</span>
+          <span>{p.read} read</span>
+        </div>
+
+        <h1 className="post-title">{p.title}</h1>
+        {p.dek && <p className="dek">{p.dek}</p>}
+
+        <div className="callout">
+          <h6>Reader's note</h6>
+          <p>This is a working note, not a finished essay. I edit posts in place as I learn more — the most recent version is always what's here. If you find an error, <a href="mailto:hello@ajscanlan.dev" className="inline" style={{color:'var(--ink-900)'}}>email me</a> and I'll fix it.</p>
+        </div>
+
+        <h2><span className="num">01 — The setup</span>What I was actually trying to do</h2>
+        <p>Every few months something in production behaves weirdly enough that I learn a thing I should have known years ago. This is one of those.</p>
+        <p>The service is a long-running Node worker that pulls jobs off a queue, hits two external APIs, and writes results to Postgres. Boring. It runs for weeks at a time and the only thing that ever goes wrong is the database being briefly slow.</p>
+        <p>Until — over about seven weeks — RSS climbed from 180 MB to 1.4 GB. Not a leak shaped like a hot loop. A slow drip, about <strong>0.4%</strong> per hour, perfectly linear, completely invisible on any 24-hour graph.</p>
+
+        <div className="breaker"><span></span><span></span><span></span></div>
+
+        <h2><span className="num">02 — The investigation</span>Heap snapshot diff</h2>
+        <p>The fix that worked, in the end, was the textbook one: take a heap snapshot, wait, take another, diff them, find the object class that's growing without bound. Chrome DevTools makes this pleasant. Doing it on a production worker — less so.</p>
+        <p>I caught it because <code>Map</code> entries kept climbing while every other object class was flat. That pointed at our per-request cache, which I had quietly assumed was bounded.</p>
+        <pre><span className="c">// the bug, distilled:</span>{'\n'}<span className="k">const</span> cache = <span className="k">new</span> Map();{'\n'}<span className="k">function</span> remember(id, value) {'{'}{'\n'}  cache.set(id, value); <span className="c">// nothing ever evicts</span>{'\n'}{'}'}</pre>
+        <p>Switching to <code>WeakMap</code> wasn't right either — the keys were strings. The actual fix was an LRU with a sensible cap. Embarrassing in retrospect; reassuring that the tooling found it in an afternoon.</p>
+
+        <h3>What I'd do differently</h3>
+        <p>Two things. <em>One</em>: any cache that grows with traffic gets a bound at construction time, not "later". <em>Two</em>: a single weekly metric — RSS as a percentage of last week's RSS — would have flagged this in week two instead of week seven.</p>
+
+        <h3>What I'd still get wrong</h3>
+        <p>Probably the same class of thing. The pattern I keep hitting is "this small thing won't matter at our scale" → six months and 10× the traffic later, it matters a lot. I don't have a fix for that beyond paranoia and runbooks.</p>
+
+        <div className="post-foot">
+          <a href="#/archive" onClick={(e)=>{e.preventDefault(); go('archive')}}>← all posts</a>
+          <a href="mailto:hello@ajscanlan.dev">spot an error? email me</a>
+        </div>
+      </main>
+    </>
+  );
+};
+
+// ─── App / routing ────────────────────────────────────────────────────
+const parseHash = () => {
+  const h = (location.hash || '#/').replace(/^#/, '');
+  if (h === '/' || h === '') return { route: 'home' };
+  if (h.startsWith('/p/')) return { route: 'post', slug: h.slice(3) };
+  if (h.startsWith('/about')) return { route: 'about' };
+  if (h.startsWith('/archive')) return { route: 'archive' };
+  return { route: 'home' };
+};
+
+const App = () => {
+  const [state, setState] = useState(() => parseHash());
+  const [archiveFilter, setArchiveFilter] = useState('all');
+
+  useEffect(() => {
+    const onHash = () => setState(parseHash());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  // Scroll-top on route change.
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [state.route, state.slug]);
+
+  const go = (route, slug, filter) => {
+    if (filter) setArchiveFilter(filter);
+    const target = route === 'post' ? `#/p/${slug}` :
+                   route === 'home' ? '#/' : `#/${route}`;
+    if (location.hash !== target) {
+      location.hash = target;
+    } else {
+      setState({ route, slug });
+    }
+  };
+
+  return (
+    <>
+      <Nav route={state.route} go={go} />
+      {state.route === 'home'    && <Home go={go} />}
+      {state.route === 'about'   && <About go={go} />}
+      {state.route === 'archive' && <Archive go={go} initialFilter={archiveFilter} />}
+      {state.route === 'post'    && <Post slug={state.slug} go={go} />}
+
+      <footer>
+        <div className="inner">
+          <span>© 2026 A.J. Scanlan</span>
+          <span>Built with Astro · <a href="https://github.com/AJScanlan/ajscanlan.dev" target="_blank" rel="noopener">source</a></span>
+        </div>
+      </footer>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+</body>
+</html>

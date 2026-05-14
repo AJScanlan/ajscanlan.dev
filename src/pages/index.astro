@@ -1,100 +1,216 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
-import { formatReadingTime } from "@/utils/reading-time";
-import { getReadingTime } from "@/utils/get-reading-time";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getReadingTime } from '../utils/get-reading-time';
+import ProjectCard from '../components/ProjectCard.astro';
+import PostRow from '../components/PostRow.astro';
+import Eyebrow from '../components/Eyebrow.astro';
 
-const collectionLabels = {
-	thoughts: "Thought",
-	notes: "Note",
-	"cheat-sheets": "Cheat Sheet",
-	logs: "Project Log",
-} as const;
+// Projects — sort by order field
+const projects = (await getCollection('projects'))
+    .filter(p => p.data.featured)
+    .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
-type CollectionKey = keyof typeof collectionLabels;
+// All content collections
+const [essays, notes, cheatSheets, logs, technical] = await Promise.all([
+    getCollection('essays', e => e.data.status === 'published'),
+    getCollection('notes', e => e.data.status === 'published'),
+    getCollection('cheat-sheets', e => e.data.status === 'published'),
+    getCollection('logs', e => e.data.status === 'published'),
+    getCollection('technical', e => e.data.status === 'published'),
+]);
 
-const collections = ["thoughts", "notes", "cheat-sheets", "logs"] as const;
+// Helper to get sortDate from any entry
+const sortDate = (entry: any): Date =>
+    'date' in entry.data ? entry.data.date : entry.data.updated;
 
-const allEntries = (
-	await Promise.all(
-		collections.map(async (col) => {
-			const entries = await getCollection(
-				col,
-				({ data }) => data.status === "published",
-			);
-			return entries.map((entry) => ({
-				entry,
-				collection: col as CollectionKey,
-				sortDate:
-					"date" in entry.data && entry.data.date
-						? (entry.data.date as Date)
-						: (entry.data.updated as Date),
-			}));
-		}),
-	)
-)
-	.flat()
-	.sort((a, b) => b.sortDate.valueOf() - a.sortDate.valueOf())
-	.slice(0, 8);
+// Section 1: project-log + technical (combined, sort by date desc, show latest 4)
+const engineeringPosts = [...logs, ...technical]
+    .sort((a, b) => sortDate(b).valueOf() - sortDate(a).valueOf())
+    .slice(0, 4);
 
-// Pre-calculate reading times for all posts
-const postsWithReadingTime = await Promise.all(
-	allEntries.map(async ({ entry, collection, sortDate }) => ({
-		entry,
-		collection,
-		sortDate,
-		readingTime: await getReadingTime(entry),
-	})),
-);
+// Section 2: cheat-sheets + notes (combined, sort by date desc, show latest 3)
+const referencePosts = [...cheatSheets, ...notes]
+    .sort((a, b) => sortDate(b).valueOf() - sortDate(a).valueOf())
+    .slice(0, 3);
+
+// Section 3: essays (sort by date desc, show latest 3)
+const essayPosts = essays
+    .sort((a, b) => sortDate(b).valueOf() - sortDate(a).valueOf())
+    .slice(0, 3);
+
+// Pre-calculate reading times
+const withReadingTime = async (entries: any[]) =>
+    Promise.all(entries.map(async e => ({ entry: e, rt: await getReadingTime(e) })));
+
+const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
+    withReadingTime(engineeringPosts),
+    withReadingTime(referencePosts),
+    withReadingTime(essayPosts),
+]);
 ---
 
-<BaseLayout
-	title="ajscanlan.dev"
-	description="Writing my way to understanding."
->
-	<section class="mb-12">
-		<h1 class="text-3xl font-semibold tracking-tight mb-3">
-			Writing my way to understanding
-		</h1>
-		<p class="text-ink-600 dark:text-ink-400 max-w-prose">
-			Short, sincere, approachable reflections — clarity over flair.
-			Occasionally technical, often humane.
-		</p>
-	</section>
+<BaseLayout title="ajscanlan.dev" description="Working notebook — engineering, writing, and the space between.">
+    <div class="layout-home">
 
-	<section>
-		<h2 class="text-xl font-semibold mb-4">Latest posts</h2>
-		<ul class="space-y-5">
-			{
-				postsWithReadingTime.map(({ entry, collection, sortDate, readingTime }) => (
-					<li>
-						<a href={`/posts/${entry.slug}/`} class="block">
-							<h3 class="text-lg font-medium hover:underline">
-								{entry.data.title}
-							</h3>
-							{entry.data.dek && (
-								<p class="text-sm text-ink-600 dark:text-ink-400">
-									{entry.data.dek}
-								</p>
-							)}
-							<p class="text-xs text-ink-500 mt-0.5">
-								<span class="text-fox-500 font-medium">
-									{collectionLabels[collection]}
-								</span>
-								{" "}·{" "}
-								<time>
-									{sortDate.toLocaleDateString("en-IE", {
-										year: "numeric",
-										month: "short",
-										day: "2-digit",
-									})}
-								</time>
-								{" "}· {formatReadingTime(readingTime)}
-							</p>
-						</a>
-					</li>
-				))
-			}
-		</ul>
-	</section>
+        <!-- Section 1: Hero -->
+        <section class="hero">
+            <div class="avail-pill">
+                <span class="green-dot"></span>
+                Available for new roles · Jun 2026 · Remote
+            </div>
+            <h1 class="hero-h1">
+                A.J. Scanlan — <span class="fox-word">engineer</span>,<br/>
+                writer, builder.
+            </h1>
+            <p class="hero-lede">
+                Senior software engineer. I build reliable systems, write clearly about how they work,
+                and bring the same rigor to both. Based in NYC.
+            </p>
+            <div class="hero-links">
+                <a href="mailto:hi@ajscanlan.dev">hi@ajscanlan.dev</a>
+                <span class="sep">·</span>
+                <a href="https://github.com/AJScanlan" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <span class="sep">·</span>
+                <a href="/about">More about me</a>
+            </div>
+        </section>
+
+        <!-- Section 2: Selected Projects -->
+        <section class="projects-section">
+            <Eyebrow text="Selected Projects" />
+            <div class="projects-grid">
+                {projects.map(p => (
+                    <ProjectCard
+                        name={p.data.name}
+                        blurb={p.data.blurb}
+                        status={p.data.status}
+                        stack={p.data.stack}
+                        links={p.data.links}
+                    />
+                ))}
+            </div>
+        </section>
+
+        <!-- Section 3: Engineering & Technical Writing -->
+        <section class="posts-section">
+            <Eyebrow text="Projects & Technical Writing" />
+            <div class="post-rows">
+                {engWithRT.map(({ entry, rt }) => (
+                    <PostRow
+                        date={sortDate(entry)}
+                        title={entry.data.title}
+                        dek={entry.data.dek}
+                        kind={entry.data.kind}
+                        slug={entry.slug}
+                        readingTime={rt}
+                    />
+                ))}
+            </div>
+            <a href="/archive?type=project-log" class="see-all">See all →</a>
+        </section>
+
+        <!-- Section 4: References & Cheat Sheets -->
+        <section class="posts-section">
+            <Eyebrow text="References & Cheat Sheets" />
+            <div class="post-rows">
+                {refWithRT.map(({ entry, rt }) => (
+                    <PostRow
+                        date={sortDate(entry)}
+                        title={entry.data.title}
+                        dek={entry.data.dek}
+                        kind={entry.data.kind}
+                        slug={entry.slug}
+                        readingTime={rt}
+                    />
+                ))}
+            </div>
+            <a href="/archive?type=cheat-sheet" class="see-all">See all →</a>
+        </section>
+
+        <!-- Section 5: Essays -->
+        <section class="posts-section">
+            <Eyebrow text="Essays" />
+            <div class="post-rows">
+                {essayWithRT.map(({ entry, rt }) => (
+                    <PostRow
+                        date={sortDate(entry)}
+                        title={entry.data.title}
+                        dek={entry.data.dek}
+                        kind={entry.data.kind}
+                        slug={entry.slug}
+                        readingTime={rt}
+                    />
+                ))}
+            </div>
+            <a href="/archive?type=essay" class="see-all">See all →</a>
+        </section>
+
+    </div>
 </BaseLayout>
+
+<style>
+    .layout-home > section + section {
+        margin-top: 64px;
+    }
+
+    /* Hero */
+    .hero { padding-top: 64px; padding-bottom: 8px; }
+
+    .avail-pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+        color: var(--ink-400); margin-bottom: 20px;
+    }
+    .green-dot {
+        width: 6px; height: 6px; border-radius: 50%; background: #1f7a5c; flex-shrink: 0;
+    }
+    .hero-h1 {
+        font-size: 3.125rem; /* 50px */
+        line-height: 1.05;
+        font-weight: 700;
+        letter-spacing: -0.028em;
+        color: var(--ink-900);
+        margin: 0 0 18px;
+    }
+    .fox-word { color: var(--fox-ink); }
+    .hero-lede {
+        font-size: 1.15625rem; /* ~18.5px */
+        line-height: 1.55;
+        color: var(--ink-600);
+        max-width: 56ch;
+        margin: 0 0 24px;
+    }
+    .hero-links {
+        display: flex; align-items: center; gap: 10px;
+        font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-500);
+    }
+    .hero-links a { color: var(--ink-700); text-decoration: none; }
+    .hero-links a:hover { color: var(--fox-ink); }
+    .sep { color: var(--ink-300); }
+
+    /* Projects */
+    .projects-section > .projects-grid {
+        margin-top: 16px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    @media (max-width: 700px) {
+        .projects-section > .projects-grid { grid-template-columns: 1fr; }
+        .hero-h1 { font-size: 2.25rem; }
+    }
+
+    /* Post sections */
+    .posts-section > .post-rows { margin-top: 12px; }
+    .see-all {
+        display: inline-block;
+        margin-top: 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11.5px;
+        color: var(--ink-500);
+        text-decoration: none;
+    }
+    .see-all:hover { color: var(--fox-ink); }
+</style>

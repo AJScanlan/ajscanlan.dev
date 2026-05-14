@@ -1,7 +1,9 @@
 ---
+import Nav from '../components/Nav.astro';
+
 const {
     title = "ajscanlan.dev",
-    description = "Thoughts in public",
+    description = "Working notebook — engineering, writing, and the space between.",
     ogImage,
 } = Astro.props;
 ---
@@ -14,6 +16,9 @@ const {
         <title>{title}</title>
         <meta name="description" content={description} />
         {ogImage && <meta property="og:image" content={ogImage} />}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
         <style is:global>
             @import "/src/styles/global.css";
         </style>
@@ -22,34 +27,28 @@ const {
         <a href="#main-content" class="skip-to-content">
             Skip to main content
         </a>
-        
-        <header class="border-b border-ink-200/60 dark:border-ink-800/60" role="banner">
-            <div class="container-wide py-rhythm-6 flex items-center justify-between">
-                <a href="/" class="flex items-center gap-rhythm-3 font-semibold text-lg tracking-tight text-fox-500 hover:text-fox-600 transition-colors">
-                    <img src="/icons/RED_FOX.svg" alt="Fox" class="w-8 h-8" />
-                    <span>ajscanlan.dev</span>
-                </a>
-                <nav class="text-sm flex gap-rhythm-6" aria-label="Main navigation">
-                    <a href="/about/" class="hover:underline">About</a>
-                    <a href="/posts/" class="hover:underline">Archive</a>
-                    <a href="/feed.xml" class="hover:underline">RSS</a>
-                </nav>
-            </div>
-        </header>
 
-        <main id="main-content" class="container-narrow py-rhythm-12" role="main">
+        <Nav />
+
+        <main id="main-content" role="main">
             <slot />
         </main>
 
-        <footer class="mt-rhythm-12 border-t border-ink-200/60 dark:border-ink-800/60" role="contentinfo">
-            <div
-                class="container-narrow py-rhythm-8 text-sm text-ink-600 dark:text-ink-400"
-            >
-                <p>
-                    © {new Date().getFullYear()} A.J. Scanlan. Built with Astro.
-                    Minimal on purpose.
-                </p>
+        <footer role="contentinfo" class="site-footer">
+            <div class="layout-home">
+                <p>© {new Date().getFullYear()} A.J. Scanlan. Built with Astro.</p>
             </div>
         </footer>
     </body>
 </html>
+
+<style>
+    .site-footer {
+        margin-top: 80px;
+        border-top: 1px solid var(--ink-100);
+        padding: 32px 0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        color: var(--ink-400);
+    }
+</style>

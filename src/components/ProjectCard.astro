@@ -8,12 +8,6 @@ interface Props {
 }
 
 const { name, blurb, status, stack, links } = Astro.props;
-
-const statusColors = {
-  live: { bg: '#1f7a5c' },
-  'in-progress': { bg: 'var(--fox)' },
-  archived: { bg: 'var(--ink-300)' },
-};
 ---
 
 <div class="project-card">
@@ -40,7 +34,7 @@ const statusColors = {
   </div>
 </div>
 
-<style define:vars={{ statusBg: statusColors[status].bg }}>
+<style>
   .project-card {
     border: 1px solid var(--ink-100);
     border-radius: 10px;
@@ -50,7 +44,6 @@ const statusColors = {
     flex-direction: column;
     gap: 16px;
     transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
-    cursor: pointer;
   }
 
   .project-card:hover {
@@ -68,9 +61,12 @@ const statusColors = {
     letter-spacing: 0.1em;
     border-radius: 3px;
     padding: 2px 8px;
-    background: var(--statusBg);
     color: white;
   }
+
+  .status-pill[data-status="live"]        { background: #1f7a5c; }
+  .status-pill[data-status="in-progress"] { background: var(--fox); }
+  .status-pill[data-status="archived"]    { background: var(--ink-300); }
 
   .title {
     font-size: 16px;

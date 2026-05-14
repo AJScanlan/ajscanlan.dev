@@ -10,6 +10,8 @@ Sticky site navigation with fox mark, brand name, and page links. Included autom
 
 No props. Not used directly in MDX.
 
+**Interactive behavior:** Link hover transitions smoothly to `--fox-ink` color over 120ms.
+
 ---
 
 ### PostRow
@@ -17,8 +19,8 @@ No props. Not used directly in MDX.
 Post list row used on the homepage and archive page. Two layout variants controlled by context.
 
 **Variants:**
-- `home` — 3-column layout (used on homepage post sections)
-- `archive` — 4-column layout (used on the `/archive` page)
+- `home` — 3-column layout (used on homepage post sections) with grid columns `100px 1fr 140px`
+- `archive` — 4-column layout (used on the `/archive` page) with grid columns `110px 110px 1fr 80px`
 
 **Props:**
 - `post` — Post collection entry (required)
@@ -36,6 +38,8 @@ Project card with status pill, stack chips, and links. Used in the homepage proj
 - `project` — Project data entry (required)
 
 Displays `name`, `blurb`, `status` (live/in-progress/archived), `stack[]`, and `links[]` from the `projects` data collection.
+
+**Interactive behavior:** On hover, card lifts with `translateY(-1px)`, border lightens to `--ink-200`, and a soft shadow appears.
 
 Not used directly in MDX.
 
@@ -77,7 +81,7 @@ Important warnings or caveats.
 - `type`: `"note"` | `"tip"` | `"warn"` (required)
 - `title`: Optional heading text
 
-**Visual style:** Flat style, `paper-2` background (`#f3f1ec`), `ink-200` border.
+**Visual style:** Flat style, `paper-2` background (`#f3f1ec`), `ink-200` border, `8px` border-radius.
 
 **Accessibility:** Uses semantic ARIA roles (`role="note"`, `role="complementary"`, `role="alert"`)
 

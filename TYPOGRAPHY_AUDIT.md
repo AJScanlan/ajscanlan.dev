@@ -78,14 +78,14 @@
 ## Recommendations for Future
 
 ### Enhancements
-- [ ] Consider fluid typography (clamp) for smoother scaling across viewports
-- [ ] Add responsive heading sizes for very small screens (<375px)
-- [ ] Test with longer article content (2000+ words)
+- Consider fluid typography (clamp) for smoother scaling across viewports
+- Add responsive heading sizes for very small screens (<375px)
+- Test with longer article content (2000+ words)
 
 ### Monitoring
-- [ ] Run periodic audits when changing base font size
-- [ ] Check heading hierarchy when adding new components
-- [ ] Verify line height after webfont changes
+- Run periodic audits when changing base font size
+- Check heading hierarchy when adding new components
+- Verify line height after webfont changes
 
 ---
 

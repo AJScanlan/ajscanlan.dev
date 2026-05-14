@@ -1,23 +1,8 @@
 ---
 const map = {
-    note: { 
-        label: "Note", 
-        border: "border-ink-400 dark:border-ink-600",
-        bg: "bg-ink-50 dark:bg-ink-800/40",
-        textColor: "text-ink-800 dark:text-ink-100"
-    },
-    tip: { 
-        label: "Tip", 
-        border: "border-green dark:border-green",
-        bg: "bg-green/5 dark:bg-green/10",
-        textColor: "text-ink-800 dark:text-ink-100"
-    },
-    warn: {
-        label: "Warning",
-        border: "border-amber dark:border-amber",
-        bg: "bg-amber/10 dark:bg-amber/15",
-        textColor: "text-ink-900 dark:text-ink-100"
-    },
+    note: { label: "Note" },
+    tip: { label: "Tip" },
+    warn: { label: "Warning" },
 } as const;
 
 type CalloutType = keyof typeof map;
@@ -28,24 +13,49 @@ interface CalloutProps {
     icon?: boolean;
 }
 
-const { type = "note", title, icon = true } = Astro.props as CalloutProps;
+const { type = "note", title } = Astro.props as CalloutProps;
 
-const { label, border, bg, textColor } = map[type];
+const { label } = map[type];
 
-// Map callout types to ARIA roles
 const roleMap = {
     note: "note",
-    tip: "complementary", 
+    tip: "complementary",
     warn: "alert"
 } as const;
 ---
 <div
-    class={`my-6 rounded-xl border-2 ${border} ${bg} ${textColor} p-rhythm-4`}
+    class="callout"
     role={roleMap[type]}
     aria-label={title ?? label}
 >
-    <div class="text-sm font-semibold mb-rhythm-2">{title ?? label}</div>
-    <div class="prose prose-sm dark:prose-invert">
+    <p class="callout-label">{title ?? label}</p>
+    <div class="callout-body">
         <slot />
     </div>
 </div>
+
+<style>
+    .callout {
+        border: 1px solid var(--ink-200);
+        border-radius: 8px;
+        background: var(--paper-2);
+        padding: 14px 20px;
+        margin: 24px 0;
+    }
+
+    .callout-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-500);
+        margin: 0 0 6px;
+    }
+
+    .callout-body {
+        font-size: 13px;
+        line-height: 1.55;
+        color: var(--ink-700);
+    }
+</style>

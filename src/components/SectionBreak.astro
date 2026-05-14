@@ -1,23 +1,10 @@
 ---
-/**
- * SectionBreak.astro
- * Subtle centered ornaments to mark section transitions.
- * Supports different variants: diamond, dots, asterism.
- * Magazine-style typographic element for visual breathing room.
- */
-
 interface Props {
     variant?: 'diamond' | 'dots' | 'asterism';
     spacing?: 'normal' | 'tight' | 'loose';
 }
 
 const { variant = 'diamond', spacing = 'normal' } = Astro.props;
-
-const ornaments = {
-    diamond: '◆',
-    dots: '• • •',
-    asterism: '⁂',
-};
 
 const spacingClasses = {
     tight: 'my-rhythm-8',
@@ -26,14 +13,22 @@ const spacingClasses = {
 };
 ---
 
-<div 
+<div
     class={`section-break ${spacingClasses[spacing]}`}
     role="separator"
     aria-hidden="true"
 >
-    <span class="ornament">
-        {ornaments[variant]}
-    </span>
+    {variant === 'dots' ? (
+        <span class="dots-container">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </span>
+    ) : (
+        <span class="ornament">
+            {variant === 'diamond' ? '◆' : '⁂'}
+        </span>
+    )}
 </div>
 
 <style>
@@ -46,31 +41,42 @@ const spacingClasses = {
     }
 
     .ornament {
-        color: var(--fox-500, #D0342C);
+        color: var(--ink-300);
         font-size: 1rem;
         letter-spacing: 0.5em;
         opacity: 0.6;
         transition: opacity 0.2s ease;
     }
 
-    /* Subtle interaction on hover */
     .section-break:hover .ornament {
         opacity: 0.8;
     }
 
-    /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
         .ornament {
             transition: none;
         }
     }
 
-    /* Dark mode adjustment */
     :global(.dark) .ornament {
         opacity: 0.5;
     }
 
     :global(.dark) .section-break:hover .ornament {
         opacity: 0.7;
+    }
+
+    .dots-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 999px;
+        background: var(--ink-200);
+        display: block;
     }
 </style>

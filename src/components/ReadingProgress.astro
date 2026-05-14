@@ -1,17 +1,12 @@
 ---
-/**
- * ReadingProgress.astro
- * Thin Fox Red progress bar at top of page showing scroll progress.
- * Respects prefers-reduced-motion for accessibility.
- */
 ---
 
-<div 
-    id="reading-progress" 
-    class="reading-progress" 
-    role="progressbar" 
-    aria-valuemin="0" 
-    aria-valuemax="100" 
+<div
+    id="reading-progress"
+    class="reading-progress"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
     aria-valuenow="0"
     aria-label="Reading progress"
 >
@@ -19,17 +14,16 @@
 
 <style>
     .reading-progress {
-        position: fixed;
-        top: 0;
+        position: sticky;
+        top: 56px;
         left: 0;
         width: 0%;
-        height: 3px;
-        background: #D0342C; /* Fox Red */
-        z-index: 9999;
+        height: 2px;
+        background: rgba(138, 34, 28, 0.6);
+        z-index: 40;
         transition: width 0.1s ease-out;
     }
 
-    /* Respect reduced motion preference */
     @media (prefers-reduced-motion: reduce) {
         .reading-progress {
             transition: none;
@@ -55,7 +49,7 @@
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', () => {
         updateReadingProgress();
-        
+
         // Update on scroll with passive listener for better performance
         let ticking = false;
         window.addEventListener('scroll', () => {

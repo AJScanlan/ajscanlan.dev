@@ -157,11 +157,11 @@ const counts = {
 </style>
 
 <script>
-const tabs = document.querySelectorAll('.tab');
-const rows = document.querySelectorAll('.archive-row');
-const yearGroups = document.querySelectorAll('.year-group');
+const tabs = document.querySelectorAll<HTMLElement>('.tab');
+const rows = document.querySelectorAll<HTMLElement>('.archive-row');
+const yearGroups = document.querySelectorAll<HTMLElement>('.year-group');
 
-function activate(kind) {
+function activate(kind: string) {
     tabs.forEach(t => t.classList.toggle('active', t.dataset.kind === kind));
 
     rows.forEach(row => {
@@ -169,14 +169,12 @@ function activate(kind) {
         row.toggleAttribute('data-hidden', !show);
     });
 
-    // Hide year groups that have no visible rows
     yearGroups.forEach(group => {
         const hasVisible = [...group.querySelectorAll('.archive-row')]
             .some(r => !r.hasAttribute('data-hidden'));
         group.toggleAttribute('data-hidden', !hasVisible);
     });
 
-    // Update URL without reload
     const url = new URL(window.location.href);
     if (kind === 'all') {
         url.searchParams.delete('type');
@@ -186,7 +184,6 @@ function activate(kind) {
     history.replaceState({}, '', url.toString());
 }
 
-// Initialize from URL param
 const initialKind = new URL(window.location.href).searchParams.get('type') ?? 'all';
 activate(initialKind);
 

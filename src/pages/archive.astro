@@ -1,0 +1,186 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getReadingTime } from '../utils/get-reading-time';
+
+const [essays, notes, cheatSheets, logs, technical] = await Promise.all([
+    getCollection('essays', e => e.data.status === 'published'),
+    getCollection('notes', e => e.data.status === 'published'),
+    getCollection('cheat-sheets', e => e.data.status === 'published'),
+    getCollection('logs', e => e.data.status === 'published'),
+    getCollection('technical', e => e.data.status === 'published'),
+]);
+
+const sortDate = (entry: any): Date =>
+    'date' in entry.data ? entry.data.date : entry.data.updated;
+
+// Combine all entries into a unified list
+const allPosts = [
+    ...essays.map(e => ({ entry: e, kind: e.data.kind })),
+    ...notes.map(e => ({ entry: e, kind: e.data.kind })),
+    ...cheatSheets.map(e => ({ entry: e, kind: e.data.kind })),
+    ...logs.map(e => ({ entry: e, kind: e.data.kind })),
+    ...technical.map(e => ({ entry: e, kind: e.data.kind })),
+].sort((a, b) => sortDate(b.entry).valueOf() - sortDate(a.entry).valueOf());
+
+// Pre-calculate reading times
+const postsWithRT = await Promise.all(
+    allPosts.map(async ({ entry, kind }) => ({
+        entry,
+        kind,
+        date: sortDate(entry),
+        rt: await getReadingTime(entry),
+    }))
+);
+
+// Group by year
+const byYear = postsWithRT.reduce((acc, post) => {
+    const year = post.date.getFullYear().toString();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+    return acc;
+}, {} as Record<string, typeof postsWithRT>);
+
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+
+// Counts per kind for filter tabs
+const counts = {
+    all: postsWithRT.length,
+    'project-log': postsWithRT.filter(p => p.kind === 'project-log').length,
+    technical: postsWithRT.filter(p => p.kind === 'technical').length,
+    'cheat-sheet': postsWithRT.filter(p => p.kind === 'cheat-sheet').length,
+    note: postsWithRT.filter(p => p.kind === 'note').length,
+    essay: postsWithRT.filter(p => p.kind === 'essay').length,
+};
+---
+
+<BaseLayout title="Archive — ajscanlan.dev" description="All posts, sorted by date.">
+    <div class="layout-home archive-wrap">
+
+        <h1 class="archive-h1">Archive</h1>
+
+        <div class="filter-tabs" id="filter-tabs">
+            <button class="tab" data-kind="all">All ({counts.all})</button>
+            <button class="tab" data-kind="project-log">Project logs ({counts['project-log']})</button>
+            <button class="tab" data-kind="technical">Technical ({counts.technical})</button>
+            <button class="tab" data-kind="cheat-sheet">Cheat sheets ({counts['cheat-sheet']})</button>
+            <button class="tab" data-kind="note">Notes ({counts.note})</button>
+            <button class="tab" data-kind="essay">Essays ({counts.essay})</button>
+        </div>
+
+        <div id="archive-list">
+            {years.map(year => (
+                <div class="year-group" data-year={year}>
+                    <div class="year-label">
+                        <span>{year}</span>
+                        <span class="year-rule"></span>
+                    </div>
+                    <div class="year-rows">
+                        {byYear[year].map(({ entry, kind, date, rt }) => (
+                            <a href={`/posts/${entry.slug}/`} class="archive-row" data-kind={kind}>
+                                <span class="arc-date">{date.toISOString().slice(0, 10)}</span>
+                                <span class={`arc-kind ${kind === 'project-log' ? 'arc-kind-pl' : 'arc-kind-other'}`}>{kind}</span>
+                                <span class="arc-title">{entry.data.title}</span>
+                                <span class="arc-time">{rt} min</span>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+
+    </div>
+</BaseLayout>
+
+<style>
+.archive-wrap { padding-top: 52px; padding-bottom: 80px; }
+.archive-h1 {
+    font-size: 2.25rem; font-weight: 700; color: var(--ink-900);
+    margin: 0 0 28px; letter-spacing: -0.02em;
+}
+.filter-tabs {
+    display: flex; flex-wrap: wrap; gap: 0;
+    border-bottom: 1px solid var(--ink-100);
+    margin-bottom: 32px;
+}
+.tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px; padding: 9px 13px;
+    color: var(--ink-400); background: none; border: none;
+    border-bottom: 2px solid transparent; margin-bottom: -1px;
+    cursor: pointer; transition: color 120ms;
+}
+.tab:hover { color: var(--ink-700); }
+.tab.active { color: var(--ink-900); border-bottom-color: var(--ink-900); font-weight: 600; }
+
+.year-group { margin-bottom: 24px; }
+.year-label {
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-400);
+    margin-bottom: 4px;
+}
+.year-rule { flex: 1; height: 1px; background: var(--ink-100); }
+
+.archive-row {
+    display: grid;
+    grid-template-columns: 110px 110px 1fr 80px;
+    gap: 16px; padding: 11px 0;
+    border-bottom: 1px solid var(--ink-100);
+    align-items: baseline; text-decoration: none;
+    transition: background 120ms;
+}
+.archive-row:hover { background: var(--paper-2); }
+
+.arc-date { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-400); }
+.arc-kind {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+}
+.arc-kind-pl  { color: var(--fox-ink); }
+.arc-kind-other { color: var(--ink-400); }
+.arc-title { font-size: 13px; font-weight: 500; color: var(--ink-900); }
+.arc-time  { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-400); text-align: right; }
+
+.archive-row[data-hidden] { display: none; }
+.year-group[data-hidden] { display: none; }
+</style>
+
+<script>
+const tabs = document.querySelectorAll('.tab');
+const rows = document.querySelectorAll('.archive-row');
+const yearGroups = document.querySelectorAll('.year-group');
+
+function activate(kind) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.kind === kind));
+
+    rows.forEach(row => {
+        const show = kind === 'all' || row.dataset.kind === kind;
+        row.toggleAttribute('data-hidden', !show);
+    });
+
+    // Hide year groups that have no visible rows
+    yearGroups.forEach(group => {
+        const hasVisible = [...group.querySelectorAll('.archive-row')]
+            .some(r => !r.hasAttribute('data-hidden'));
+        group.toggleAttribute('data-hidden', !hasVisible);
+    });
+
+    // Update URL without reload
+    const url = new URL(window.location.href);
+    if (kind === 'all') {
+        url.searchParams.delete('type');
+    } else {
+        url.searchParams.set('type', kind);
+    }
+    history.replaceState({}, '', url.toString());
+}
+
+// Initialize from URL param
+const initialKind = new URL(window.location.href).searchParams.get('type') ?? 'all';
+activate(initialKind);
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => activate(tab.dataset.kind ?? 'all'));
+});
+</script>

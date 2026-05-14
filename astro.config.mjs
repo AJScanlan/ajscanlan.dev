@@ -11,6 +11,9 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 export default defineConfig({
   site: 'https://ajscanlan.dev',
+  redirects: {
+    '/posts': '/archive',
+  },
   integrations: [
     tailwind({ applyBaseStyles: false }),
     mdx(),

@@ -144,6 +144,16 @@ const counts = {
 
 .archive-row[data-hidden] { display: none; }
 .year-group[data-hidden] { display: none; }
+
+@media (max-width: 640px) {
+    .archive-row {
+        grid-template-columns: 90px 1fr;
+        grid-template-rows: auto auto;
+    }
+    .arc-date { font-size: 10px; }
+    .arc-kind { display: none; }
+    .arc-time { text-align: left; color: var(--ink-300); font-size: 10px; }
+}
 </style>
 
 <script>

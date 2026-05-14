@@ -10,7 +10,6 @@ type CalloutType = keyof typeof map;
 interface CalloutProps {
     type?: CalloutType;
     title?: string;
-    icon?: boolean;
 }
 
 const { type = "note", title } = Astro.props as CalloutProps;

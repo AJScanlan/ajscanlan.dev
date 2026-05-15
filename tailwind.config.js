@@ -136,7 +136,7 @@ module.exports = {
                         },
                         h6: {
                             fontSize: theme('fontSize.lg[0]'),       // 19px
-                            lineHeight: '1.6',
+                            lineHeight: theme('fontSize.lg[1].lineHeight'),
                             fontWeight: '500',
                             marginTop: '1.25rem',
                             marginBottom: '0.5rem',

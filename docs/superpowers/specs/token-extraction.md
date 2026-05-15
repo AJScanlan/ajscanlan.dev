@@ -624,6 +624,23 @@ code values `1.05`/`1.08`/`1.2`/`1.22`/`1.3`/`1.5`/`1.55`/`1.6`/`1.65` all map
 onto the per-step lineHeight above (no separate token needed — lineHeight is
 bundled into the fontSize tuple).
 
+### Line height
+
+Line-heights are not a standalone token category — each value is bundled into
+the `lineHeight` slot of its `fontSize` scale tuple (see *Proposed fontSize
+scale* above). The canonical target below is therefore the unitless ratio of
+whichever `fontSize` step the element uses. Figma px line-heights are converted
+to a unitless ratio against the element's font size (px ÷ size) and snapped to
+the nearest scale-step ratio; tolerance ±0.05.
+
+| Raw value(s) | Canonical token | Tailwind utility | Notes |
+|---|---|---|---|
+| `13.42px` (÷11 ≈ 1.22), `17.6px` (÷11 ≈ 1.6 → snaps to micro-label step), `18.4px` (÷11.5 ≈ 1.6), `19.2px` (÷12 ≈ 1.6), `20.8px` (÷13 ≈ 1.6) — H2 section number, breadcrumb/status/badge, availability text, section headings, footer/filter text | `text-2xs` / `text-xs` lineHeight `1.4`–`1.45` | bundled in `fontSize` tuple | Mono micro-labels. Carried in the `2xs` (1.4) / `xs` (1.45) fontSize tuples — no separate `leading-*` utility. |
+| `20px` (÷12.5 ≈ 1.6), `20.93px` (code `<pre>` lines, ÷14 ≈ 1.5), `21.6px` (÷13.5 ≈ 1.6), `21.75px` (÷13.7 ≈ 1.59), `22.28px` (÷13.5 ≈ 1.65), `22.4px` (÷12.8 ≈ 1.6 / intro paras), `23.1px` (÷14 ≈ 1.65), `23.2px` (÷13.8 ≈ 1.68) — date columns, code-block lines, hero contact links, project-card body, contact list, intro paragraphs, inline `<code>`, header nav links | `text-sm` lineHeight `1.55` | bundled in `fontSize` tuple | Small-text cluster. `20.93px` is the code-block `<pre>` line-height — folds into the `sm` step's `1.55` ratio. |
+| `24px` (÷15.8 ≈ 1.52), `24.7px` (÷18.1 ≈ 1.36), `25.65px` (÷17.8 ≈ 1.44), `26px` (÷19.2 ≈ 1.35), `28px` (÷15.8 ≈ 1.77 → body), `28.68px` (hero description, ÷17.3 ≈ 1.66), `28.88px` (post body paragraphs, ÷16.3 ≈ 1.77), `29.45px` (About hero description, ÷17.5 ≈ 1.68), `30px` (÷18.9 ≈ 1.59) — reader's note body, project-card/post-list headings, H3, body paragraphs, hero descriptions, post lede | `text-base` lineHeight `1.6` (`text-lg`/`text-xl` headings `1.5`/`1.3`) | bundled in `fontSize` tuple | Body-grade text and `lg`/`xl` headings. `28.68px` and `29.45px` are the Home and About hero-description line-heights — both fold into the `base` step's `1.6` ratio. Project-card/post-list headings (`24.7`/`25.65`) and H3 (`26`) ride the `lg`/`xl` tuples. |
+| `27.2px` (header wordmark, ÷16.6 ≈ 1.64), `34.16px` (H2 section heading, ÷27.3 ≈ 1.25), `47.52px` (H1 page heading, ÷43.1 ≈ 1.1), `52.5px` (hero H1, ÷49.6 ≈ 1.06) | `text-3xl`/`text-5xl`/`text-6xl` lineHeight `1.22`/`1.1`/`1.05` | bundled in `fontSize` tuple | Heading cluster. Wordmark rides `base` (`1.6`); H2 → `3xl` `1.22`; H1 → `5xl` `1.1`; hero H1 → `6xl` `1.05`. |
+| `1.05`, `1.08`, `1.2`, `1.22`, `1.3`, `1.5`, `1.55`, `1.6`, `1.65` (code/config — body, headings, project-card/callout blurbs, typography plugin) | per-step `fontSize` tuple lineHeight | bundled in `fontSize` tuple | Already unitless; each maps directly onto the `lineHeight` of its element's `fontSize` step (`1.05`→`6xl`, `1.08`/`1.1`→`5xl`, `1.2`/`1.22`→`3xl`, `1.3`→`xl`, `1.5`→`2xl`/`lg`, `1.55`→`sm`, `1.6`/`1.65`→`base`). No separate `leading-*` token needed. |
+
 ### Letter spacing
 
 Mapped onto Tailwind's default `tracking-*` scale (`tighter` -0.05em,
@@ -680,6 +697,7 @@ mapped per-axis.
 | `1.75rem` (28px), `2rem` (32px), `30px`, `31px`, `32px`, `36px` | `8` (32px) | `p-8` / `gap-8` / `m-8` |
 | `2.5rem` (40px), `40px` | `10` (40px) | `mt-10` / `pb-10` |
 | `3rem` (48px), `50px`, `52px` | `12` (48px) | `m-12` / `p-12` |
+| `3.5rem` (56px) (h2 `margin-top`, `global.css:176`) | `14` (56px) | `mt-14` |
 | `64px` | `16` (64px) | `pt-16` / `mt-16` |
 | `72px` | `18` (72px) | `py-18` |
 | `80px` | `20` (80px) | `mt-20` / `pb-20` |

@@ -586,7 +586,11 @@ Heading-level assignment (drives `global.css` element rules + typography plugin)
 | H3 | `text-2xl` | 25px / 1.5 |
 | H4 | `text-xl` | 20px / 1.3 |
 | H5 | `text-lg` | 19px / 1.5 |
-| H6 | `text-lg` | 19px / 1.6 |
+| H6 | `text-lg` | 19px / 1.5 |
+
+> Note: H5 and H6 share the `text-lg` token, so they share its bundled
+> line-height (1.5). The raw values had H6 at a one-off 1.6 — collapsed to 1.5
+> to avoid reintroducing a near-duplicate the standardization is removing.
 
 > Owner decision (2026-05-15): the existing code had H4 (25px) larger than H3
 > (20px) — an inherited inconsistency. The owner chose to FIX it: H3 → `text-2xl`

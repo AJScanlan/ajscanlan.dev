@@ -544,3 +544,237 @@ Every distinct occurrence is listed; no deduplication.
 | `#1f7a5c` | `tailwind.config.js:45` (green) |
 | `#d97706` | `tailwind.config.js:46` (amber) |
 | `#dc2626` | `tailwind.config.js:47` (red) |
+
+---
+
+## Mapping table
+
+Clustered 2026-05-15 from the `## Figma raw values` and `## Code raw values`
+sections above. Every recorded raw value is accounted for below. Canonical
+tokens lean on Tailwind's standard scales; custom values are introduced only
+where the design genuinely exceeds the defaults.
+
+### Font size
+
+Custom `fontSize` scale, standard Tailwind key names. Body text is `base` (17px).
+Clustering tolerance ±0.75px; the sub-12px cluster collapses **upward** per the
+accessibility rule (11px reserved for uppercase tracked-out mono micro-labels,
+everything else floors at 12px). The custom `heading-*` keys are deleted.
+
+| Raw value(s) | Canonical token | Tailwind utility | Notes |
+|---|---|---|---|
+| `9.5px`, `10px`, `10.5px` (ProjectCard chip/avail-pill, PostRow kind-pill/date/meta, archive tabs/year/kind, about chip) | `text-xs` (12px) | `text-xs` | Accessibility floor — sub-12px collapses up to 12px. None of these are uppercase mono micro-labels. |
+| `11px`, `11.5px`, `0.71875rem` (≈11.5px) (breadcrumb label, status badge, tech-tag labels, separator dots, Eyebrow, availability pill, ProjectCard status pill) | `text-2xs` (11px) | `text-2xs` | One new step below `xs`. Permitted at 11px **only** because every member is an uppercase, tracked-out mono micro-label. |
+| `12px`, `12.5px`, `12.8px`, `12.9px`, `13px`, `13.4px`, `13.5px`, `13.7px`, `13.8px`, `13.9px`, `14px`, `14.5px` (section heading labels, year dividers, date columns, contact labels/values, footer text, archive filter tabs, hero contact links, project-card body, header nav links, inline `<code>`, intro paragraphs) | `text-sm` (13px) | `text-sm` | Wide cluster spanning 12–14.5px collapses to one canonical 13px small-text token. Project-card body, contact links, nav, and meta text all converge here. |
+| `15px`, `15.3px`, `15.8px`, `15.9px`, `16px`, `16.1px`, `16.3px`, `16.5px`, `16.6px`, `1rem` (16px), `0.95em`/`0.9em` (code, relative) (PostRow last-row, archive intro, About body paragraphs, post body paragraphs, header wordmark, SectionBreak ornament) | `text-base` (17px) → see note | `text-base` | These are body-grade text; Figma's HTML-import noise sits ~1px under the intended 17px body. Snap to `base`. `0.95em`/`0.9em` are *relative* code sizes — keep as-is in the typography plugin (they resolve against `base`), not separate tokens. The header wordmark (`16.6px`) snaps to `base` too. |
+| `17px`, `17.3px`, `17.5px`, `17.7px`, `17.8px`, `1.0625rem` (17px), `1.09375rem` (≈17.5px) (body base, hero/About hero descriptions, post-list titles, post dek) | `text-base` (17px) | `text-base` | Canonical body. Hero ledes and post-list titles fall within ±0.75px of 17px once noise is removed. |
+| `18px`, `18.1px`, `18.3px`, `18.4px`, `18.5px`, `18.9px`, `19px`, `19.2px`, `1.125rem` (18px), `1.15625rem` (≈18.5px), `1.1875rem` (19px) (post-list titles, project-card headings, post subtitle/lede, h6, h5) | `text-lg` (19px) | `text-lg` | Project-card headings, post-list titles, post lede, h5 and h6 all converge on a single 19px step. |
+| `20px`, `1.25rem` (20px) (h3, h4, h5 in code) | `text-xl` (20px) | `text-xl` | h3-grade subheadings. |
+| `25px`, `1.5625rem` (25px) (h4 in code/config) | `text-2xl` (25px) | `text-2xl` | h4-grade. |
+| `27.3px`, `28px`, `1.75rem` (28px) (post H2 section heading, h2) | `text-3xl` (28px) | `text-3xl` | h2-grade section heading. |
+| `36px`, `2.25rem` (36px) (index/archive H1 at mobile breakpoint) | `text-4xl` (36px) | `text-4xl` | Mobile/responsive H1 size; also the floor for large page headings on small screens. |
+| `43px`, `43.1px`, `44px`, `2.75rem` (44px) (post H1, About/Archive H1 page headings) | `text-5xl` (44px) | `text-5xl` | Standard page-heading H1. |
+| `49px`, `49.6px`, `50px`, `52.5px`(? see line-height note), `3.0625rem` (49px), `3.125rem` (50px) (hero H1 emphasis + main spans, hero H1 in code/config) | `text-6xl` (49px) | `text-6xl` | Hero H1 only. `52.5px` in the Figma line-height table is a line-height, not a size — see Line height below. |
+
+Heading-level assignment (drives `global.css` element rules + typography plugin):
+
+| Element | Token | Size / lineHeight |
+|---|---|---|
+| Hero H1 (`index.astro` hero) | `text-6xl` | 49px / 1.05 |
+| H1 (page headings, post title) | `text-5xl` | 44px / 1.1 |
+| H2 | `text-3xl` | 28px / 1.22 |
+| H3 | `text-xl` | 20px / 1.3 |
+| H4 | `text-2xl` | 25px / 1.5 |
+| H5 | `text-lg` | 19px / 1.5 |
+| H6 | `text-lg` | 19px / 1.6 |
+
+> Judgment note: the existing code has H4 (25px) larger than H3 (20px) — an
+> inherited inconsistency. The mapping preserves the *sizes* the code/Figma
+> actually use (faithful standardization, not redesign per the spec's
+> non-goals), but the controller should flag the H3<H4 inversion for the owner.
+
+### Proposed fontSize scale
+
+Drop-in for `tailwind.config.js` `theme.extend.fontSize`. Standard key names plus
+one extension below `xs` (`2xs`) for the 11px mono micro-label, and `5xl`/`6xl`
+for the two large heading steps:
+
+```js
+fontSize: {
+  '2xs': ['0.6875rem', { lineHeight: '1.4'  }],  // 11px — uppercase mono micro-labels only
+  xs:    ['0.75rem',   { lineHeight: '1.45' }],  // 12px
+  sm:    ['0.8125rem', { lineHeight: '1.55' }],  // 13px
+  base:  ['1.0625rem', { lineHeight: '1.6'  }],  // 17px — body
+  lg:    ['1.1875rem', { lineHeight: '1.5'  }],  // 19px
+  xl:    ['1.25rem',   { lineHeight: '1.3'  }],  // 20px
+  '2xl': ['1.5625rem', { lineHeight: '1.5'  }],  // 25px
+  '3xl': ['1.75rem',   { lineHeight: '1.22' }],  // 28px
+  '4xl': ['2.25rem',   { lineHeight: '1.15' }],  // 36px
+  '5xl': ['2.75rem',   { lineHeight: '1.1'  }],  // 44px
+  '6xl': ['3.0625rem', { lineHeight: '1.05' }],  // 49px
+},
+```
+
+Line-height rationale (clusters from the `## Line height` sections, raw values
+collapsed to one per size step): micro-labels `13.42`/`17.6`/`18.4`/`19.2`/`20.8`
+→ `1.4`–`1.45`; small text `20`–`23.2` → `1.55`; body `27.2`–`30` (and code
+`1.6`/`1.65`) → `1.6`; `lg`/`xl`/`2xl` headings `24.7`/`25.65`/`26` → `1.3`–`1.5`;
+H2 `34.16` → `1.22`; H1 `47.52` → `1.1`; hero H1 `52.5` → `1.05`. The relative
+code values `1.05`/`1.08`/`1.2`/`1.22`/`1.3`/`1.5`/`1.55`/`1.6`/`1.65` all map
+onto the per-step lineHeight above (no separate token needed — lineHeight is
+bundled into the fontSize tuple).
+
+### Letter spacing
+
+Mapped onto Tailwind's default `tracking-*` scale (`tighter` -0.05em,
+`tight` -0.025em, `normal` 0, `wide` 0.025em, `wider` 0.05em, `widest` 0.1em).
+Tolerance ±0.02em. One custom value `eyebrow` is reserved for uppercase mono
+eyebrows beyond `widest`.
+
+Figma px letter-spacings are converted to `em` against their element's font
+size before clustering (px ÷ size).
+
+| Raw value(s) | Canonical token | Tailwind utility | Notes |
+|---|---|---|---|
+| `-1.4px` (hero H1, ÷49 ≈ -0.029em), `-1.1px` (H1, ÷43 ≈ -0.026em), `-0.028em`, `-0.025em`, `-0.42px` (H2, ÷27 ≈ -0.015em) | `tracking-tight` (-0.025em) | `tracking-tight` | All large-heading tightening collapses to one negative-tracking token. |
+| `-0.23px` (project-card heading, ÷18 ≈ -0.013em), `-0.17px` (wordmark, ÷16.6 ≈ -0.01em), `-0.15px` (post-list title, ÷18 ≈ -0.008em), `-0.1px` (H3, ÷19 ≈ -0.005em), `-0.015em`, `-0.01em`, `-0.005em` | `tracking-normal` (0em) | `tracking-normal` | Sub-`-0.02em` micro-tightening is below the ±0.02em tolerance threshold and visually negligible — snap to `normal` (no utility class needed). |
+| `-0.02em` (h1/h2 config, archive-h1) | `tracking-tight` (-0.025em) | `tracking-tight` | Within ±0.02em of `tight`; merged with the large-heading cluster. |
+| `0.66px` (category badge, ÷11 ≈ 0.06em), `0.88px` (post-list category tag, ÷11.5 ≈ 0.077em), `0.08em` | `tracking-wider` (0.05em) | `tracking-wider` | Lowercase/small-caps tag tracking. |
+| `1.32px` (status label, ÷11.5 ≈ 0.115em), `1.54px`, `1.61px`, `1.68px`, `1.76px`, `1.92px`, `1.98px` (uppercase mono eyebrows/section labels/breadcrumb/status — all ÷~11-13 land 0.12–0.16em), `0.12em`, `0.14em`, `0.15em` | `tracking-eyebrow` (0.13em) | `tracking-eyebrow` | The one reserved custom value. Covers every uppercase mono micro-label; 0.13em is the cluster centroid of the 0.12–0.15em group. |
+| `0.1em` (ProjectCard status-pill) | `tracking-eyebrow` (0.13em) | `tracking-eyebrow` | Within ±0.02em of 0.13em; an uppercase mono label — merged into `eyebrow` rather than kept as `widest`. |
+| `0.5em` (SectionBreak ornament `· · ·` dots) | one-off — keep as `tracking-[0.5em]` | `tracking-[0.5em]` | Decorative glyph spacing for the section-break ornament, not text tracking. Not a token; an intentional arbitrary value. |
+
+Custom `tracking` extension for `tailwind.config.js`:
+
+```js
+letterSpacing: {
+  eyebrow: '0.13em',  // uppercase JetBrains Mono eyebrows / micro-labels
+},
+```
+
+### Spacing
+
+Every raw px value snapped to the nearest Tailwind **default** spacing step
+(4px grid). The custom `rhythm-*` scale is deleted. Two-value paddings are
+mapped per-axis.
+
+| Raw value(s) | Canonical token | Tailwind utility |
+|---|---|---|
+| `0` | `0` | `p-0` / `m-0` |
+| `4px` | `1` (4px) | `p-1` / `gap-1` / `m-1` |
+| `5px`, `5.2px`, `5.3px`, `5.4px`, `6px` | `1.5` (6px) | `gap-1.5` / `p-1.5` |
+| `7px` (chip/kind-pill h-padding) | `2` (8px) | `px-2` |
+| `8px` | `2` (8px) | `p-2` / `gap-2` |
+| `0.25em` (Eyebrow separator margin) | `1` (4px) | `mx-1` |
+| `9px` | `2` (8px) | `pb-2` |
+| `10px` | `2.5` (10px) | `gap-2.5` / `p-2.5` |
+| `11px` (PostRow/archive-row v-padding `11px 0`) | `3` (12px) | `py-3` |
+| `12px` | `3` (12px) | `p-3` / `gap-3` |
+| `0.75rem` (12px) | `3` (12px) | `mt-3` / `mb-3` |
+| `14px`, `15px`, `0.35rem` (≈5.6px → see note) | `4` (16px) for 14/15px | `p-4` / `gap-4` |
+| `0.15rem` (≈2.4px, code v-padding) | `0.5` (2px) | `py-0.5` |
+| `0.35rem` (≈5.6px, code h-padding) | `1.5` (6px) | `px-1.5` |
+| `16px`, `17px`, `18px`, `1rem` (16px) | `4` (16px) | `p-4` / `gap-4` / `m-4` |
+| `1.25rem` (20px), `19px`, `20px`, `21px`, `22px`, `23px` | `5` (20px) | `p-5` / `gap-5` / `m-5` |
+| `1.5rem` (24px), `24px`, `25px`, `26px`, `28px` | `6` (24px) | `p-6` / `gap-6` / `m-6` |
+| `1.75rem` (28px), `2rem` (32px), `30px`, `31px`, `32px`, `36px` | `8` (32px) | `p-8` / `gap-8` / `m-8` |
+| `2.5rem` (40px), `40px` | `10` (40px) | `mt-10` / `pb-10` |
+| `3rem` (48px), `50px`, `52px` | `12` (48px) | `m-12` / `p-12` |
+| `64px` | `16` (64px) | `pt-16` / `mt-16` |
+| `72px` | `18` (72px) | `py-18` |
+| `80px` | `20` (80px) | `mt-20` / `pb-20` |
+
+> Note: `0.75rem 1.5rem` (skip-to-content), `2px 8px` / `2px 7px` / `1px 7px`
+> (pills), `12px 0`, `14px 20px`, `24px 0`, `32px 0`, `0 40px`, `16px 0`,
+> `9px 13px`, `0 0 6px`, `0 0 14px`, `0 0 18px`, `0 0 20px`, `0 0 24px`,
+> `0 0 28px`, `0 0 36px`, `0 6px`, `0 0.25em` are all axis-pairs — each component
+> px resolves through the single-value rows above (e.g. `1px 7px` → `py-px px-2`,
+> `9px 13px` → `py-2 px-3`, `2px 8px` → `py-0.5 px-2`). `1px`/`2px` border-grade
+> paddings map to Tailwind's `px` (1px) and `0.5` (2px) steps respectively.
+> `18` (72px) and `20` (80px) are not Tailwind 3 defaults — they ARE on the
+> default scale in current Tailwind (`p-18`=72px, `p-20`=80px), so no `extend`
+> needed.
+
+### Border radius
+
+Snapped to Tailwind's default `rounded-*` scale.
+
+| Raw value(s) | Canonical token | Tailwind utility |
+|---|---|---|
+| `2px` (`:focus-visible` outline radius) | `rounded-sm` (2px) | `rounded-sm` |
+| `3px` (category pill, tech-tag chip, kind-pill, meta-kind, active underline) | `rounded` (4px DEFAULT) | `rounded` |
+| `0.25rem` (4px, typography code chip) | `rounded` (4px DEFAULT) | `rounded` |
+| `0.5rem` (8px, skip-to-content) | `rounded-lg` (8px) | `rounded-lg` |
+| `8px` (reader's note / callout box, code block `<pre>`) | `rounded-lg` (8px) | `rounded-lg` |
+| `10px` (project card) | `rounded-xl` (12px) | `rounded-xl` |
+| `50%`, `999px`, `6px` size-circular dot | `rounded-full` (9999px) | `rounded-full` |
+
+### Font weight
+
+Standardized onto the existing 500 / 600 / 700 / 800 set (Tailwind `font-medium`,
+`font-semibold`, `font-bold`, `font-extrabold`). No raw weight values appeared in
+the inventory tables — weights are carried in component `<style>` blocks not
+captured as a separate category. Guidance for Phase 4: collapse any 550/650-style
+intentions onto the nearest of {500, 600, 700, 800}; body = `font-medium` (500),
+emphasis/labels = `font-semibold` (600), headings = `font-bold` (700), hero H1 =
+`font-extrabold` (800).
+
+### Color reconciliation
+
+All Figma hexes dedupe exactly onto existing `ink` / `paper` / `fox` tokens — no
+new colors are needed. The Tailwind config becomes the single source; the
+`:root` CSS variables in `global.css` are removed once components stop consuming
+them.
+
+| Raw value(s) | Canonical token | Tailwind utility |
+|---|---|---|
+| `#0b0b0e` | `ink.900` | `text-ink-900` / `bg-ink-900` |
+| `#0f1011` | `ink.800` | `text-ink-800` |
+| `#1a1b1d` | `ink.700` | `text-ink-700` |
+| `#2d2e31` | `ink.600` | `text-ink-600` |
+| `#44464a` | `ink.500` | `text-ink-500` |
+| `#6d6f73` | `ink.400` | `text-ink-400` |
+| `#a0a2a6` | `ink.300` | `text-ink-300` |
+| `#c8c9cb` | `ink.200` | `text-ink-200` |
+| `#e8e8e9` | `ink.100` | `border-ink-100` |
+| `#f7f7f8` | `ink.50` | `bg-ink-50` |
+| `#faf9f6` | `paper.100` | `bg-paper-100` |
+| `#f3f1ec` | `paper.200` | `bg-paper-200` |
+| `#fcfcfc` | `paper.50` | `bg-paper-50` |
+| `#d0342c` | `fox.500` | `text-fox-500` / `bg-fox-500` |
+| `#8a221c` | `fox.ink` | `text-fox-ink` |
+| `#b82a23` | `fox.600` | `bg-fox-600` |
+| `#9f221b` | `fox.700` | — |
+| `#7f1d16` | `fox.800` | — |
+| `#651710` | `fox.900` | — |
+| `#fef2f2` | `fox.50` | — |
+| `#fee2e2` | `fox.100` | — |
+| `#fecaca` | `fox.200` | — |
+| `#fca5a5` | `fox.300` | — |
+| `#f87171` | `fox.400` | `outline-fox-400` (dark `:focus-visible`) |
+| `#1f7a5c` | `green` | `bg-green` |
+| `#d97706` | `amber` | — |
+| `#dc2626` | `red` | — |
+| `#f5a78a` (code-block keyword syntax highlight) | `fox.300` (≈`#fca5a5`) | snap to `fox.300` |
+| `#f7f7f8` (code-block default text) | `ink.50` | `text-ink-50` |
+| `rgba(208,52,44,0.18)` / `rgba(208,52,44,0.06)` / `rgba(208,52,44,0.04)` | `fox.500` + opacity | `bg-fox-500/20`, `/5`, `/5` |
+| `rgba(138,34,28,0.6)` / `0.25` / `0.2` / `0.06)` | `fox.ink` + opacity | `bg-fox-ink/60`, `border-fox-ink/25`, `/20`, `/5` |
+| `rgba(11,11,14,0.18)` (card hover shadow) | `ink.900` + opacity | `shadow` arbitrary `ink-900/20` |
+| `rgba(31,122,92,0.18)` (live-status dot ring) | `green` + opacity | `green/20` |
+| `rgba(255,255,255,0)` (transparent overlay) | transparent | `bg-transparent` |
+
+**Unused ramp steps** (no Figma frame and no code consumer references them as a
+real applied color — flag for removal):
+
+- `fox.700` `#9f221b`, `fox.800` `#7f1d16`, `fox.900` `#651710` — defined in
+  config, never used.
+- `fox.50` `#fef2f2`, `fox.100` `#fee2e2`, `fox.200` `#fecaca` — defined,
+  never used (red tints are produced via `rgba()` of `fox.500`/`fox.ink`
+  instead, so the solid tint steps are dead).
+- `amber` `#d97706` and `red` `#dc2626` — defined as "functional accents",
+  never used anywhere in Figma or code.
+
+`fox.300` `#fca5a5` and `fox.400` `#f87171` become **used** after this mapping
+(syntax-highlight keyword color and dark-mode focus outline respectively), so
+they should be kept. `fox.600` is used (`#b82a23`). Net: 8 ramp steps are
+candidates for deletion.

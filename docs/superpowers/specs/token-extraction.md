@@ -569,8 +569,8 @@ everything else floors at 12px). The custom `heading-*` keys are deleted.
 | `15px`, `15.3px`, `15.8px`, `15.9px`, `16px`, `16.1px`, `16.3px`, `16.5px`, `16.6px`, `1rem` (16px), `0.95em`/`0.9em` (code, relative) (PostRow last-row, archive intro, About body paragraphs, post body paragraphs, header wordmark, SectionBreak ornament) | `text-base` (17px) → see note | `text-base` | These are body-grade text; Figma's HTML-import noise sits ~1px under the intended 17px body. Snap to `base`. `0.95em`/`0.9em` are *relative* code sizes — keep as-is in the typography plugin (they resolve against `base`), not separate tokens. The header wordmark (`16.6px`) snaps to `base` too. |
 | `17px`, `17.3px`, `17.5px`, `17.7px`, `17.8px`, `1.0625rem` (17px), `1.09375rem` (≈17.5px) (body base, hero/About hero descriptions, post-list titles, post dek) | `text-base` (17px) | `text-base` | Canonical body. Hero ledes and post-list titles fall within ±0.75px of 17px once noise is removed. |
 | `18px`, `18.1px`, `18.3px`, `18.4px`, `18.5px`, `18.9px`, `19px`, `19.2px`, `1.125rem` (18px), `1.15625rem` (≈18.5px), `1.1875rem` (19px) (post-list titles, project-card headings, post subtitle/lede, h6, h5) | `text-lg` (19px) | `text-lg` | Project-card headings, post-list titles, post lede, h5 and h6 all converge on a single 19px step. |
-| `20px`, `1.25rem` (20px) (h3, h4, h5 in code) | `text-xl` (20px) | `text-xl` | h3-grade subheadings. |
-| `25px`, `1.5625rem` (25px) (h4 in code/config) | `text-2xl` (25px) | `text-2xl` | h4-grade. |
+| `20px`, `1.25rem` (20px) (h3, h4, h5 in code) | `text-xl` (20px) | `text-xl` | H4-grade subheadings (post owner H3/H4 fix). |
+| `25px`, `1.5625rem` (25px) (h4 in code/config) | `text-2xl` (25px) | `text-2xl` | H3-grade subheadings (post owner H3/H4 fix). |
 | `27.3px`, `28px`, `1.75rem` (28px) (post H2 section heading, h2) | `text-3xl` (28px) | `text-3xl` | h2-grade section heading. |
 | `36px`, `2.25rem` (36px) (index/archive H1 at mobile breakpoint) | `text-4xl` (36px) | `text-4xl` | Mobile/responsive H1 size; also the floor for large page headings on small screens. |
 | `43px`, `43.1px`, `44px`, `2.75rem` (44px) (post H1, About/Archive H1 page headings) | `text-5xl` (44px) | `text-5xl` | Standard page-heading H1. |
@@ -583,15 +583,15 @@ Heading-level assignment (drives `global.css` element rules + typography plugin)
 | Hero H1 (`index.astro` hero) | `text-6xl` | 49px / 1.05 |
 | H1 (page headings, post title) | `text-5xl` | 44px / 1.1 |
 | H2 | `text-3xl` | 28px / 1.22 |
-| H3 | `text-xl` | 20px / 1.3 |
-| H4 | `text-2xl` | 25px / 1.5 |
+| H3 | `text-2xl` | 25px / 1.5 |
+| H4 | `text-xl` | 20px / 1.3 |
 | H5 | `text-lg` | 19px / 1.5 |
 | H6 | `text-lg` | 19px / 1.6 |
 
-> Judgment note: the existing code has H4 (25px) larger than H3 (20px) — an
-> inherited inconsistency. The mapping preserves the *sizes* the code/Figma
-> actually use (faithful standardization, not redesign per the spec's
-> non-goals), but the controller should flag the H3<H4 inversion for the owner.
+> Owner decision (2026-05-15): the existing code had H4 (25px) larger than H3
+> (20px) — an inherited inconsistency. The owner chose to FIX it: H3 → `text-2xl`
+> (25px), H4 → `text-xl` (20px), restoring a correct descending hierarchy
+> h1 > h2 > h3 > h4. This is the one intentional size change vs. the raw values.
 
 ### Proposed fontSize scale
 
@@ -794,5 +794,8 @@ real applied color — flag for removal):
 
 `fox.300` `#fca5a5` and `fox.400` `#f87171` become **used** after this mapping
 (syntax-highlight keyword color and dark-mode focus outline respectively), so
-they should be kept. `fox.600` is used (`#b82a23`). Net: 8 ramp steps are
-candidates for deletion.
+they should be kept. `fox.600` is used (`#b82a23`). Net: 8 ramp steps to delete.
+
+> Owner decision (2026-05-15): all 8 unused steps — `fox.50`, `fox.100`,
+> `fox.200`, `fox.700`, `fox.800`, `fox.900`, `amber`, `red` — are confirmed
+> for removal from `tailwind.config.js`.

@@ -35,7 +35,7 @@ module.exports = {
                     600: '#b82a23',
                     ink: '#8a221c',  // Text-grade burgundy
                 },
-                // Functional accents (used sparingly)
+                // Success state
                 green: '#1f7a5c',   // Success states
             },
             fontFamily: {
@@ -76,8 +76,8 @@ module.exports = {
                     css: {
                         color: theme('colors.ink.800'),
                         maxWidth: '70ch',          // Within 60-75ch spec
-                        fontSize: '1.0625rem',     // 17px body
-                        lineHeight: '1.65',        // Within 1.55-1.7 spec
+                        fontSize: theme('fontSize.base[0]'),              // 17px body
+                        lineHeight: theme('fontSize.base[1].lineHeight'), // 1.6
                         
                         // Links - Fox Red accent
                         a: { 
@@ -134,6 +134,7 @@ module.exports = {
                             marginTop: '1.5rem',
                             marginBottom: '0.5rem',
                         },
+                        // h5/h6 share the lg token — differentiated by weight/margin, not size
                         h6: {
                             fontSize: theme('fontSize.lg[0]'),       // 19px
                             lineHeight: theme('fontSize.lg[1].lineHeight'),
@@ -192,7 +193,7 @@ module.exports = {
                             marginBottom: '0.5rem',
                         },
                         
-                        // Paragraphs: rhythm spacing
+                        // Paragraphs
                         p: {
                             marginTop: '1.25rem',
                             marginBottom: '1.25rem',

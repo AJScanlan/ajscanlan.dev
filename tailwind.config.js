@@ -29,22 +29,14 @@ module.exports = {
                 },
                 // Brand accent - Fox Red (smart, alert, kind)
                 fox: {
-                    50: '#fef2f2',   // Tints for hover states
-                    100: '#fee2e2',
-                    200: '#fecaca',
                     300: '#fca5a5',
                     400: '#f87171',
                     500: '#d0342c',  // Primary Fox Red
                     600: '#b82a23',
-                    700: '#9f221b',
-                    800: '#7f1d16',
-                    900: '#651710',
                     ink: '#8a221c',  // Text-grade burgundy
                 },
                 // Functional accents (used sparingly)
                 green: '#1f7a5c',   // Success states
-                amber: '#d97706',   // Warnings
-                red: '#dc2626',     // Errors (distinct from brand)
             },
             fontFamily: {
                 sans: [
@@ -59,32 +51,25 @@ module.exports = {
                 ],
             },
             fontSize: {
-                // Body: 17px base with optimized line-height
-                base: ['1.0625rem', { lineHeight: '1.6' }],   // 17px
-                lg:   ['1.25rem',   { lineHeight: '1.65' }],  // 20px
-
-                // Heading scale
-                'heading-sm':  ['1.25rem',   { lineHeight: '1.6'  }],  // 20px
-                'heading-md':  ['1.5625rem', { lineHeight: '1.5'  }],  // 25px
-                'heading-lg':  ['1.25rem',   { lineHeight: '1.3'  }],  // 20px
-                'heading-xl':  ['1.75rem',   { lineHeight: '1.22' }],  // 28px
-                'heading-2xl': ['3.0625rem', { lineHeight: '1.2'  }],  // 49px
+                '2xs': ['0.6875rem', { lineHeight: '1.4'  }],  // 11px — uppercase mono micro-labels only
+                xs:    ['0.75rem',   { lineHeight: '1.45' }],  // 12px
+                sm:    ['0.8125rem', { lineHeight: '1.55' }],  // 13px
+                base:  ['1.0625rem', { lineHeight: '1.6'  }],  // 17px — body
+                lg:    ['1.1875rem', { lineHeight: '1.5'  }],  // 19px
+                xl:    ['1.25rem',   { lineHeight: '1.3'  }],  // 20px
+                '2xl': ['1.5625rem', { lineHeight: '1.5'  }],  // 25px
+                '3xl': ['1.75rem',   { lineHeight: '1.22' }],  // 28px
+                '4xl': ['2.25rem',   { lineHeight: '1.15' }],  // 36px
+                '5xl': ['2.75rem',   { lineHeight: '1.1'  }],  // 44px
+                '6xl': ['3.0625rem', { lineHeight: '1.05' }],  // 49px
+            },
+            letterSpacing: {
+                eyebrow: '0.13em',  // uppercase JetBrains Mono eyebrows / micro-labels
             },
             maxWidth: {
                 'prose': '70ch',   // 60-75ch range
                 'prose-narrow': '60ch',
                 'prose-wide': '75ch',
-            },
-            spacing: {
-                // Rhythm units: 4/8/12px base
-                'rhythm-1': '0.25rem',  // 4px
-                'rhythm-2': '0.5rem',   // 8px
-                'rhythm-3': '0.75rem',  // 12px
-                'rhythm-4': '1rem',     // 16px
-                'rhythm-6': '1.5rem',   // 24px
-                'rhythm-8': '2rem',     // 32px
-                'rhythm-12': '3rem',    // 48px
-                'rhythm-16': '4rem',    // 64px
             },
             typography: ({ theme }) => ({
                 DEFAULT: {
@@ -105,18 +90,18 @@ module.exports = {
                             }
                         },
                         
-                        // Headings: 1.25 modular scale with progressive line-height tightening
-                        h1: { 
-                            fontSize: '3.0625rem',     // 49px
-                            lineHeight: '1.2',
+                        // Headings: standardized scale via theme() tokens
+                        h1: {
+                            fontSize: theme('fontSize.5xl[0]'),      // 44px
+                            lineHeight: theme('fontSize.5xl[1].lineHeight'),
                             letterSpacing: '-0.02em',
                             fontWeight: '800',
                             marginTop: '0',
                             marginBottom: '1.5rem',
                         },
                         h2: {
-                            fontSize: '1.75rem',       // 28px
-                            lineHeight: '1.22',
+                            fontSize: theme('fontSize.3xl[0]'),      // 28px
+                            lineHeight: theme('fontSize.3xl[1].lineHeight'),
                             letterSpacing: '-0.015em',
                             fontWeight: '700',
                             marginTop: '3.5rem',
@@ -125,8 +110,8 @@ module.exports = {
                             borderLeftWidth: '0',
                         },
                         h3: {
-                            fontSize: '1.25rem',       // 20px
-                            lineHeight: '1.3',
+                            fontSize: theme('fontSize.2xl[0]'),      // 25px
+                            lineHeight: theme('fontSize.2xl[1].lineHeight'),
                             letterSpacing: '-0.005em',
                             fontWeight: '600',
                             marginTop: '2rem',
@@ -134,24 +119,24 @@ module.exports = {
                             paddingLeft: '0',
                             borderLeftWidth: '0',
                         },
-                        h4: { 
-                            fontSize: '1.5625rem',     // 25px
-                            lineHeight: '1.5',
+                        h4: {
+                            fontSize: theme('fontSize.xl[0]'),       // 20px
+                            lineHeight: theme('fontSize.xl[1].lineHeight'),
                             letterSpacing: '-0.005em',
                             fontWeight: '600',
                             marginTop: '1.75rem',
                             marginBottom: '0.5rem',
                         },
                         h5: {
-                            fontSize: '1.25rem',       // 20px
-                            lineHeight: '1.6',
+                            fontSize: theme('fontSize.lg[0]'),       // 19px
+                            lineHeight: theme('fontSize.lg[1].lineHeight'),
                             fontWeight: '500',
                             marginTop: '1.5rem',
                             marginBottom: '0.5rem',
                         },
                         h6: {
-                            fontSize: '1.125rem',      // 18px - same as body
-                            lineHeight: '1.65',
+                            fontSize: theme('fontSize.lg[0]'),       // 19px
+                            lineHeight: '1.6',
                             fontWeight: '500',
                             marginTop: '1.25rem',
                             marginBottom: '0.5rem',

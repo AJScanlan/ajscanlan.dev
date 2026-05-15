@@ -7,33 +7,12 @@ interface Props {
 const { text, sub } = Astro.props;
 ---
 
-<p class="eyebrow">
+<p class="m-0 font-mono text-2xs font-medium tracking-eyebrow uppercase text-ink-400">
     {text}
     {sub && (
         <>
-            <span class="separator"> · </span>
-            <span class="sub-label">{sub}</span>
+            <span class="mx-1"> · </span>
+            <span class="text-ink-300">{sub}</span>
         </>
     )}
 </p>
-
-<style>
-    .eyebrow {
-        margin: 0;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.71875rem; /* 11.5px */
-        font-weight: 500;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--ink-400);
-    }
-
-    .separator {
-        margin: 0 0.25em;
-    }
-
-    .sub-label {
-        color: var(--ink-300);
-    }
-
-</style>

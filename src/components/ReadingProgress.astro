@@ -3,7 +3,7 @@
 
 <div
     id="reading-progress"
-    class="reading-progress"
+    class="sticky top-14 left-0 w-0 h-0.5 bg-fox-ink/60 z-40 transition-[width] duration-100 ease-out motion-reduce:transition-none"
     role="progressbar"
     aria-valuemin="0"
     aria-valuemax="100"
@@ -11,25 +11,6 @@
     aria-label="Reading progress"
 >
 </div>
-
-<style>
-    .reading-progress {
-        position: sticky;
-        top: 56px;
-        left: 0;
-        width: 0%;
-        height: 2px;
-        background: rgba(138, 34, 28, 0.6);
-        z-index: 40;
-        transition: width 0.1s ease-out;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .reading-progress {
-            transition: none;
-        }
-    }
-</style>
 
 <script>
     function updateReadingProgress() {

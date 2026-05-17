@@ -51,62 +51,27 @@ const readingTime = await getReadingTime(entry);
     <div class="layout-post">
         <ReadingProgress />
 
-        <div class="meta-row">
-            <a href="/archive" class="meta-back">← all posts</a>
-            <span class="meta-sep">·</span>
-            <span class="meta-kind" data-kind={kind}>{kind}</span>
-            <span class="meta-sep">·</span>
-            <time class="meta-date">{formattedDate}</time>
-            <span class="meta-sep">·</span>
-            <span class="meta-rt">{readingTime} min read</span>
+        <div class="flex items-center gap-2.5 flex-wrap font-mono text-xs text-ink-400 mb-6 pt-10">
+            <a href="/archive" class="meta-back text-ink-500 no-underline border-b border-ink-200 hover:text-fox-ink hover:border-fox-ink">← all posts</a>
+            <span class="text-ink-200">·</span>
+            <span class="uppercase tracking-wider text-xs rounded py-px px-2 bg-fox-500/5 text-fox-ink border border-fox-ink/25" data-kind={kind}>{kind}</span>
+            <span class="text-ink-200">·</span>
+            <time>{formattedDate}</time>
+            <span class="text-ink-200">·</span>
+            <span>{readingTime} min read</span>
         </div>
 
-        <h1 class="post-h1">{data.title}</h1>
+        <h1 class="text-5xl font-bold tracking-tight text-ink-900 mb-4">{data.title}</h1>
 
-        {data.dek && <p class="post-dek">{data.dek}</p>}
+        {data.dek && <p class="font-serif italic text-lg text-ink-500 mb-8">{data.dek}</p>}
 
-        <article class="post-prose">
+        <article class="post-prose text-base text-ink-700">
             <Content components={{ Callout, SectionBreak }} />
         </article>
     </div>
 </BaseLayout>
 
 <style>
-.meta-row {
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    color: var(--ink-400); margin-bottom: 28px; padding-top: 40px;
-}
-.meta-back {
-    color: var(--ink-500); text-decoration: none;
-    border-bottom: 1px solid var(--ink-200);
-}
-.meta-back:hover { color: var(--fox-ink); border-bottom-color: var(--fox-ink); }
-.meta-sep { color: var(--ink-200); }
-.meta-kind {
-    text-transform: uppercase; letter-spacing: 0.08em; font-size: 10.5px;
-    border-radius: 3px; padding: 1px 7px;
-    background: rgba(208, 52, 44, 0.04); color: var(--fox-ink);
-    border: 1px solid rgba(138, 34, 28, 0.25);
-}
-.meta-date { color: var(--ink-400); }
-.meta-rt   { color: var(--ink-400); }
-
-.post-h1 {
-    font-size: 2.75rem; font-weight: 700; letter-spacing: -0.025em;
-    line-height: 1.08; color: var(--ink-900); margin: 0 0 14px;
-}
-
-.post-dek {
-    font-family: ui-serif, 'Iowan Old Style', Charter, Georgia, serif;
-    font-style: italic; font-size: 1.25rem; line-height: 1.5;
-    color: var(--ink-500); margin: 0 0 36px;
-}
-
-.post-prose {
-    font-size: 1.09375rem; /* 17.5px */
-    line-height: 1.65;
-    color: var(--ink-700);
-}
+/* post-prose p applies to markdown-rendered paragraphs — cannot target via utility classes */
 .post-prose p { margin: 0 0 20px; }
 </style>

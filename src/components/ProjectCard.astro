@@ -8,26 +8,34 @@ interface Props {
 }
 
 const { name, blurb, status, stack, links } = Astro.props;
+
+const statusBg: Record<string, string> = {
+  live:          'bg-green',
+  'in-progress': 'bg-fox-500',
+  archived:      'bg-ink-300',
+};
 ---
 
-<div class="project-card">
-  <div class="status-pill" data-status={status}>
+<div class="project-card border border-ink-100 rounded-xl p-5 bg-paper-100 flex flex-col gap-4 transition-all duration-200 ease-in-out hover:border-ink-200">
+  <div
+    class={`self-start font-mono text-2xs font-semibold uppercase tracking-eyebrow rounded py-0.5 px-2 text-white ${statusBg[status]}`}
+  >
     {status.replace('-', ' ')}
   </div>
 
-  <h3 class="title">{name}</h3>
+  <h3 class="text-lg font-semibold text-ink-900 m-0 p-0">{name}</h3>
 
-  <p class="blurb">{blurb}</p>
+  <p class="text-sm text-ink-600 m-0 p-0">{blurb}</p>
 
-  <div class="stack-chips">
+  <div class="flex flex-wrap gap-1">
     {stack.map((item) => (
-      <span class="chip">{item}</span>
+      <span class="font-mono text-xs rounded py-0.5 px-2 bg-paper-200 text-ink-600 border border-ink-100 inline-block">{item}</span>
     ))}
   </div>
 
-  <div class="links-section">
+  <div class="flex flex-wrap gap-3 mt-auto">
     {links.map((link) => (
-      <a href={link.url} class="link">
+      <a href={link.url} class="font-mono text-xs text-ink-500 no-underline transition-colors duration-[120ms] ease-in-out hover:text-fox-ink">
         {link.label}
       </a>
     ))}
@@ -35,89 +43,9 @@ const { name, blurb, status, stack, links } = Astro.props;
 </div>
 
 <style>
-  .project-card {
-    border: 1px solid var(--ink-100);
-    border-radius: 10px;
-    padding: 22px;
-    background: var(--paper);
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
-  }
-
+  /* Card hover: custom shadow has no clean Tailwind utility — deliberate exception */
   .project-card:hover {
     transform: translateY(-1px);
-    border-color: var(--ink-200);
     box-shadow: 0 12px 28px -18px rgba(11, 11, 14, 0.18);
-  }
-
-  .status-pill {
-    align-self: flex-start;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border-radius: 3px;
-    padding: 2px 8px;
-    color: white;
-  }
-
-  .status-pill[data-status="live"]        { background: #1f7a5c; }
-  .status-pill[data-status="in-progress"] { background: var(--fox); }
-  .status-pill[data-status="archived"]    { background: var(--ink-300); }
-
-  .title {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--ink-900);
-    letter-spacing: -0.01em;
-    margin: 0;
-    padding: 0;
-  }
-
-  .blurb {
-    font-size: 13px;
-    line-height: 1.55;
-    color: var(--ink-600);
-    margin: 0;
-    padding: 0;
-  }
-
-  .stack-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-
-  .chip {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9.5px;
-    border-radius: 3px;
-    padding: 2px 7px;
-    background: var(--paper-2);
-    color: var(--ink-600);
-    border: 1px solid var(--ink-100);
-    display: inline-block;
-  }
-
-  .links-section {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-top: auto;
-  }
-
-  .link {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-500);
-    text-decoration: none;
-    transition: color 120ms ease;
-  }
-
-  .link:hover {
-    color: var(--fox-ink);
   }
 </style>

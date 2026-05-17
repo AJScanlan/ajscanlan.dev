@@ -26,155 +26,66 @@ const formatReadingTime = (minutes?: number): string => {
   return `${minutes} min`;
 };
 
-const getKindColor = (k: string): { color: string; bg: string; border: string } => {
+const getKindClasses = (k: string): { color: string; bg: string; border: string } => {
   if (k === 'project-log') {
     return {
-      color: 'var(--fox-ink)',
-      bg: 'rgba(138, 34, 28, 0.06)',
-      border: '1px solid rgba(138, 34, 28, 0.2)',
+      color: 'text-fox-ink',
+      bg: 'bg-fox-ink/5',
+      border: 'border border-fox-ink/20',
     };
   }
   return {
-    color: 'var(--ink-400)',
-    bg: 'transparent',
-    border: '1px solid var(--ink-200)',
+    color: 'text-ink-400',
+    bg: 'bg-transparent',
+    border: 'border border-ink-200',
   };
 };
 
-const kindStyle = getKindColor(kind);
+const kindClasses = getKindClasses(kind);
 ---
 
 {variant === 'home' ? (
-  <a href={href} class="post-row-home">
-    <div class="date">{formatHomeDate(date)}</div>
-    <div class="title-dek">
-      <div class="title">{title}</div>
-      {dek && <div class="dek">{dek}</div>}
+  <a href={href} class="post-row-home group grid no-underline border-b border-ink-100 py-3 transition-[background,color] duration-[120ms] ease-out gap-6 items-baseline cursor-pointer">
+    <div class="font-mono text-xs text-ink-400">{formatHomeDate(date)}</div>
+    <div class="min-w-0">
+      <div class={`text-base font-medium text-ink-900 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink post-row-title`}>{title}</div>
+      {dek && <div class="text-sm text-ink-500 overflow-hidden text-ellipsis whitespace-nowrap max-w-[48ch]">{dek}</div>}
     </div>
-    <div class="kind-pill" style={`color: ${kindStyle.color}; background: ${kindStyle.bg}; border: ${kindStyle.border};`}>
+    <div class={`font-mono text-2xs font-medium uppercase rounded py-px px-2 inline-block whitespace-nowrap ${kindClasses.color} ${kindClasses.bg} ${kindClasses.border}`}>
       {kind.toUpperCase()}
     </div>
   </a>
 ) : (
-  <a href={href} class="post-row-archive">
-    <div class="iso-date">{formatArchiveDate(date)}</div>
-    <div class="kind-text" style={`color: ${kindStyle.color};`}>{kind.toUpperCase()}</div>
-    <div class="title">{title}</div>
-    <div class="reading-time">{formatReadingTime(readingTime)}</div>
+  <a href={href} class="post-row-archive group grid no-underline border-b border-ink-100 py-3 transition-[background,color] duration-[120ms] ease-out gap-4 items-baseline cursor-pointer hover:bg-paper-200">
+    <div class="font-mono text-xs text-ink-400">{formatArchiveDate(date)}</div>
+    <div class={`font-mono text-2xs font-medium uppercase ${kindClasses.color}`}>{kind.toUpperCase()}</div>
+    <div class="text-sm font-medium text-ink-900 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink">{title}</div>
+    <div class="font-mono text-xs text-ink-400 text-right">{formatReadingTime(readingTime)}</div>
   </a>
 )}
 
 <style>
-  a {
-    text-decoration: none;
-    display: grid;
-    border-bottom: 1px solid var(--ink-100);
-    padding: 11px 0;
-    transition: background 120ms ease-out, color 120ms ease-out;
-  }
-
-  /* HOME VARIANT */
+  /* HOME VARIANT — grid track sizes have no utility equivalent */
   .post-row-home {
     grid-template-columns: 100px 1fr 140px;
-    gap: 24px;
-    align-items: baseline;
-    cursor: pointer;
   }
 
-  .post-row-home:hover .title {
-    color: var(--fox-ink);
-  }
-
-  .post-row-home .title::after {
+  /* Arrow pseudo-element — requires ::after content, no utility equivalent */
+  .post-row-title::after {
     content: ' →';
-    color: var(--ink-300);
+    color: #a0a2a6; /* ink.300 */
     opacity: 0;
     display: inline-block;
     margin-left: 0;
     transition: opacity 120ms ease-out;
   }
 
-  .post-row-home:hover .title::after {
+  .post-row-home:hover .post-row-title::after {
     opacity: 1;
   }
 
-  .date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--ink-400);
-  }
-
-  .title-dek {
-    min-width: 0;
-  }
-
-  .title {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--ink-900);
-    transition: color 120ms ease-out;
-  }
-
-  .dek {
-    font-size: 12.5px;
-    color: var(--ink-500);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 48ch;
-  }
-
-  .kind-pill {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    text-transform: uppercase;
-    border-radius: 3px;
-    padding: 1px 7px;
-    display: inline-block;
-    white-space: nowrap;
-  }
-
-  /* ARCHIVE VARIANT */
+  /* ARCHIVE VARIANT — grid track sizes have no utility equivalent */
   .post-row-archive {
     grid-template-columns: 110px 110px 1fr 80px;
-    gap: 16px;
-    align-items: baseline;
-    cursor: pointer;
-  }
-
-  .post-row-archive:hover {
-    background: var(--paper-2);
-  }
-
-  .post-row-archive:hover .title {
-    color: var(--fox-ink);
-  }
-
-  .iso-date {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    color: var(--ink-400);
-  }
-
-  .kind-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-
-  .post-row-archive .title {
-    font-size: 12.5px;
-    font-weight: 500;
-    color: var(--ink-900);
-    transition: color 120ms ease-out;
-  }
-
-  .reading-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    color: var(--ink-400);
-    text-align: right;
   }
 </style>

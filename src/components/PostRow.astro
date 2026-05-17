@@ -58,7 +58,7 @@ const kindClasses = getKindClasses(kind);
 ) : (
   <a href={href} class="post-row-archive group grid no-underline border-b border-ink-100 py-3 transition-[background,color] duration-[120ms] ease-out gap-4 items-baseline cursor-pointer hover:bg-paper-200">
     <div class="font-mono text-xs text-ink-400">{formatArchiveDate(date)}</div>
-    <div class={`font-mono text-xs font-medium uppercase ${kindClasses.color}`}>{kind.toUpperCase()}</div>
+    <div class={`font-mono text-xs font-medium uppercase tracking-wider ${kindClasses.color}`}>{kind.toUpperCase()}</div>
     <div class="text-sm font-medium text-ink-900 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink">{title}</div>
     <div class="font-mono text-xs text-ink-400 text-right">{formatReadingTime(readingTime)}</div>
   </a>

@@ -59,7 +59,7 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
                 <span class="w-1.5 h-1.5 rounded-full bg-green flex-shrink-0"></span>
                 Available for new roles · Jun 2026 · Remote
             </div>
-            <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-ink-900 mb-4">
+            <h1 class="text-4xl min-[700px]:text-6xl font-bold tracking-tight text-ink-900 mb-4">
                 A.J. Scanlan — <span class="text-fox-ink">engineer</span>,<br/>
                 writer, builder.
             </h1>
@@ -79,7 +79,7 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
         <!-- Section 2: Selected Projects -->
         <section class="mt-16">
             <Eyebrow text="Selected Projects" />
-            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="mt-4 grid grid-cols-1 min-[700px]:grid-cols-2 gap-4">
                 {projects.map(p => (
                     <ProjectCard
                         name={p.data.name}

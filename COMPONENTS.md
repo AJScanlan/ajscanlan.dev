@@ -86,7 +86,7 @@ Important warnings or caveats.
 - `type`: `"note"` | `"tip"` | `"warn"` (required)
 - `title`: Optional heading text
 
-**Visual style:** Flat style, `bg-paper-200` background, `border-ink-200` border, `rounded` (0.25rem) border-radius.
+**Visual style:** Flat style, `bg-paper-200` background, `border-ink-200` border, `rounded-lg` (8px) border-radius.
 
 **Accessibility:** Uses semantic ARIA roles (`role="note"`, `role="complementary"`, `role="alert"`)
 

@@ -51,7 +51,7 @@ const kindClasses = getKindClasses(kind);
       <div class={`text-base font-medium text-ink-900 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink post-row-title`}>{title}</div>
       {dek && <div class="text-sm text-ink-500 overflow-hidden text-ellipsis whitespace-nowrap max-w-[48ch]">{dek}</div>}
     </div>
-    <div class={`font-mono text-xs font-medium uppercase rounded py-px px-2 inline-block whitespace-nowrap ${kindClasses.color} ${kindClasses.bg} ${kindClasses.border}`}>
+    <div class={`font-mono text-xs font-medium uppercase tracking-wider rounded py-px px-2 inline-block whitespace-nowrap ${kindClasses.color} ${kindClasses.bg} ${kindClasses.border}`}>
       {kind.toUpperCase()}
     </div>
   </a>

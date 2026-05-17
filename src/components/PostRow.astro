@@ -46,7 +46,7 @@ const kindClasses = getKindClasses(kind);
 
 {variant === 'home' ? (
   <a href={href} class="post-row-home group grid no-underline border-b border-ink-100 py-3 transition-[background,color] duration-[120ms] ease-out gap-6 items-baseline cursor-pointer">
-    <div class="font-mono text-xs text-ink-400">{formatHomeDate(date)}</div>
+    <div class="font-mono text-sm text-ink-400">{formatHomeDate(date)}</div>
     <div class="min-w-0">
       <div class={`text-base font-medium text-ink-900 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink post-row-title`}>{title}</div>
       {dek && <div class="text-sm text-ink-500 overflow-hidden text-ellipsis whitespace-nowrap max-w-[48ch]">{dek}</div>}

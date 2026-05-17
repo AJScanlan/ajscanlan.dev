@@ -10,7 +10,7 @@ Sticky site navigation with fox mark, brand name, and page links. Included autom
 
 No props. Not used directly in MDX.
 
-**Interactive behavior:** Link hover transitions smoothly to `--fox-ink` color over 120ms.
+**Interactive behavior:** Link hover transitions smoothly to `text-fox-ink` (`fox.ink`) color over 120ms.
 
 ---
 
@@ -23,7 +23,12 @@ Post list row used on the homepage and archive page. Two layout variants control
 - `archive` — 4-column layout (used on the `/archive` page) with grid columns `110px 110px 1fr 80px`
 
 **Props:**
-- `post` — Post collection entry (required)
+- `date` — Date (required)
+- `title` — string (required)
+- `dek` — string (optional)
+- `kind` — `'project-log' | 'technical' | 'cheat-sheet' | 'note' | 'essay'` (required)
+- `slug` — string (required)
+- `readingTime` — number in minutes (optional)
 - `variant`: `"home"` | `"archive"` (default: `"home"`)
 
 Not used directly in MDX.
@@ -39,7 +44,7 @@ Project card with status pill, stack chips, and links. Used in the homepage proj
 
 Displays `name`, `blurb`, `status` (live/in-progress/archived), `stack[]`, and `links[]` from the `projects` data collection.
 
-**Interactive behavior:** On hover, card lifts with `translateY(-1px)`, border lightens to `--ink-200`, and a soft shadow appears.
+**Interactive behavior:** On hover, card lifts with `translateY(-1px)`, border lightens to `border-ink-200`, and a soft shadow appears.
 
 Not used directly in MDX.
 
@@ -53,7 +58,7 @@ Mono uppercase section label for marking content sections.
 <Eyebrow>Project Logs</Eyebrow>
 ```
 
-**Style:** 11.5–12px monospace / .14–.16em letter-spacing / uppercase / ink-400 color.
+**Style:** `text-2xs` (11px) monospace / `tracking-eyebrow` (0.13em) / uppercase / `text-ink-400`.
 
 No props beyond children.
 
@@ -81,7 +86,7 @@ Important warnings or caveats.
 - `type`: `"note"` | `"tip"` | `"warn"` (required)
 - `title`: Optional heading text
 
-**Visual style:** Flat style, `paper-2` background (`#f3f1ec`), `ink-200` border, `8px` border-radius.
+**Visual style:** Flat style, `bg-paper-200` background, `border-ink-200` border, `rounded` (0.25rem) border-radius.
 
 **Accessibility:** Uses semantic ARIA roles (`role="note"`, `role="complementary"`, `role="alert"`)
 
@@ -115,8 +120,8 @@ Subtle centered ornaments marking transitions between major sections.
 - `spacing`: `"tight"` | `"normal"` | `"loose"` (default: `"normal"`)
 
 **Visual style:**
-- `dots` variant: 3 × 4px circles, ink-200 color
-- `diamond` and `asterism` variants: ink-300 color
+- `dots` variant: 3 × 4px circles, `text-ink-200` color
+- `diamond` and `asterism` variants: `text-ink-300` color
 - Respects `prefers-reduced-motion`
 
 ---
@@ -129,7 +134,7 @@ Shows a thin progress bar at the top of the page that fills as you scroll.
 
 **Features:**
 - Sticky position at top: 56px
-- 2px height, fox-ink color at 60% opacity (`#8a221c` at 0.6)
+- 2px height, `fox.ink` color (`#8a221c`) at 60% opacity
 - Smooth animation with `requestAnimationFrame`
 - ARIA progressbar role for accessibility
 - Respects `prefers-reduced-motion`

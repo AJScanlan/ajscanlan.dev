@@ -54,32 +54,32 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
     <div class="layout-home">
 
         <!-- Section 1: Hero -->
-        <section class="hero">
-            <div class="avail-pill">
-                <span class="green-dot"></span>
+        <section class="pt-16 pb-2">
+            <div class="inline-flex items-center gap-1.5 font-mono text-2xs uppercase tracking-eyebrow text-ink-400 mb-5">
+                <span class="w-1.5 h-1.5 rounded-full bg-green flex-shrink-0"></span>
                 Available for new roles · Jun 2026 · Remote
             </div>
-            <h1 class="hero-h1">
-                A.J. Scanlan — <span class="fox-word">engineer</span>,<br/>
+            <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-ink-900 mb-4">
+                A.J. Scanlan — <span class="text-fox-ink">engineer</span>,<br/>
                 writer, builder.
             </h1>
-            <p class="hero-lede">
+            <p class="text-lg text-ink-600 max-w-[56ch] mb-6">
                 Senior software engineer. I build reliable systems, write clearly about how they work,
                 and bring the same rigor to both. Based in NYC.
             </p>
-            <div class="hero-links">
-                <a href="mailto:hi@ajscanlan.dev">hi@ajscanlan.dev</a>
-                <span class="sep">·</span>
-                <a href="https://github.com/AJScanlan" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <span class="sep">·</span>
-                <a href="/about">More about me</a>
+            <div class="flex items-center gap-2.5 font-mono text-sm text-ink-500">
+                <a href="mailto:hi@ajscanlan.dev" class="text-ink-700 no-underline hover:text-fox-ink">hi@ajscanlan.dev</a>
+                <span class="text-ink-300">·</span>
+                <a href="https://github.com/AJScanlan" target="_blank" rel="noopener noreferrer" class="text-ink-700 no-underline hover:text-fox-ink">GitHub</a>
+                <span class="text-ink-300">·</span>
+                <a href="/about" class="text-ink-700 no-underline hover:text-fox-ink">More about me</a>
             </div>
         </section>
 
         <!-- Section 2: Selected Projects -->
-        <section class="projects-section">
+        <section class="mt-16">
             <Eyebrow text="Selected Projects" />
-            <div class="projects-grid">
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {projects.map(p => (
                     <ProjectCard
                         name={p.data.name}
@@ -93,9 +93,9 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
         </section>
 
         <!-- Section 3: Engineering & Technical Writing -->
-        <section class="posts-section">
+        <section class="mt-16">
             <Eyebrow text="Projects & Technical Writing" />
-            <div class="post-rows">
+            <div class="mt-3">
                 {engWithRT.map(({ entry, rt }) => (
                     <PostRow
                         date={sortDate(entry)}
@@ -107,13 +107,13 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
                     />
                 ))}
             </div>
-            <a href="/archive?type=project-log" class="see-all">See all →</a>
+            <a href="/archive?type=project-log" class="inline-block mt-3 font-mono text-xs text-ink-500 no-underline hover:text-fox-ink">See all →</a>
         </section>
 
         <!-- Section 4: References & Cheat Sheets -->
-        <section class="posts-section">
+        <section class="mt-16">
             <Eyebrow text="References & Cheat Sheets" />
-            <div class="post-rows">
+            <div class="mt-3">
                 {refWithRT.map(({ entry, rt }) => (
                     <PostRow
                         date={sortDate(entry)}
@@ -125,13 +125,13 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
                     />
                 ))}
             </div>
-            <a href="/archive?type=cheat-sheet" class="see-all">See all →</a>
+            <a href="/archive?type=cheat-sheet" class="inline-block mt-3 font-mono text-xs text-ink-500 no-underline hover:text-fox-ink">See all →</a>
         </section>
 
         <!-- Section 5: Essays -->
-        <section class="posts-section">
+        <section class="mt-16">
             <Eyebrow text="Essays" />
-            <div class="post-rows">
+            <div class="mt-3">
                 {essayWithRT.map(({ entry, rt }) => (
                     <PostRow
                         date={sortDate(entry)}
@@ -143,74 +143,8 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
                     />
                 ))}
             </div>
-            <a href="/archive?type=essay" class="see-all">See all →</a>
+            <a href="/archive?type=essay" class="inline-block mt-3 font-mono text-xs text-ink-500 no-underline hover:text-fox-ink">See all →</a>
         </section>
 
     </div>
 </BaseLayout>
-
-<style>
-    .layout-home > section + section {
-        margin-top: 64px;
-    }
-
-    /* Hero */
-    .hero { padding-top: 64px; padding-bottom: 8px; }
-
-    .avail-pill {
-        display: inline-flex; align-items: center; gap: 6px;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
-        color: var(--ink-400); margin-bottom: 20px;
-    }
-    .green-dot {
-        width: 6px; height: 6px; border-radius: 50%; background: #1f7a5c; flex-shrink: 0;
-    }
-    .hero-h1 {
-        font-size: 3.125rem; /* 50px */
-        line-height: 1.05;
-        font-weight: 700;
-        letter-spacing: -0.028em;
-        color: var(--ink-900);
-        margin: 0 0 18px;
-    }
-    .fox-word { color: var(--fox-ink); }
-    .hero-lede {
-        font-size: 1.15625rem; /* ~18.5px */
-        line-height: 1.55;
-        color: var(--ink-600);
-        max-width: 56ch;
-        margin: 0 0 24px;
-    }
-    .hero-links {
-        display: flex; align-items: center; gap: 10px;
-        font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-500);
-    }
-    .hero-links a { color: var(--ink-700); text-decoration: none; }
-    .hero-links a:hover { color: var(--fox-ink); }
-    .sep { color: var(--ink-300); }
-
-    /* Projects */
-    .projects-section > .projects-grid {
-        margin-top: 16px;
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-    }
-    @media (max-width: 700px) {
-        .projects-section > .projects-grid { grid-template-columns: 1fr; }
-        .hero-h1 { font-size: 2.25rem; }
-    }
-
-    /* Post sections */
-    .posts-section > .post-rows { margin-top: 12px; }
-    .see-all {
-        display: inline-block;
-        margin-top: 12px;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 11.5px;
-        color: var(--ink-500);
-        text-decoration: none;
-    }
-    .see-all:hover { color: var(--fox-ink); }
-</style>

@@ -55,33 +55,36 @@ const counts = {
 ---
 
 <BaseLayout title="Archive — ajscanlan.dev" description="All posts, sorted by date.">
-    <div class="layout-home archive-wrap">
+    <div class="layout-home pt-12 pb-20">
 
-        <h1 class="archive-h1">Archive</h1>
+        <h1 class="text-5xl font-bold text-ink-900 tracking-tight mb-6">Archive</h1>
 
-        <div class="filter-tabs" id="filter-tabs">
-            <button class="tab" data-kind="all">All ({counts.all})</button>
-            <button class="tab" data-kind="project-log">Project logs ({counts['project-log']})</button>
-            <button class="tab" data-kind="technical">Technical ({counts.technical})</button>
-            <button class="tab" data-kind="cheat-sheet">Cheat sheets ({counts['cheat-sheet']})</button>
-            <button class="tab" data-kind="note">Notes ({counts.note})</button>
-            <button class="tab" data-kind="essay">Essays ({counts.essay})</button>
+        <div id="filter-tabs" class="flex flex-wrap gap-0 border-b border-ink-100 mb-8">
+            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="all">All ({counts.all})</button>
+            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="project-log">Project logs ({counts['project-log']})</button>
+            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="technical">Technical ({counts.technical})</button>
+            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="cheat-sheet">Cheat sheets ({counts['cheat-sheet']})</button>
+            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="note">Notes ({counts.note})</button>
+            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="essay">Essays ({counts.essay})</button>
         </div>
 
         <div id="archive-list">
             {years.map(year => (
-                <div class="year-group" data-year={year}>
-                    <div class="year-label">
+                <div class="year-group mb-6" data-year={year}>
+                    <div class="flex items-center gap-3 font-mono text-xs tracking-eyebrow uppercase text-ink-400 mb-1">
                         <span>{year}</span>
-                        <span class="year-rule"></span>
+                        <span class="flex-1 h-px bg-ink-100"></span>
                     </div>
-                    <div class="year-rows">
+                    <div>
                         {byYear[year].map(({ entry, kind, date, rt }) => (
-                            <a href={`/posts/${entry.slug}/`} class="archive-row" data-kind={kind}>
-                                <span class="arc-date">{date.toISOString().slice(0, 10)}</span>
-                                <span class={`arc-kind ${kind === 'project-log' ? 'arc-kind-pl' : 'arc-kind-other'}`}>{kind}</span>
-                                <span class="arc-title">{entry.data.title}</span>
-                                <span class="arc-time">{rt} min</span>
+                            <a href={`/posts/${entry.slug}/`}
+                               class="archive-row grid gap-4 py-3 border-b border-ink-100 items-baseline no-underline transition-colors duration-[120ms] hover:bg-paper-200"
+                               style="grid-template-columns: 110px 110px 1fr 80px;"
+                               data-kind={kind}>
+                                <span class="font-mono text-xs text-ink-400">{date.toISOString().slice(0, 10)}</span>
+                                <span class={`arc-kind font-mono text-xs uppercase tracking-wider ${kind === 'project-log' ? 'text-fox-ink' : 'text-ink-400'}`}>{kind}</span>
+                                <span class="text-sm font-medium text-ink-900">{entry.data.title}</span>
+                                <span class="arc-time font-mono text-xs text-ink-400 text-right">{rt} min</span>
                             </a>
                         ))}
                     </div>
@@ -93,66 +96,30 @@ const counts = {
 </BaseLayout>
 
 <style>
-.archive-wrap { padding-top: 52px; padding-bottom: 80px; }
-.archive-h1 {
-    font-size: 2.25rem; font-weight: 700; color: var(--ink-900);
-    margin: 0 0 28px; letter-spacing: -0.02em;
+/* Active tab state — toggled by JS via .active class */
+.tab.active {
+    color: #0b0b0e; /* ink-900 */
+    border-bottom-color: #0b0b0e; /* ink-900 */
+    font-weight: 600;
 }
-.filter-tabs {
-    display: flex; flex-wrap: wrap; gap: 0;
-    border-bottom: 1px solid var(--ink-100);
-    margin-bottom: 32px;
-}
-.tab {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px; padding: 9px 13px;
-    color: var(--ink-400); background: none; border: none;
-    border-bottom: 2px solid transparent; margin-bottom: -1px;
-    cursor: pointer; transition: color 120ms;
-}
-.tab:hover { color: var(--ink-700); }
-.tab.active { color: var(--ink-900); border-bottom-color: var(--ink-900); font-weight: 600; }
 
-.year-group { margin-bottom: 24px; }
-.year-label {
-    display: flex; align-items: center; gap: 12px;
-    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-400);
-    margin-bottom: 4px;
+/* data-hidden attribute drives show/hide filtering */
+.archive-row[data-hidden],
+.year-group[data-hidden] {
+    display: none;
 }
-.year-rule { flex: 1; height: 1px; background: var(--ink-100); }
 
-.archive-row {
-    display: grid;
-    grid-template-columns: 110px 110px 1fr 80px;
-    gap: 16px; padding: 11px 0;
-    border-bottom: 1px solid var(--ink-100);
-    align-items: baseline; text-decoration: none;
-    transition: background 120ms;
-}
-.archive-row:hover { background: var(--paper-2); }
-
-.arc-date { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-400); }
-.arc-kind {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px;
-    text-transform: uppercase; letter-spacing: 0.08em;
-}
-.arc-kind-pl  { color: var(--fox-ink); }
-.arc-kind-other { color: var(--ink-400); }
-.arc-title { font-size: 13px; font-weight: 500; color: var(--ink-900); }
-.arc-time  { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-400); text-align: right; }
-
-.archive-row[data-hidden] { display: none; }
-.year-group[data-hidden] { display: none; }
-
+/* Responsive grid: 640px breakpoint preserved exactly */
 @media (max-width: 640px) {
     .archive-row {
-        grid-template-columns: 90px 1fr;
+        grid-template-columns: 90px 1fr !important;
         grid-template-rows: auto auto;
     }
-    .arc-date { font-size: 10px; }
     .arc-kind { display: none; }
-    .arc-time { text-align: left; color: var(--ink-300); font-size: 10px; }
+    .arc-time {
+        text-align: left;
+        color: #a0a2a6; /* ink-300 */
+    }
 }
 </style>
 

@@ -134,10 +134,10 @@ Deploying to GitHub Pages with custom domain `ajscanlan.dev`. Automated via GitH
 
 ## References
 
+- Publishing a post: `docs/PUBLISHING.md`
+- Component reference: `COMPONENTS.md`
 - Full design brief: `.github/copilot-instructions.md`
-- Task tracking: `TODO.md`
 - Change history: `CHANGELOG.md`
-- Accessibility notes: `ACCESSIBILITY_AUDIT.md`
 
 ## Related Sites
 

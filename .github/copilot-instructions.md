@@ -91,14 +91,19 @@ Reading time is **automatically calculated** using the `getReadingTime()` utilit
 - Use `formatReadingTime()` utility from `@/utils/reading-time` to display
 
 ### Content Frontmatter Template
+All fields are defined in `src/content/config.ts` (the source of truth). Required fields and the `date` vs `updated` split vary by collection — see the inline notes.
 ```yaml
 ---
-title: "Your Title"
-dek: "Short description"
-date: 2026-05-14
-kind: "technical"         # project-log | technical | cheat-sheet | note | essay
-tags: ["tag1", "tag2"]
-status: "published"       # or "draft"
+title: "Your Title"             # required
+dek: "Short description"        # required for essay & technical; optional otherwise
+date: 2026-05-14                # required (cheat-sheets use `updated` instead of `date`)
+kind: "technical"               # project-log | technical | cheat-sheet | note | essay
+tags: ["tag1", "tag2"]          # optional — default: []
+status: "published"             # draft (default) | published
+openness: "confident"           # provisional (default) | confident — epistemic status
+series: "optional-series-slug"  # optional — groups related posts
+updated: 2026-05-20             # optional (required for cheat-sheets)
+readingTime: 6                  # optional — overrides build-time auto-calculation
 ---
 ```
 
@@ -112,7 +117,7 @@ status: "published"       # or "draft"
 - Respect `prefers-reduced-motion`
 
 ### Contrast Standards
-All text meets WCAG AA (4.5:1 for body, 3:1 for large text). See `ACCESSIBILITY_AUDIT.md`.
+All text meets WCAG AA (4.5:1 for body, 3:1 for large text).
 
 ## Development Workflow
 

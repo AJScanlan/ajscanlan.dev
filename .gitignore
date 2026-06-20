@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # brainstorming / visual companion sessions
 .superpowers/
+
+.claude/settings.local.json

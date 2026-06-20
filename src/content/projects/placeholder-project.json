@@ -1,10 +1,10 @@
 {
-  "name": "Project Two",
-  "blurb": "Replace this with a real project blurb — what it does and why it matters.",
-  "status": "live",
-  "stack": ["React", "Node", "PostgreSQL"],
+  "name": "ConversationEngine",
+  "blurb": "A journey into building an LLM-native chat and synchronization engine in Swift.",
+  "status": "in-progress",
+  "stack": ["Swift", "SwiftUI", "AI"],
   "links": [
-    { "label": "GitHub", "url": "https://github.com/AJScanlan" }
+    { "label": "GitHub", "url": "https://github.com/AJScanlan/ConversationEngine" }
   ],
   "featured": true,
   "order": 2

@@ -92,6 +92,7 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
         </section>
 
         <!-- Section 3: Engineering & Technical Writing -->
+        {engWithRT.length > 0 && (
         <section class="mt-16">
             <Eyebrow text="Projects & Technical Writing" />
             <div class="mt-3">
@@ -108,8 +109,10 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
             </div>
             <a href="/archive?type=project-log" class="inline-block mt-3 font-mono text-xs text-ink-500 no-underline hover:text-fox-ink">See all →</a>
         </section>
+        )}
 
         <!-- Section 4: References & Cheat Sheets -->
+        {refWithRT.length > 0 && (
         <section class="mt-16">
             <Eyebrow text="References & Cheat Sheets" />
             <div class="mt-3">
@@ -126,8 +129,10 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
             </div>
             <a href="/archive?type=cheat-sheet" class="inline-block mt-3 font-mono text-xs text-ink-500 no-underline hover:text-fox-ink">See all →</a>
         </section>
+        )}
 
         <!-- Section 5: Essays -->
+        {essayWithRT.length > 0 && (
         <section class="mt-16">
             <Eyebrow text="Essays" />
             <div class="mt-3">
@@ -144,6 +149,7 @@ const [engWithRT, refWithRT, essayWithRT] = await Promise.all([
             </div>
             <a href="/archive?type=essay" class="inline-block mt-3 font-mono text-xs text-ink-500 no-underline hover:text-fox-ink">See all →</a>
         </section>
+        )}
 
     </div>
 </BaseLayout>

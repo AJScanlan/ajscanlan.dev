@@ -48,26 +48,28 @@ const readingTime = await getReadingTime(entry);
     title={`${data.title} — ajscanlan.dev`}
     description={data.dek ?? data.title}
 >
-    <div class="layout-post">
+    <div class="layout-home">
         <ReadingProgress />
 
-        <div class="flex items-center gap-2.5 flex-wrap font-mono text-sm text-ink-400 mb-6 pt-10">
-            <a href="/archive" class="meta-back text-ink-500 no-underline border-b border-ink-200 hover:text-fox-ink hover:border-fox-ink">← all posts</a>
-            <span class="text-ink-200">·</span>
-            <span class="font-mono uppercase tracking-wider text-xs rounded py-px px-2 bg-fox-500/5 text-fox-ink border border-fox-ink/25" data-kind={kind}>{kind}</span>
-            <span class="text-ink-200">·</span>
-            <time>{formattedDate}</time>
-            <span class="text-ink-200">·</span>
-            <span>{readingTime} min read</span>
+        <div class="max-w-[660px]">
+            <div class="flex items-center gap-2.5 flex-wrap font-mono text-sm text-ink-400 mb-6 pt-10">
+                <a href="/archive" class="meta-back text-ink-500 no-underline border-b border-ink-200 hover:text-fox-ink hover:border-fox-ink">← all posts</a>
+                <span class="text-ink-200">·</span>
+                <span class="font-mono uppercase tracking-wider text-xs rounded py-px px-2 bg-fox-500/5 text-fox-ink border border-fox-ink/25" data-kind={kind}>{kind}</span>
+                <span class="text-ink-200">·</span>
+                <time>{formattedDate}</time>
+                <span class="text-ink-200">·</span>
+                <span>{readingTime} min read</span>
+            </div>
+
+            <h1 class="text-5xl font-bold tracking-tight text-ink-900 mb-4">{data.title}</h1>
+
+            {data.dek && <p class="font-serif italic text-lg text-ink-500 mb-8">{data.dek}</p>}
+
+            <article class="post-prose text-base text-ink-700">
+                <Content components={{ Callout, SectionBreak }} />
+            </article>
         </div>
-
-        <h1 class="text-5xl font-bold tracking-tight text-ink-900 mb-4">{data.title}</h1>
-
-        {data.dek && <p class="font-serif italic text-lg text-ink-500 mb-8">{data.dek}</p>}
-
-        <article class="post-prose text-base text-ink-700">
-            <Content components={{ Callout, SectionBreak }} />
-        </article>
     </div>
 </BaseLayout>
 

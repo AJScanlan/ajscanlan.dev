@@ -1,0 +1,209 @@
+---
+title: "MDX Reference — Components & Formatting"
+dek: "Kitchen-sink reference for writing posts on this site."
+date: 2026-06-20
+updated: 2026-06-20
+tags: ["reference", "mdx"]
+status: "published"
+openness: "confident"
+kind: cheat-sheet
+---
+
+Everything available when writing a post. `h1` is reserved for the page title rendered from frontmatter — content starts at `h2`.
+
+---
+
+## Headings
+
+```
+## h2 — Section heading
+### h3 — Subsection
+#### h4 — Minor heading
+```
+
+## h2 — Section heading
+
+### h3 — Subsection
+
+#### h4 — Minor heading
+
+---
+
+## Text
+
+Regular paragraph. **Bold**, *italic*, ~~strikethrough~~, and `inline code`.
+
+Smartypants converts "straight quotes" to "curly quotes", -- to em-dashes, and ... to ellipsis automatically.
+
+[Links look like this](https://example.com).
+
+---
+
+## Lists
+
+Unordered:
+- First item
+- Second item
+  - Nested item
+  - Another nested item
+- Third item
+
+Ordered:
+1. First step
+2. Second step
+3. Third step
+
+Task list (GFM):
+- [x] Done
+- [ ] Not done
+
+---
+
+## Blockquotes
+
+> A blockquote. Good for pulling out an idea or a direct quote from something you've read.
+>
+> Multiple paragraphs work fine.
+
+---
+
+## Code
+
+Inline: `const x = 1`
+
+Fenced block — language identifier enables syntax highlighting:
+
+```swift
+struct ContentView: View {
+    @State private var count = 0
+
+    var body: some View {
+        Button("Count: \(count)") {
+            count += 1
+        }
+    }
+}
+```
+
+```typescript
+type Post = {
+    title: string;
+    date: Date;
+    kind: 'essay' | 'note' | 'technical' | 'project-log' | 'cheat-sheet';
+};
+```
+
+```bash
+npm run dev
+npm run build
+```
+
+---
+
+## Tables (GFM)
+
+| Prop      | Type                                | Default    |
+| --------- | ----------------------------------- | ---------- |
+| `variant` | `diamond` \| `dots` \| `asterism`  | `diamond`  |
+| `spacing` | `normal` \| `tight` \| `loose`     | `normal`   |
+
+---
+
+## Footnotes
+
+Inline footnote^[This is an inline footnote — no separate definition needed.] for short asides.
+
+Reference-style footnote[^1] for longer notes.
+
+[^1]: This is the footnote body. Can contain **formatting** and `code`.
+
+---
+
+## Custom Components
+
+Injected automatically — no import needed in the MDX file.
+
+### Callout
+
+Three `type` values: `note` (default), `tip`, `warn`. Optional `title` prop overrides the label.
+
+```mdx
+<Callout>Default note.</Callout>
+<Callout type="tip">A tip.</Callout>
+<Callout type="warn">A warning.</Callout>
+<Callout type="note" title="Custom title">Custom label.</Callout>
+```
+
+<Callout>
+Default note callout. Good for context or background the reader might need.
+</Callout>
+
+<Callout type="tip">
+A tip — actionable advice or a shortcut worth highlighting.
+</Callout>
+
+<Callout type="warn">
+A warning. Use sparingly. Good for gotchas or irreversible actions.
+</Callout>
+
+<Callout type="note" title="Custom title">
+The `title` prop overrides the default label.
+</Callout>
+
+<Eyebrow text="Selected Projects" />
+
+### SectionBreak
+
+Visual break between major sections. Three variants, three spacings.
+
+```mdx
+<SectionBreak />
+<SectionBreak variant="dots" />
+<SectionBreak variant="asterism" />
+<SectionBreak spacing="tight" />
+<SectionBreak spacing="loose" />
+```
+
+<SectionBreak variant="diamond" />
+
+<SectionBreak variant="dots" />
+
+<SectionBreak variant="asterism" />
+
+---
+
+## JSX Expressions
+
+MDX lets you embed JavaScript expressions inline:
+
+```mdx
+Current year: {new Date().getFullYear()}
+Conditional: {someCondition && <strong>shown if true</strong>}
+```
+
+Current year: {new Date().getFullYear()}
+
+---
+
+## Frontmatter Reference
+
+Fields available per collection type:
+
+```yaml
+# logs (this collection)
+title: "Post Title"
+dek: "Optional subtitle shown under the title"     # optional
+date: 2026-01-15
+updated: 2026-06-01                                 # optional, for living docs
+kind: project-log
+status: draft | published                           # default: draft
+openness: provisional | confident                   # default: provisional
+tags: ["tag-one", "tag-two"]
+series: "series-name"                               # optional
+readingTime: 5                                      # optional override (minutes)
+
+# essays — same but dek is required, kind: essay
+# notes — same but dek optional, kind: note
+# technical — same but dek required, kind: technical
+# cheat-sheets — uses `updated` instead of `date`, kind: cheat-sheet
+```

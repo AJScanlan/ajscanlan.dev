@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Callout from "@/components/Callout.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
 import ReadingProgress from "@/components/ReadingProgress.astro";
 import SectionBreak from "@/components/SectionBreak.astro";
 import { getReadingTime } from "@/utils/get-reading-time";
@@ -67,7 +68,7 @@ const readingTime = await getReadingTime(entry);
             {data.dek && <p class="font-serif italic text-lg text-ink-500 mb-8">{data.dek}</p>}
 
             <article class="post-prose text-base text-ink-700">
-                <Content components={{ Callout, SectionBreak }} />
+                <Content components={{ Callout, SectionBreak, Eyebrow }} />
             </article>
         </div>
     </div>

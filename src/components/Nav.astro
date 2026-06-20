@@ -19,9 +19,9 @@ const navLinks: NavLink[] = [
 <nav aria-label="Main navigation" class="sticky top-0 z-50 bg-paper-100 border-b border-ink-100">
   <div class="layout-home flex items-center justify-between h-14 py-3">
     {/* Brand */}
-    <a href="/" class="flex items-center gap-2 no-underline text-ink-900 transition-colors duration-[120ms] hover:text-fox-ink">
-      <div class="fox-mark size-5 shrink-0 bg-fox-500"></div>
-      <span class="hidden sm:inline font-mono text-base font-semibold text-inherit">ajscanlan.dev</span>
+    <a href="/" aria-label="ajscanlan.dev" class="group flex items-center gap-2 no-underline">
+      <img src="/icons/RED_FOX_FILLED.svg" alt="" class="size-11 shrink-0" />
+      <span class="hidden sm:inline font-mono text-base font-semibold"><span class="text-ink-900 transition-colors duration-[120ms] group-hover:text-fox-ink">ajscanlan</span><span class="text-ink-400 transition-colors duration-[120ms] group-hover:text-fox-ink">.dev</span></span>
     </a>
 
     {/* Nav Links */}
@@ -40,11 +40,4 @@ const navLinks: NavLink[] = [
       ))}
     </div>
   </div>
-
-  <style>
-    /* clip-path has no Tailwind utility — intentional exception */
-    .fox-mark {
-      clip-path: polygon(50% 0%, 100% 30%, 85% 100%, 15% 100%, 0% 30%);
-    }
-  </style>
 </nav>

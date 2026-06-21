@@ -1,18 +1,18 @@
 ---
 interface Props {
-    text: string;
+    text?: string;
     sub?: string;
 }
 
 const { text, sub } = Astro.props;
 ---
 
-<p class="m-0 font-mono text-2xs font-medium tracking-eyebrow uppercase text-ink-400">
-    {text}
+<div class="eyebrow m-0 font-mono text-2xs font-medium tracking-eyebrow uppercase text-ink-400">
+    <slot>{text}</slot>
     {sub && (
         <>
             <span class="mx-1"> · </span>
             <span class="text-ink-300">{sub}</span>
         </>
     )}
-</p>
+</div>

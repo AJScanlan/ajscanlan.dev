@@ -83,4 +83,7 @@ const readingTime = await getReadingTime(entry);
 .post-prose :global(.eyebrow + h2) { margin-top: 0.5rem; }
 .post-prose :global(a) { color: theme('colors.fox.ink'); text-decoration: underline; text-underline-offset: 3px; }
 .post-prose :global(a:hover) { color: theme('colors.fox.600'); }
+.post-prose :global(blockquote) { border-left: 3px solid theme('colors.fox.ink'); margin: 0 0 20px; padding: 0.25rem 0 0.25rem 1.25rem; color: theme('colors.ink.500'); font-style: italic; }
+.post-prose :global(blockquote p) { margin-bottom: 0.75rem; }
+.post-prose :global(blockquote p:last-child) { margin-bottom: 0; }
 </style>

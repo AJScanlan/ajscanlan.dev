@@ -1,0 +1,61 @@
+---
+title: "What is ConversationEngine?"
+dek: "And why build it?"
+date: 2026-06-21
+kind: "project-log"
+tags: ["conversation-engine"]
+status: "published"
+openness: "provisional"
+---
+
+<Eyebrow text="1. The what"/>
+
+## What is it?
+
+`ConversationEngine` will be an LLM chat interface with a frontend built in Swift and SwiftUI for iOS, and a backend built in Rust.
+
+Similar to ChatGPT or Claude, it will allow the user to send a prompt to an LLM backend and receive a response streamed back in real-time. It will also allow users to open a chat from their history, loading old messages from the backend.
+
+It will handle rich message types—image, video, audio, cards—displaying them inline alongside text. It will have error handling—recovering when it can, gracefully degrading when it can't.
+
+It will be a production quality chat interface built from first principles.
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="2. The why"/>
+
+## Why build it?
+
+To learn how it all works.
+
+Recently I was working on a traditional messaging interface on iOS. Users send messages, users receive messages. There was some complexity in error handling and real-time publishing and subscribing, as well as some challenges with building a UI to accommodate it, but it was manageable. Our team built it all from scratch without much difficulty.
+
+Shortly after I was working on an LLM chat interface on iOS. By contrast with the above, the complexity for such a feature was an order of magnitude higher—and with it came _many_ more edge cases.
+
+* When streaming a response from the backend, how do you fetch messages that were missed while the user navigated away?
+* How do you interrupt a streaming response when messages may still be coming in before the interrupt is acknowledged?
+* How do you stream text in chunks smoothly in SwiftUI, while also allowing for rich media to be decoded inline?
+
+These questions are only a small sample of the problems faced in such a feature, and some aren't edge cases but core functionality expected by the user.
+
+I didn't build the LLM chat interface I was working on, and the fact it worked so well is a testament to those that did, but for the first time in a while I was working on a system I struggled to mentally model.
+
+So I decided to build my own, in public, documenting my decisions (and my failures).
+
+Even after 12 years of building software I still sometimes find myself intimidated by systems I don't fully understand, but I remember something my boss once told me:
+
+> Good engineers will say "I don't know"
+>
+> Great engineers will say "I don't know, **but I'll find out**"
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="3. The how"/>
+
+## How to build it?
+
+I plan on building `ConversationEngine` piece by piece, from the ground up, with blog posts detailing my decisions, my thought processes, my learnings and my failures.
+
+Hopefully the project (and blog posts) can help others who may struggle as I did to fully understand how such distributed systems work, and if not then at least it will help me learn.
+
+The project can be found on Github: [ConversationEngine](https://github.com/AJScanlan/ConversationEngine)

@@ -195,6 +195,11 @@ h6 {
     margin-bottom: 0.5rem;
 }
 
+/* Offset anchor scroll for sticky nav (h-14 = 56px + 8px breathing room) */
+h1, h2, h3, h4, h5, h6 {
+    scroll-margin-top: 4rem;
+}
+
 /* Reduce motion: Remove border animation potential */
 @media (prefers-reduced-motion: reduce) {
     h2, h3 {

@@ -1,10 +1,10 @@
 {
-  "name": "ConversationEngine",
+  "name": "LedgerKit",
   "blurb": "A journey into building an LLM-native chat and synchronization engine in Swift.",
   "status": "in-progress",
   "stack": ["Swift", "SwiftUI", "AI"],
   "links": [
-    { "label": "GitHub", "url": "https://github.com/AJScanlan/ConversationEngine" }
+    { "label": "GitHub", "url": "https://github.com/AJScanlan/LedgerKit" }
   ],
   "featured": true,
   "order": 2

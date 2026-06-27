@@ -1,0 +1,4 @@
+- Use canonical terms (event vs message)
+- Be honest: don't hide failure, don't puff up successes
+- ~1 code concept per post
+- Always breadcrumb to the prior post

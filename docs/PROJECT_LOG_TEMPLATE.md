@@ -1,11 +1,12 @@
 ---
-title:
-date:
-summary:        # one sentence — the transferable idea, NOT the project step
-series: ledger-kit
-tags:
+title: # What is LedgerKit?"
+dek: # "And why build it?"
+date: # 2026-06-21
+kind: # "project-log"
+tags: # ["ledger-kit"]
+status: # "published"
+openness: # "provisional"
 ---
-<!-- match frontmatter to your SSG; this is a stub -->
 
 <!-- THE STORY SO FAR ─────────────────────────────────  (serves: sequential + drop-in)
 2–3 sentences. Where we left off + just enough for a stranger to stand on.

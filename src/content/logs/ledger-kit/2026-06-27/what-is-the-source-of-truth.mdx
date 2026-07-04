@@ -1,0 +1,142 @@
+---
+title: "What is our source of truth?"
+dek: "Deriving messages from a stream of events"
+date: 2026-06-27
+kind: "project-log"
+tags: ["ledger-kit"]
+status: "published"
+openness: "provisional"
+---
+
+{/* THE STORY SO FAR ─────────────────────────────────  (serves: sequential + drop-in)
+2–3 sentences. Where we left off + just enough for a stranger to stand on.
+Link the prior post here. Sequential readers skim it; drop-ins lean on it.
+Cut to one line if the post is early or self-contained. */}
+
+{/* 
+
+TODO: Hide this beneath a FOLD component
+
+Previously I wrote about how I went from building a traditional messaging interface, to working on an LLM messaging interface, and how I was having trouble mentally modelling the latter in a way that I could intuitively understand. To combat this I decided to build my own LLM chat interface from first principles as a learning exercise. 
+
+*/}
+
+{/* THE QUESTION ─────────────────────────────────────  (serves: curiosity)
+Frame the post as a question you actually wanted answered.
+Not "How reducers work" but "What *is* the source of truth here?"
+This is where your curiosity is visible. */}
+
+<Eyebrow text="1. The problem"/>
+## How do I model half a message?
+
+A simple `Message` in a traditional chat interface may look like this:
+
+```swift
+  struct Message {
+    let content: String
+  }
+```
+
+But when streaming messages incrementally we're immediately hit with a question: _how do I know when a message ends?_
+
+Given a stream of text: `"Hell" -> "o, wo" -> "rld"`, should my data layer parse it like this for the UI to render?
+
+```swift
+  let eventsStream = ["Hell", "o, wo", "rld"]
+  let messages = eventsStream.reduce([]) { /* Explained in future post */ }
+
+  // prints
+  [
+    Message("Hell"),
+    Message("o, wo"),
+    Message("rld"),
+  ]
+```
+
+`"Hell"` _might_ be a message, but `"o, wo"` definitely isn't. 
+
+Naively mapping our events to models is no problem, but I quickly ran into an issue: I could show these messages streaming in the UI, but I couldn't know when to allow the user to interrupt or when to allow them to send another message.
+
+This is where we need to think about what defines a message.
+
+<SectionBreak variant="dots" />
+
+{/* WORKING IT OUT ───────────────────────────────────  (serves: the explainer + honesty)
+The body. What you tried, in the order you tried it.
+Weave the wobble in here — where your understanding slipped, what
+surprised you, the wrong turn. No heading. Just don't smooth it over.
+
+THE ONE RITUAL: take a single hard idea and anchor it in ONE everyday
+metaphor — gist, then metaphor, then the detail. If a tired friend
+couldn't follow it, it isn't done. This paragraph is the post's craft
+on display; it's the thing you're actually signaling. */}
+
+<Eyebrow text="2. The solution"/>
+## Defining boundaries
+
+A message is a **discrete** unit of communication, where _discrete_[^1] here means having a clear beginning and end. So we need to take a _continuous_ stream of events, and decide where to start building a message, and where to decide that message has finished.
+
+The easiest way to do this is to add an `Event` type for our stream and simply model these boundaries:
+
+```swift
+  enum Event {
+    case beginning
+    case delta(String)
+    case end
+  }
+
+  struct Message {
+    let content: String
+  }
+
+  let eventsStream = [
+    Event.beginning,
+    Event.delta("Hell"),
+    Event.delta("o, wo"),
+    Event.delta("rld"),
+    Event.end
+  ]
+
+  let messages = eventsStream.reduce([]) { /* Explained in future post */ }
+
+  // prints
+  [
+    Message("Hello, world"),
+  ]
+```
+
+This is a small change but it reveals something to us: once we model it this way, the _events_ become the source of truth from which the messages are derived.
+
+<SectionBreak variant="dots" />
+
+{/* THE IDEA WORTH KEEPING ───────────────────────────  (serves: standalone takeaway)
+One transferable sentence a drop-in reader keeps even if they read nothing else.
+General, not project-specific:
+  portable:     "Events store change-over-time; messages store current-value."
+*/}
+
+<Eyebrow text="3. The result"/>
+## What can we learn from this?
+
+We may be tempted to consider an array of messages as the source of truth in our chat interface, particularly since as users they're the part we see and interact with, but **messages are actually _derived_ state from our real source of truth: the events.**
+
+This is essentially how ledgers work in the real world. Banks don't store your balance _and_ your transactions; they store the transactions and use them to _compute_ the balance. This means they don't have to store two sources of truth, which may get out of sync, simplifying the state management.
+
+[Computed properties](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Computed-Properties) in Swift follow the same principle and are similarly useful for simplifying state.
+
+
+{/* WHAT THIS OPENS UP ───────────────────────────────  (serves: curiosity + next post)
+End on the open question, not a resolution. The limit you just hit, what
+you don't yet know, what the next post chases. A post that ends "and that's
+solved" reads as closed; curiosity lives at the edges. */}
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="4. The future"/>
+## What's next?
+
+Now that we know what our source of truth is we can focus on ensuring our model for it is robust and deterministic. Since our messages will be built incrementally from events streaming in, most likely over an unreliable network connection, we want to make sure those events are always in the same order, and for errors to gracefully degrade functionality rather than break completely.
+
+To this end, the next post will be on folding our continuous events into discrete state using **reducers**.
+
+[^1]: This may sound like pointless semantics but the language we use plays a large part in how we mentally model our systems. Finding the right name for a type or a property lowers cognitive load without even touching architecture.

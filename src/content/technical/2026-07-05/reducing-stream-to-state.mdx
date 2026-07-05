@@ -1,0 +1,141 @@
+---
+title: "Making some bugs impossible by design"
+dek: "Or, why I love enums"
+date: 2026-07-05
+kind: "technical"
+tags: []
+status: "published"
+openness: "provisional"
+---
+
+<Eyebrow text="1. The problem"/>
+## State management is difficult
+
+In my opinion, managing state in an application is one of the hardest problems to solve. If done poorly or without thought, we end up with spaghetti code - passing state around many different observers, sometimes through classes that have no reason to know about such state. Or we end up with globally accessible state that any part of the app can touch, as was so common back in the day with `AppDelegate` singletons being god objects, or `MassiveViewController` architecture.
+
+Such solutions are very common, and I'm sure every dev has reached for a singleton or allowed a `ViewModel` to grow too large with too many concerns (I know I have, and still do at times). But these patterns come with a real cost: state that can be changed by anything, cognitive overhead ensuring state is in sync and represents a legal configuration of your app, tight coupling, and difficulty testing.
+
+In the [intro post](https://ajscanlan.dev/posts/ledger-kit/2026-06-21/what-is-ledger-kit/) of this series I mentioned the difficulty I had modelling an LLM chat interface due to the complexity of the state, and it's the principal reason for this project in the first place. Specifically I was having a problem keeping an array of messages in sync, without duplicates, with a stream of events when switching sources between a real-time websocket connection and a REST API endpoint.
+
+I've also seen bad state cause UI that doesn't represent the underlying data, performance issues from accessing state too often or off the main thread, or sending wrong data to the API resulting in wrong responses - almost all issues I fix (and introduce) are downstream of bad state.
+
+So what can we do about it?
+
+We can shrink the set of states our code can represent.
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="2. Preventing state drift"/>
+## Reducing state
+
+The simplest solution to managing state, and the most reliable, is to just have less of it.
+
+One way of doing this is to leverage [computed properties](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/properties/#Computed-Properties).
+
+```swift
+  struct ViewModel {
+    var firstName: String
+    var familyName: String
+  }
+
+  var fullName = viewModel.firstName + viewModel.familyName
+```
+
+In the above example there are 3 pieces of state: `firstName`, `familyName`, and `fullName`. This works fine, but what if something changes `viewModel.firstName` and forgets to update `fullName`? Or if multiple observers build their own `fullName` but one gets it backwards? These would lead to subtle bugs.
+
+The key insight here is that `fullName` isn't a separate piece of state, it's state _derived_ from _other_ pieces of state.
+
+By keeping it separate we introduce complexity and management responsibilities where we don't need to. If we instead make it a computed property of `firstName` and `familyName` we reduce our state to 2 pieces and make a lot of bugs impossible by design because `fullName` is immutable and can no longer drift from the data it's derived from.
+
+```swift
+  struct ViewModel {
+    var firstName: String
+    var familyName: String
+    var fullName: String { firstName + familyName }
+  }
+```
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="3. Removing illegal state combinations"/>
+## Putting boundaries on your state
+
+Another solution, and my personal favourite, is to leverage [enums](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/enumerations/).
+
+I love enums, and I use them often. They're simple, versatile, robust ways of modeling state in such a way that invalid configurations of your app state become _unrepresentable_. This is particularly powerful as it means the compiler can verify our states are correct instead of us. Every bug the compiler can catch is one that we don't have to (or the QA, or worse still, the user).
+
+To explain why let's compare _unbounded_ state with _bounded_ state.
+
+```swift
+  struct ViewModel {
+    var state = "loading"
+  }
+
+  if viewModel.state == "loading" {
+    // Show loading
+  } else if viewModel.state == "error" {
+    // Show error
+  }
+```
+
+The above is an extreme example of the problems with unbounded state. It works, but _only_ if the state is _exactly_ what the app expects, and since it's unbounded, the possible states it could be in are open ended. What if state is ever set to `"Loading"` or `"eror"`? What if a third state is added but we forget to add a third branch to our `if` statement? Again we open ourselves up to subtle bugs.
+
+To remedy this we can use _bounded_ state.
+
+```swift
+  struct ViewModel {
+    var isLoading = true
+    var isError = false
+  }
+
+  if viewModel.isLoading {
+    // Show loading
+  } else if viewModel.isError {
+    // Show error
+  }
+```
+
+By replacing our string, which could be almost any value, with separate booleans, which can only be 1 of 2 values, we've reduced our possible state combinations down by multiple orders of magnitude, from an indeterminate number to 4, and made ourselves immune to typos.
+
+But this approach still has some problems: what if a third boolean is added but we forget to update the `if` statement? or worse, what if both `isLoading` and `isError` are `true` at the same time?
+
+For this, we can use enums.
+
+```swift
+  enum State {
+    case loading
+    case error
+    case loaded
+  }
+
+  struct ViewModel {
+    var state = State.loading
+  }
+
+  switch viewModel.state {
+    case .loading: // Show loading
+    case .error: // Show error
+    case .loaded: // Show loaded
+  }
+```
+
+This solves all of our problems above:
+  - No possibility of typos
+  - No possibility of loading and error states at the same time
+  - No possibility of forgetting to implement a new state 
+    - If a new state is added to our enum but not to our switch case, the compiler will refuse to build, catching a bug before we even run the app. 
+
+This approach allows the compiler to catch _many_ cases where we would have previously introduced a bug. And if we use associated values we can make our `State` carry our models too, ensuring we don't need to deal with optionals that shouldn't be optional.
+
+Using enums we've collapsed an unbounded set of states into a much more manageable 3. This makes it easier to mentally model our state, easier to manage our state, and easier to extend our state, reducing cognitive load to be used for other problems in our code.
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="4. The point"/>
+## What to take away from this
+
+State management is as difficult as it is important, but we can make it easier without learning entirely new architectures or without massive rewrites to our code.
+
+The above solutions are near universal, applying in MVC, MVP, MVVM, VIPER, TCA etc. And clearly Apple agrees, as their movement to SwiftUI from UIKit shows they understand how important state management is to building UI and they've introduced many frameworks and tools to make it easier.
+
+They are also both examples of the same idea: we can make some bugs _impossible by design_ by being mindful of how we model and represent state in our application. The two solutions above are examples of this mechanism from two different directions: the first prevents state drifting and lowers responsibilities for observers, while the latter makes illegal states impossible to compile.

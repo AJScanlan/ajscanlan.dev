@@ -1,0 +1,127 @@
+---
+title: "My journey through AI assisted development (so far)"
+dek: "A worthwhile struggle"
+date: 2026-07-14
+kind: "technical"
+tags: []
+status: "published"
+openness: "provisional"
+---
+
+I've spent many hours of my life fighting bugs. 
+
+When I began my career I would check documentation, then StackOverflow, then back to documentation - desperation would sometimes push me to reading the javadocs, and in rare cases, the second page of Google.
+
+Sometimes I'd rope a coworker into being a rubber duck, to good success.
+
+I would try logically working through the problem. If that didn't work I would try out-of-the-box thinking. If that didn't work, I'd try anything.
+
+And then, a few years ago, I tried AI.
+
+Here's my journey into learning AI assisted development.
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="1. The past"/>
+## Before the LLM, there was StackOverflow
+
+I started learning software development ~2015. Java, on Android.
+
+It was a good time to start. Smartphones weren't new, but apps were still novel enough. Mobile app development was as good a place as any to begin. I had learned some Java in college and Object Oriented Programming made sense to me (instilling a love of types that persists to this day).
+
+The Android API was a different story - `Intents`, `Activities`, `Fragments` - vocabulary second nature to me now was jargon back then. But the Android docs by Google were detailed and helpful, which was very important back then as your main two sources of information when tackling a bug or a feature were:
+
+- Documentation
+- StackOverflow
+
+If you couldn't find your answer in either, then you were in unknown territory and either in the zone, or incredibly frustrated. But such challenges often came with some benefits.
+
+Like many developers from back then might say: solving the problem and building the solution brought with it an intellectual satisfaction. One that many miss in the days of AI - though I've learned that such satisfaction can still be found by solving even more complex problems and building even more complex solutions.
+
+I loved the struggle (in retrospect, very rarely in the moment).
+
+Then I discovered GPT-3.
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="2. The present"/>
+## A new method
+
+At first I used AI as a shortcut to a workflow I was already comfortable with.
+
+I'd ask it questions, use it as a sounding board or an idea generating machine, often finding the problem myself after asking the wrong question, or the right question but the wrong answer. It was very impressive, and I still use it like this to this day.
+
+I would only ever use it in "Ask" mode, getting it to generate code which I'd read and then copy paste. I avoided "Edit" mode for fear of it making sweeping changes over multiple turns that I'd have to painstakingly revert (I hadn't considered the benefits of staging changes for this case yet).
+
+Then I discovered a game changer: **Plan mode**
+
+With "Plan" mode I could work with the LLM to build a comprehensive plan _before_ execution would start - this dramatically lowered the chances of misunderstandings or out-of-scope changes or unexpected architectural decisions. Now large pieces of work could be planned and built with more confidence than before.
+
+Looking back now I think this was the tipping point where manual development started to give way to AI assisted development.
+
+In short order I discovered the power of plugins and connectors and MCP servers. I could have the LLM create or read tickets, using them as a bootstrap of context for deferred bug fixes or features. I could connect the LLM to documentation providers like context7 so the AI was up to date, reducing the number of hallucinations drastically.
+
+At this point I realized I was spending more time communicating with the AI and reviewing its code than actually writing any myself. Bittersweet, in a way, but marvelous in another.
+
+## A new problem (and a new solution)
+
+The next step on my journey was very much driven by necessity, but helped along by some very knowledgeable coworkers.
+
+I was on a new project: migrating a React Native module within an existing codebase to native Swift/SwiftUI.
+
+JavaScript isn't my best language, and I'd only worked on React Native a handful of times before, but I didn't anticipate any issues, until I realized the challenge in front of me.
+
+The RN module was very well written, but incredibly complex (necessarily so, as the feature, a chat interface, was _big_ and had to handle many different cases). Worse still, the deadline on the project was fixed - not due to hubris or cheapness, but because of Google Play Store guidelines.
+
+Without AI, or the skills of my coworkers, such a massive scope on such a tight deadline would not have been possible. To make matters worse (again), there was no spec, no requirements - our team for the most part had to build them _from_ the RN code as we went.
+
+I had built the UI for the root view quickly, a list of threads with avatars and users, closely matching the UI from the RN module. I thought it was good work until I looked closer at the code: the avatars would come from different places, the threads would have different models based on view type, there were far more channel types than I'd realized, and all were driven by an underlying config I'd missed.
+
+What seemed like straightforward, manageable complexity ballooned quickly. The more I looked, the more I'd missed. I had to change my strategy.
+
+AI was instrumental here. We could query the RN codebase via the LLM and build out the spec without reading every single line of JavaScript (though we had to be thorough, and careful, as the AI was not infallible and things had to be double/triple checked). I could work with it, back and forth, and avoid (most) surprises like the ones above.
+
+We eventually got into a groove, using an AI to draft a spec for a feature in the module from the RN code, create a ticket for it, then implement it in native code. Testing and reviewing at every step of course, as quality is not something that can be built on trust.
+
+The team I was on had their own MCP server which again showed me just how powerful AI could be with access to the right tools.
+
+We were using an AI to generate context. Using tickets to store that context for us to review. Passing that context via tickets to a new agent in a new session. Writing tests as a way to cement that context and commit it to the codebase. We were even passing context across platforms - iOS would implement a feature and Android would point their AI at the iOS codebase to copy it, keeping both in sync and essentially parallelizing the platforms.
+
+To me, context is a rich thing. It's the environment surrounding the problem. It's the setting, the knowledge, the _state_ of a problem. Something you can give another to quickly get them up to speed with you, on the same wavelength. Context is understanding made transferable.
+
+It was at this point I realized: **Context is king.**
+
+We delivered that project on time and in a good state. I'm proud of that work and very grateful for my coworkers - they were flexible, patient, knowledgeable, true professionals. Everyone on the team was pulling in the same direction to get it done.
+
+But my journey didn't really end there.
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="3. The future"/>
+## So much to learn, so much to see
+
+I learned in that project that delegation is a _skill_, not just an activity. Something that once seemed to belong in the domain of managers not engineers, but which has become a core component of AI assisted development. Knowing how to direct an AI agent, how to manage its environment and knowledge, how to make different agents work together (or against each other). 
+
+The future of software may look more like management than engineering as we know it, but I think AI abstractions may open up more interesting and complex problems to solve.
+
+I've since been playing around with new tools and paradigms:
+- The superpowers plugin for Claude introduced me to the power of sub-agents, and _compartmentalized_ context. One agent writes the spec, one implements, one reviews - all unaware of the other to avoid the same mistake from compounding.
+- Test Driven Development was something I'd known about for years but now I see how useful it is in an environment where the limiting factor isn't your ability to code but your ability to comprehend and not break things. Tests are a great way of committing that comprehension to the repo.
+- Conductor / git worktrees - I'd never heard of worktrees before this, but I naturally stumbled upon them when I wanted to run an AI agent in a separate branch without disrupting the agent presently working away on something else. Borderline necessary to run multiple agents on the same codebase without interfering with each other's context.
+
+I'd always known context was important, but this project revealed to me just how important it is. What I saw as useful I now see as vital. Context and comprehension aren't so different from each other, and if you can provide one it is often as good as providing the other.
+
+<SectionBreak variant="dots" />
+
+<Eyebrow text="The feeling"/>
+## Enough to fill my heart
+
+AI has allowed me to tackle challenges that I would have never considered. It has introduced new vocabulary, new topics and ideas, new processes and points-of-view. It has helped me learn more than ever before. It has put my reach just outside my grasp, forcing me out of my comfort zone but giving me a sense of satisfaction once thought lost. It has opened up a whole new level of complexity for me to tackle (often failing as much as I succeed). It has raised the expectations I have of myself.
+
+It has also infuriated me. 
+
+I've fought with it and against it. I've made confident claims based on hallucinations which I've embarrassedly had to walk back. I've wasted hours trying to get it to do what I want. I've gone around and around with it debugging issues. I've fixed its mistakes, and used it to introduce some mistakes of my own.
+
+Integrating AI into my workflow so far has at times been a struggle, one I'd not felt since I was a junior. The heights it opens up can be as demoralizing as they are rewarding, and I've only started climbing them.
+
+In retrospect, I think I love it.

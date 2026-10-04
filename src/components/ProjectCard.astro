@@ -16,26 +16,26 @@ const statusBg: Record<string, string> = {
 };
 ---
 
-<div class="project-card border border-ink-100 rounded-xl p-5 bg-paper-100 flex flex-col gap-4 transition-all duration-200 ease-in-out hover:border-ink-200">
+<div class="project-card border border-ink-100 dark:border-ink-800 rounded-xl p-5 bg-paper-100 dark:bg-ink-800 flex flex-col gap-4 transition-all duration-200 ease-in-out hover:border-ink-200 dark:hover:border-ink-700">
   <div
     class={`self-start font-mono text-2xs font-semibold uppercase tracking-eyebrow rounded py-0.5 px-2 text-white ${statusBg[status]}`}
   >
     {status.replace('-', ' ')}
   </div>
 
-  <h3 class="text-lg font-semibold text-ink-900 m-0 p-0">{name}</h3>
+  <h3 class="text-lg font-semibold text-ink-900 dark:text-ink-50 m-0 p-0">{name}</h3>
 
-  <p class="text-sm text-ink-600 m-0 p-0">{blurb}</p>
+  <p class="text-sm text-ink-600 dark:text-ink-300 m-0 p-0">{blurb}</p>
 
   <div class="flex flex-wrap gap-1">
     {stack.map((item) => (
-      <span class="font-mono text-xs rounded py-0.5 px-2 bg-paper-200 text-ink-600 border border-ink-100 inline-block">{item}</span>
+      <span class="font-mono text-xs rounded py-0.5 px-2 bg-paper-200 dark:bg-ink-900 text-ink-600 dark:text-ink-300 border border-ink-100 dark:border-ink-700 inline-block">{item}</span>
     ))}
   </div>
 
   <div class="flex flex-wrap gap-3 mt-auto">
     {links.map((link) => (
-      <a href={link.url} class="font-mono text-xs text-ink-500 no-underline transition-colors duration-[120ms] ease-in-out hover:text-fox-ink">
+      <a href={link.url} class="font-mono text-xs text-ink-500 dark:text-ink-400 no-underline transition-colors duration-[120ms] ease-in-out hover:text-fox-ink dark:hover:text-fox-400">
         {link.label}
       </a>
     ))}

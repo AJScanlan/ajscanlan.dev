@@ -29,15 +29,15 @@ const formatReadingTime = (minutes?: number): string => {
 const getKindClasses = (k: string): { color: string; bg: string; border: string } => {
   if (k === 'project-log') {
     return {
-      color: 'text-fox-ink',
-      bg: 'bg-fox-ink/5',
-      border: 'border border-fox-ink/20',
+      color: 'text-fox-ink dark:text-fox-400',
+      bg: 'bg-fox-ink/5 dark:bg-fox-400/10',
+      border: 'border border-fox-ink/20 dark:border-fox-400/30',
     };
   }
   return {
-    color: 'text-ink-400',
+    color: 'text-ink-400 dark:text-ink-500',
     bg: 'bg-transparent',
-    border: 'border border-ink-200',
+    border: 'border border-ink-200 dark:border-ink-700',
   };
 };
 
@@ -45,22 +45,22 @@ const kindClasses = getKindClasses(kind);
 ---
 
 {variant === 'home' ? (
-  <a href={href} class="post-row-home group grid no-underline border-b border-ink-100 py-3 transition-[background,color] duration-[120ms] ease-out gap-6 items-baseline cursor-pointer">
-    <div class="font-mono text-sm text-ink-400">{formatHomeDate(date)}</div>
+  <a href={href} class="post-row-home group grid no-underline border-b border-ink-100 dark:border-ink-800 py-3 transition-[background,color] duration-[120ms] ease-out gap-6 items-baseline cursor-pointer">
+    <div class="font-mono text-sm text-ink-400 dark:text-ink-500">{formatHomeDate(date)}</div>
     <div class="min-w-0">
-      <div class={`text-base font-medium text-ink-900 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink post-row-title`}>{title}</div>
-      {dek && <div class="post-row-dek text-sm text-ink-500 overflow-hidden text-ellipsis whitespace-nowrap max-w-[48ch]">{dek}</div>}
+      <div class={`text-base font-medium text-ink-900 dark:text-ink-50 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink dark:group-hover:text-fox-400 post-row-title`}>{title}</div>
+      {dek && <div class="post-row-dek text-sm text-ink-500 dark:text-ink-400 overflow-hidden text-ellipsis whitespace-nowrap max-w-[48ch]">{dek}</div>}
     </div>
     <div class={`font-mono text-xs font-medium uppercase tracking-wider rounded py-px px-2 inline-block whitespace-nowrap ${kindClasses.color} ${kindClasses.bg} ${kindClasses.border}`}>
       {kind.toUpperCase()}
     </div>
   </a>
 ) : (
-  <a href={href} class="post-row-archive group grid no-underline border-b border-ink-100 py-3 transition-[background,color] duration-[120ms] ease-out gap-4 items-baseline cursor-pointer hover:bg-paper-200">
-    <div class="font-mono text-xs text-ink-400">{formatArchiveDate(date)}</div>
+  <a href={href} class="post-row-archive group grid no-underline border-b border-ink-100 dark:border-ink-800 py-3 transition-[background,color] duration-[120ms] ease-out gap-4 items-baseline cursor-pointer hover:bg-paper-200 dark:hover:bg-ink-800">
+    <div class="font-mono text-xs text-ink-400 dark:text-ink-500">{formatArchiveDate(date)}</div>
     <div class={`font-mono text-xs font-medium uppercase tracking-wider ${kindClasses.color}`}>{kind.toUpperCase()}</div>
-    <div class="text-sm font-medium text-ink-900 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink">{title}</div>
-    <div class="font-mono text-xs text-ink-400 text-right">{formatReadingTime(readingTime)}</div>
+    <div class="text-sm font-medium text-ink-900 dark:text-ink-50 transition-colors duration-[120ms] ease-out group-hover:text-fox-ink dark:group-hover:text-fox-400">{title}</div>
+    <div class="font-mono text-xs text-ink-400 dark:text-ink-500 text-right">{formatReadingTime(readingTime)}</div>
   </a>
 )}
 
@@ -78,6 +78,12 @@ const kindClasses = getKindClasses(kind);
     display: inline-block;
     margin-left: 0;
     transition: opacity 120ms ease-out;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .post-row-title::after {
+      color: theme('colors.ink.600');
+    }
   }
 
   .post-row-home:hover .post-row-title::after {

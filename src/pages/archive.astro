@@ -57,34 +57,34 @@ const counts = {
 <BaseLayout title="Archive — ajscanlan.dev" description="All posts, sorted by date.">
     <div class="layout-home pt-8 sm:pt-12 pb-20">
 
-        <h1 class="text-5xl font-bold text-ink-900 tracking-tight mb-6">Archive</h1>
+        <h1 class="text-5xl font-bold text-ink-900 dark:text-ink-50 tracking-tight mb-6">Archive</h1>
 
-        <div id="filter-tabs" class="flex flex-wrap gap-0 border-b border-ink-100 mb-8">
-            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="all">All ({counts.all})</button>
-            {counts['project-log'] > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="project-log">Project logs ({counts['project-log']})</button>}
-            {counts.technical > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="technical">Technical ({counts.technical})</button>}
-            {counts['cheat-sheet'] > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="cheat-sheet">Cheat sheets ({counts['cheat-sheet']})</button>}
-            {counts.note > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="note">Notes ({counts.note})</button>}
-            {counts.essay > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700" data-kind="essay">Essays ({counts.essay})</button>}
+        <div id="filter-tabs" class="flex flex-wrap gap-0 border-b border-ink-100 dark:border-ink-800 mb-8">
+            <button class="tab font-mono text-sm py-2 px-3 text-ink-400 dark:text-ink-500 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700 dark:hover:text-ink-200" data-kind="all">All ({counts.all})</button>
+            {counts['project-log'] > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 dark:text-ink-500 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700 dark:hover:text-ink-200" data-kind="project-log">Project logs ({counts['project-log']})</button>}
+            {counts.technical > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 dark:text-ink-500 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700 dark:hover:text-ink-200" data-kind="technical">Technical ({counts.technical})</button>}
+            {counts['cheat-sheet'] > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 dark:text-ink-500 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700 dark:hover:text-ink-200" data-kind="cheat-sheet">Cheat sheets ({counts['cheat-sheet']})</button>}
+            {counts.note > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 dark:text-ink-500 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700 dark:hover:text-ink-200" data-kind="note">Notes ({counts.note})</button>}
+            {counts.essay > 0 && <button class="tab font-mono text-sm py-2 px-3 text-ink-400 dark:text-ink-500 bg-transparent border-0 border-b-2 border-transparent -mb-px cursor-pointer transition-colors duration-[120ms] hover:text-ink-700 dark:hover:text-ink-200" data-kind="essay">Essays ({counts.essay})</button>}
         </div>
 
         <div id="archive-list">
             {years.map(year => (
                 <div class="year-group mb-6" data-year={year}>
-                    <div class="flex items-center gap-3 font-mono text-xs tracking-eyebrow uppercase text-ink-400 mb-1">
+                    <div class="flex items-center gap-3 font-mono text-xs tracking-eyebrow uppercase text-ink-400 dark:text-ink-500 mb-1">
                         <span>{year}</span>
-                        <span class="flex-1 h-px bg-ink-100"></span>
+                        <span class="flex-1 h-px bg-ink-100 dark:bg-ink-800"></span>
                     </div>
                     <div>
                         {byYear[year].map(({ entry, kind, date, rt }) => (
                             <a href={`/posts/${entry.slug}/`}
-                               class="archive-row grid gap-4 py-3 border-b border-ink-100 items-baseline no-underline transition-colors duration-[120ms] hover:bg-paper-200"
+                               class="archive-row grid gap-4 py-3 border-b border-ink-100 dark:border-ink-800 items-baseline no-underline transition-colors duration-[120ms] hover:bg-paper-200 dark:hover:bg-ink-800"
                                style="grid-template-columns: 110px 110px 1fr 80px;"
                                data-kind={kind}>
-                                <span class="font-mono text-xs text-ink-400">{date.toISOString().slice(0, 10)}</span>
-                                <span class={`arc-kind font-mono text-xs uppercase tracking-wider ${kind === 'project-log' ? 'text-fox-ink' : 'text-ink-400'}`}>{kind}</span>
-                                <span class="text-sm font-medium text-ink-900">{entry.data.title}</span>
-                                <span class="arc-time font-mono text-xs text-ink-400 text-right">{rt} min</span>
+                                <span class="font-mono text-xs text-ink-400 dark:text-ink-500">{date.toISOString().slice(0, 10)}</span>
+                                <span class={`arc-kind font-mono text-xs uppercase tracking-wider ${kind === 'project-log' ? 'text-fox-ink dark:text-fox-400' : 'text-ink-400 dark:text-ink-500'}`}>{kind}</span>
+                                <span class="text-sm font-medium text-ink-900 dark:text-ink-50">{entry.data.title}</span>
+                                <span class="arc-time font-mono text-xs text-ink-400 dark:text-ink-500 text-right">{rt} min</span>
                             </a>
                         ))}
                     </div>
@@ -103,6 +103,13 @@ const counts = {
     font-weight: 600;
 }
 
+@media (prefers-color-scheme: dark) {
+    .tab.active {
+        color: theme('colors.ink.50');
+        border-bottom-color: theme('colors.ink.50');
+    }
+}
+
 /* data-hidden attribute drives show/hide filtering */
 .archive-row[data-hidden],
 .year-group[data-hidden] {
@@ -119,6 +126,12 @@ const counts = {
     .arc-time {
         text-align: left;
         color: theme('colors.ink.300');
+    }
+}
+
+@media (max-width: 640px) and (prefers-color-scheme: dark) {
+    .arc-time {
+        color: theme('colors.ink.600');
     }
 }
 </style>

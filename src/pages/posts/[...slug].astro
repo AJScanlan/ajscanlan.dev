@@ -53,21 +53,21 @@ const readingTime = await getReadingTime(entry);
         <ReadingProgress />
 
         <div class="max-w-[660px]">
-            <div class="flex items-center gap-2.5 flex-wrap font-mono text-sm text-ink-400 mb-6 pt-6 sm:pt-10">
-                <a href="/archive" class="meta-back text-ink-500 no-underline border-b border-ink-200 hover:text-fox-ink hover:border-fox-ink">← all posts</a>
-                <span class="text-ink-200">·</span>
-                <span class="font-mono uppercase tracking-wider text-xs rounded py-px px-2 bg-fox-500/5 text-fox-ink border border-fox-ink/25" data-kind={kind}>{kind}</span>
-                <span class="text-ink-200">·</span>
+            <div class="flex items-center gap-2.5 flex-wrap font-mono text-sm text-ink-400 dark:text-ink-500 mb-6 pt-6 sm:pt-10">
+                <a href="/archive" class="meta-back text-ink-500 dark:text-ink-400 no-underline border-b border-ink-200 dark:border-ink-700 hover:text-fox-ink dark:hover:text-fox-400 hover:border-fox-ink dark:hover:border-fox-400">← all posts</a>
+                <span class="text-ink-200 dark:text-ink-700">·</span>
+                <span class="font-mono uppercase tracking-wider text-xs rounded py-px px-2 bg-fox-500/5 dark:bg-fox-400/10 text-fox-ink dark:text-fox-400 border border-fox-ink/25 dark:border-fox-400/30" data-kind={kind}>{kind}</span>
+                <span class="text-ink-200 dark:text-ink-700">·</span>
                 <time>{formattedDate}</time>
-                <span class="text-ink-200">·</span>
+                <span class="text-ink-200 dark:text-ink-700">·</span>
                 <span>{readingTime} min read</span>
             </div>
 
-            <h1 class="text-5xl font-bold tracking-tight text-ink-900 mb-4">{data.title}</h1>
+            <h1 class="text-5xl font-bold tracking-tight text-ink-900 dark:text-ink-50 mb-4">{data.title}</h1>
 
-            {data.dek && <p class="font-serif italic text-lg text-ink-500 mb-8">{data.dek}</p>}
+            {data.dek && <p class="font-serif italic text-lg text-ink-500 dark:text-ink-400 mb-8">{data.dek}</p>}
 
-            <article class="post-prose text-base text-ink-700">
+            <article class="post-prose text-base text-ink-700 dark:text-ink-200">
                 <Content components={{ Callout, SectionBreak, Eyebrow }} />
             </article>
         </div>
@@ -86,4 +86,10 @@ const readingTime = await getReadingTime(entry);
 .post-prose :global(blockquote) { border-left: 3px solid theme('colors.fox.ink'); margin: 0 0 20px; padding: 0.25rem 0 0.25rem 1.25rem; color: theme('colors.ink.500'); font-style: italic; }
 .post-prose :global(blockquote p) { margin-bottom: 0.75rem; }
 .post-prose :global(blockquote p:last-child) { margin-bottom: 0; }
+
+@media (prefers-color-scheme: dark) {
+    .post-prose :global(a) { color: theme('colors.fox.400'); }
+    .post-prose :global(a:hover) { color: theme('colors.fox.300'); }
+    .post-prose :global(blockquote) { border-left-color: theme('colors.fox.400'); color: theme('colors.ink.400'); }
+}
 </style>

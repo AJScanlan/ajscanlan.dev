@@ -16,12 +16,12 @@ const navLinks: NavLink[] = [
 ];
 ---
 
-<nav aria-label="Main navigation" class="sticky top-0 z-50 bg-paper-100/85 backdrop-blur-sm border-b border-ink-100">
+<nav aria-label="Main navigation" class="sticky top-0 z-50 bg-paper-100/85 dark:bg-ink-900/85 backdrop-blur-sm border-b border-ink-100 dark:border-ink-800">
   <div class="layout-home flex items-center justify-between h-14 py-3">
     {/* Brand */}
     <a href="/" aria-label="ajscanlan.dev" class="group flex items-center gap-2 no-underline">
       <img src="/icons/RED_FOX_FILLED.svg" alt="" class="size-11 shrink-0" />
-      <span class="hidden sm:inline font-mono text-base font-semibold"><span class="text-ink-900 transition-colors duration-[120ms] group-hover:text-fox-ink">ajscanlan</span><span class="text-ink-400 transition-colors duration-[120ms] group-hover:text-fox-ink">.dev</span></span>
+      <span class="hidden sm:inline font-mono text-base font-semibold"><span class="text-ink-900 dark:text-ink-50 transition-colors duration-[120ms] group-hover:text-fox-ink">ajscanlan</span><span class="text-ink-400 dark:text-ink-500 transition-colors duration-[120ms] group-hover:text-fox-ink">.dev</span></span>
     </a>
 
     {/* Nav Links */}
@@ -30,8 +30,8 @@ const navLinks: NavLink[] = [
         <a
           href={link.href}
           class:list={[
-            'font-mono text-sm text-ink-500 no-underline whitespace-nowrap transition-colors duration-[120ms] hover:text-fox-ink',
-            { 'text-ink-900 font-semibold': link.isActive },
+            'font-mono text-sm text-ink-500 dark:text-ink-400 no-underline whitespace-nowrap transition-colors duration-[120ms] hover:text-fox-ink',
+            { 'text-ink-900 dark:text-ink-50 font-semibold': link.isActive },
           ]}
           {...(link.isExternal && { target: '_blank', rel: 'noopener noreferrer' })}
         >
